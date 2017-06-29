@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btn_stop_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="stop refresh"/>
+
+    <com.fanwe.library.pulltorefresh.SDPullToRefreshView
+        android:id="@+id/view_pull"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--<Button-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="200dp"-->
+        <!--android:text="Hello World!"/>-->
+
+        <com.fanwe.library.view.SDRecyclerView
+        android:id="@+id/rv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+        <!--<ListView-->
+        <!--android:id="@+id/lv_content"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"/>-->
+
+        <!--<ScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+        <!--<Button-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="200dp"-->
+        <!--android:text="Hello World!"/>-->
+        <!--<View android:layout_width="match_parent" android:layout_height="1000dp"/>-->
+        <!--</LinearLayout>-->
+        <!--</ScrollView>-->
+
+
+    </com.fanwe.library.pulltorefresh.SDPullToRefreshView>
+
+    <com.fanwe.library.view.SDRecyclerView
+        android:id="@+id/rv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <ListView
+        android:id="@+id/lv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
