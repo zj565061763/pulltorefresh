@@ -201,7 +201,5 @@ public interface ISDPullToRefreshView
         int getRefreshHeight();
 
         LoadingViewType getLoadingViewType();
-
-        void setLoadingViewType(LoadingViewType loadingViewType);
     }
 }

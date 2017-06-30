@@ -74,7 +74,7 @@ class SDPullToRefreshRootView extends LinearLayout implements
         {
             ll_header.removeAllViews();
             mHeaderView = headerView;
-            headerView.setLoadingViewType(SDPullToRefreshView.LoadingViewType.HEADER);
+            headerView.setLoadingViewType(ISDPullToRefreshView.LoadingViewType.HEADER);
             ll_header.addView(headerView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         }
     }
@@ -125,7 +125,7 @@ class SDPullToRefreshRootView extends LinearLayout implements
         {
             ll_footer.removeAllViews();
             mFooterView = footerView;
-            footerView.setLoadingViewType(SDPullToRefreshView.LoadingViewType.FOOTER);
+            footerView.setLoadingViewType(ISDPullToRefreshView.LoadingViewType.FOOTER);
             ll_footer.addView(footerView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         }
     }

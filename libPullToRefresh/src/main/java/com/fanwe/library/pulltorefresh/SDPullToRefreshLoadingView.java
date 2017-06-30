@@ -36,13 +36,9 @@ public abstract class SDPullToRefreshLoadingView extends FrameLayout implements 
         return mLoadingViewType;
     }
 
-    @Override
-    public void setLoadingViewType(SDPullToRefreshView.LoadingViewType loadingViewType)
+    final void setLoadingViewType(SDPullToRefreshView.LoadingViewType loadingViewType)
     {
-        if (loadingViewType != null && mLoadingViewType != loadingViewType)
-        {
-            mLoadingViewType = loadingViewType;
-        }
+        mLoadingViewType = loadingViewType;
     }
 
     @Override
