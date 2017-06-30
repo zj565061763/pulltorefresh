@@ -547,28 +547,12 @@ public class SDPullToRefreshView extends LinearLayout implements ISDPullToRefres
                 mTouchHelper.setNeedConsume(false);
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (isViewCaptured() && checkMoveParams())
+                if (isViewCaptured() && canPull())
                 {
-                    if (mTouchHelper.isMoveDown() && (mMode == Mode.BOTH || mMode == Mode.PULL_FROM_HEADER))
+                    mTouchHelper.setNeedConsume(true);
+                    if (mIsDebug)
                     {
-                        if (!ViewCompat.canScrollVertically(mRootLayout.getContentView(), -1))
-                        {
-                            mTouchHelper.setNeedConsume(true);
-                            if (mIsDebug)
-                            {
-                                Log.e(TAG, "onInterceptTouchEvent Intercept success when move down");
-                            }
-                        }
-                    } else if (mTouchHelper.isMoveUp() && (mMode == Mode.BOTH || mMode == Mode.PULL_FROM_FOOTER))
-                    {
-                        if (!ViewCompat.canScrollVertically(mRootLayout.getContentView(), 1))
-                        {
-                            mTouchHelper.setNeedConsume(true);
-                            if (mIsDebug)
-                            {
-                                Log.e(TAG, "onInterceptTouchEvent Intercept success when move up");
-                            }
-                        }
+                        Log.e(TAG, "onInterceptTouchEvent Intercept success when isMoveDown:" + mTouchHelper.isMoveDown());
                     }
                 }
                 break;
@@ -588,6 +572,25 @@ public class SDPullToRefreshView extends LinearLayout implements ISDPullToRefres
     private boolean checkMoveParams()
     {
         return Math.abs(mTouchHelper.getDistanceY()) > mTouchSlop && mTouchHelper.getDegreeY() < 30;
+    }
+
+    private boolean canPull()
+    {
+        return checkMoveParams() && (canPullFromHeader() || canPullFromFooter());
+    }
+
+    private boolean canPullFromHeader()
+    {
+        return mTouchHelper.isMoveDown()
+                && (mMode == Mode.BOTH || mMode == Mode.PULL_FROM_HEADER)
+                && !ViewCompat.canScrollVertically(mRootLayout.getContentView(), -1);
+    }
+
+    private boolean canPullFromFooter()
+    {
+        return mTouchHelper.isMoveUp()
+                && (mMode == Mode.BOTH || mMode == Mode.PULL_FROM_FOOTER)
+                && !ViewCompat.canScrollVertically(mRootLayout.getContentView(), 1);
     }
 
     @Override
@@ -617,7 +620,7 @@ public class SDPullToRefreshView extends LinearLayout implements ISDPullToRefres
                     }
                 } else
                 {
-                    if (checkMoveParams())
+                    if (isViewCaptured() && canPull())
                     {
                         setNeedProcess(true, event);
                     }
