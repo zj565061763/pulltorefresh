@@ -10,7 +10,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
@@ -55,7 +54,7 @@ public class SDPullToRefreshView extends LinearLayout implements ISDPullToRefres
      */
     private int mRootTopReset;
     /**
-     * 触发拦截拖动的最小移动距离
+     * 触发拦截拖动的最小移动距离，默认0
      */
     private int mTouchSlop;
     /**
@@ -76,8 +75,6 @@ public class SDPullToRefreshView extends LinearLayout implements ISDPullToRefres
 
     private void initInternal()
     {
-        mTouchSlop = (int) (ViewConfiguration.get(getContext()).getScaledTouchSlop() * 0.1f);
-
         addRootLayout();
         initViewDragHelper();
     }
