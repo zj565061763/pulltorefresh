@@ -6,56 +6,27 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/btn_stop_refresh"
+        android:id="@+id/btn_button"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="stop refresh"/>
+        android:text="Button_Activity"/>
 
-    <com.fanwe.library.pulltorefresh.SDPullToRefreshView
-        android:id="@+id/view_pull"
+    <Button
+        android:id="@+id/btn_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="50dp"
+        android:text="Recyclerview_Activity"/>
 
-        <!--<Button-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="200dp"-->
-        <!--android:text="Hello World!"/>-->
-
-        <com.fanwe.library.view.SDRecyclerView
-        android:id="@+id/rv_content"
+    <Button
+        android:id="@+id/btn_listview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="50dp"
+        android:text="ListView_Activity"/>
 
-        <!--<ListView-->
-        <!--android:id="@+id/lv_content"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"/>-->
-
-        <!--<ScrollView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
-        <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
-        <!--<Button-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="200dp"-->
-        <!--android:text="Hello World!"/>-->
-        <!--<View android:layout_width="match_parent" android:layout_height="1000dp"/>-->
-        <!--</LinearLayout>-->
-        <!--</ScrollView>-->
-
-
-    </com.fanwe.library.pulltorefresh.SDPullToRefreshView>
-
-    <com.fanwe.library.view.SDRecyclerView
-        android:id="@+id/rv_content"
+    <Button
+        android:id="@+id/btn_scrollview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <ListView
-        android:id="@+id/lv_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="50dp"
+        android:text="ScrollView_Activity"/>
 
 </LinearLayout>

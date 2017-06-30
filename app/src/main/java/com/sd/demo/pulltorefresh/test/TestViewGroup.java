@@ -1,4 +1,4 @@
-package com.sd.demo.pulltorefresh;
+package com.sd.demo.pulltorefresh.test;
 
 import android.content.Context;
 import android.util.AttributeSet;

@@ -1,4 +1,4 @@
-package com.sd.demo.pulltorefresh;
+package com.sd.demo.pulltorefresh.view;
 
 import android.content.Context;
 import android.support.annotation.AttrRes;
@@ -10,6 +10,7 @@ import com.fanwe.library.pulltorefresh.ISDPullToRefreshView;
 import com.fanwe.library.pulltorefresh.SDPullToRefreshView;
 import com.fanwe.library.pulltorefresh.SDSimpleImageLoadingView;
 import com.fanwe.library.utils.SDViewUtil;
+import com.sd.demo.pulltorefresh.R;
 
 /**
  * Created by Administrator on 2017/6/30.
