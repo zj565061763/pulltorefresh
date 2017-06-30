@@ -185,10 +185,10 @@ class SDPullToRefreshRootView extends LinearLayout implements
     @Override
     public void onStateChanged(ISDPullToRefreshView.State state, SDPullToRefreshView view)
     {
-        if (getPullToRefreshView().getLastDirection() == ISDPullToRefreshView.Direction.HEADER_TO_FOOTER)
+        if (getPullToRefreshView().getDirection() == ISDPullToRefreshView.Direction.HEADER_TO_FOOTER)
         {
             mHeaderView.onStateChanged(state, view);
-        } else if (getPullToRefreshView().getLastDirection() == ISDPullToRefreshView.Direction.FOOTER_TO_HEADER)
+        } else if (getPullToRefreshView().getDirection() == ISDPullToRefreshView.Direction.FOOTER_TO_HEADER)
         {
             mFooterView.onStateChanged(state, view);
         }
@@ -197,10 +197,10 @@ class SDPullToRefreshRootView extends LinearLayout implements
     @Override
     public void onViewPositionChanged(SDPullToRefreshView view)
     {
-        if (getPullToRefreshView().getLastDirection() == ISDPullToRefreshView.Direction.HEADER_TO_FOOTER)
+        if (getPullToRefreshView().getDirection() == ISDPullToRefreshView.Direction.HEADER_TO_FOOTER)
         {
             mHeaderView.onViewPositionChanged(view);
-        } else if (getPullToRefreshView().getLastDirection() == ISDPullToRefreshView.Direction.FOOTER_TO_HEADER)
+        } else if (getPullToRefreshView().getDirection() == ISDPullToRefreshView.Direction.FOOTER_TO_HEADER)
         {
             mFooterView.onViewPositionChanged(view);
         }

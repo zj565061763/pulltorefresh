@@ -484,12 +484,6 @@ public class SDPullToRefreshView extends LinearLayout implements ISDPullToRefres
     @Override
     public Direction getDirection()
     {
-        return mDirection;
-    }
-
-    @Override
-    public Direction getLastDirection()
-    {
         return mLastDirection;
     }
 

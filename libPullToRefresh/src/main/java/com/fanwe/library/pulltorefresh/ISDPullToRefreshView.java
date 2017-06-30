@@ -111,13 +111,6 @@ public interface ISDPullToRefreshView
     Direction getDirection();
 
     /**
-     * 返回最后一次拖动的方向
-     *
-     * @return
-     */
-    Direction getLastDirection();
-
-    /**
      * 返回滚动的距离
      *
      * @return
