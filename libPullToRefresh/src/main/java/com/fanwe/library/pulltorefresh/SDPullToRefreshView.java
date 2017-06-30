@@ -506,7 +506,7 @@ public class SDPullToRefreshView extends LinearLayout implements ISDPullToRefres
         }
     }
 
-    private SDTouchEventHelper mInterceptHelper = new SDTouchEventHelper();
+    private SDTouchEventHelper mTouchHelper = new SDTouchEventHelper();
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev)
@@ -525,7 +525,7 @@ public class SDPullToRefreshView extends LinearLayout implements ISDPullToRefres
         {
             return false;
         }
-        if (mInterceptHelper.isNeedConsume())
+        if (mTouchHelper.isNeedConsume())
         {
             if (mIsDebug)
             {
@@ -534,33 +534,32 @@ public class SDPullToRefreshView extends LinearLayout implements ISDPullToRefres
             return true;
         }
 
-        mInterceptHelper.processTouchEvent(ev);
+        mTouchHelper.processTouchEvent(ev);
         switch (ev.getAction())
         {
             case MotionEvent.ACTION_DOWN:
                 //触发ViewDragHelper的尝试捕捉
                 mDragHelper.processTouchEvent(ev);
-                mInterceptHelper.setNeedConsume(false);
+                mTouchHelper.setNeedConsume(false);
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (isViewCaptured() && Math.abs(mInterceptHelper.getDistanceY()) > mTouchSlop
-                        && mInterceptHelper.getDegreeY() < 30)
+                if (isViewCaptured() && checkMoveParams())
                 {
-                    if (mInterceptHelper.isMoveDown() && (mMode == Mode.BOTH || mMode == Mode.PULL_FROM_HEADER))
+                    if (mTouchHelper.isMoveDown() && (mMode == Mode.BOTH || mMode == Mode.PULL_FROM_HEADER))
                     {
                         if (!ViewCompat.canScrollVertically(mRootLayout.getContentView(), -1))
                         {
-                            mInterceptHelper.setNeedConsume(true);
+                            mTouchHelper.setNeedConsume(true);
                             if (mIsDebug)
                             {
                                 Log.e(TAG, "onInterceptTouchEvent Intercept success when move down");
                             }
                         }
-                    } else if (mInterceptHelper.isMoveUp() && (mMode == Mode.BOTH || mMode == Mode.PULL_FROM_FOOTER))
+                    } else if (mTouchHelper.isMoveUp() && (mMode == Mode.BOTH || mMode == Mode.PULL_FROM_FOOTER))
                     {
                         if (!ViewCompat.canScrollVertically(mRootLayout.getContentView(), 1))
                         {
-                            mInterceptHelper.setNeedConsume(true);
+                            mTouchHelper.setNeedConsume(true);
                             if (mIsDebug)
                             {
                                 Log.e(TAG, "onInterceptTouchEvent Intercept success when move up");
@@ -574,12 +573,17 @@ public class SDPullToRefreshView extends LinearLayout implements ISDPullToRefres
                 mDragHelper.processTouchEvent(ev);
                 break;
         }
-        return mInterceptHelper.isNeedConsume();
+        return mTouchHelper.isNeedConsume();
     }
 
     private boolean isViewCaptured()
     {
         return mDragHelper.getViewDragState() == ViewDragHelper.STATE_DRAGGING;
+    }
+
+    private boolean checkMoveParams()
+    {
+        return Math.abs(mTouchHelper.getDistanceY()) > mTouchSlop && mTouchHelper.getDegreeY() < 30;
     }
 
     @Override
@@ -590,11 +594,10 @@ public class SDPullToRefreshView extends LinearLayout implements ISDPullToRefres
             return super.onTouchEvent(event);
         }
 
-        mInterceptHelper.processTouchEvent(event);
+        mTouchHelper.processTouchEvent(event);
         switch (event.getAction())
         {
             case MotionEvent.ACTION_DOWN:
-                setNeedProcess(true, event);
                 if (!isViewCaptured())
                 {
                     //触发ViewDragHelper的尝试捕捉
@@ -602,13 +605,18 @@ public class SDPullToRefreshView extends LinearLayout implements ISDPullToRefres
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (mInterceptHelper.isNeedConsume())
+                if (mIsNeedProcess)
                 {
-                    setNeedProcess(true, event);
-                }
-                if (mIsNeedProcess && isViewCaptured())
+                    if (isViewCaptured())
+                    {
+                        mDragHelper.processTouchEvent(event);
+                    }
+                } else
                 {
-                    mDragHelper.processTouchEvent(event);
+                    if (checkMoveParams())
+                    {
+                        setNeedProcess(true, event);
+                    }
                 }
                 break;
             case MotionEvent.ACTION_UP:
@@ -617,19 +625,19 @@ public class SDPullToRefreshView extends LinearLayout implements ISDPullToRefres
                 mDragHelper.processTouchEvent(event);
                 if (mIsDebug)
                 {
-                    if (mInterceptHelper.isNeedConsume())
+                    if (mTouchHelper.isNeedConsume())
                     {
                         Log.e(TAG, "onTouchEvent Intercept released with action " + event.getAction());
                     }
                 }
-                mInterceptHelper.setNeedConsume(false);
+                mTouchHelper.setNeedConsume(false);
                 break;
             default:
                 mDragHelper.processTouchEvent(event);
                 break;
         }
 
-        boolean result = super.onTouchEvent(event) || mIsNeedProcess;
+        boolean result = super.onTouchEvent(event) || mIsNeedProcess || event.getAction() == MotionEvent.ACTION_DOWN;
         return result;
     }
 
