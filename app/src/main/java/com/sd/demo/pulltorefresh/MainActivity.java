@@ -48,6 +48,7 @@ public class MainActivity extends SDBaseActivity
         });
 
         view_pull.setDebug(true);
+        view_pull.setHeaderView(new CustomPullToRefreshLoadingView(this));
         view_pull.setOnRefreshCallback(new ISDPullToRefreshView.OnRefreshCallback()
         {
             @Override
