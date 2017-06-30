@@ -1,6 +1,9 @@
 # pulltorefresh
 this library is based on android.support.v4.widget.ViewDragHelper
 
+## Gradle
+`compile 'com.fanwe.android:pulltorefresh:1.0.1'`
+
 ## In Xml File
 u can only add one child to SDPullToRefreshView<br>
 RecyclerView, ListView, ScrollView and so on...
