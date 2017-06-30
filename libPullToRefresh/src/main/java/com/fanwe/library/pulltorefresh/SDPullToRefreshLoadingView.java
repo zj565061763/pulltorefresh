@@ -28,7 +28,18 @@ public abstract class SDPullToRefreshLoadingView extends FrameLayout implements 
         super(context, attrs, defStyleAttr);
     }
 
+    private SDPullToRefreshView mPullToRefreshView;
     private SDPullToRefreshView.LoadingViewType mLoadingViewType;
+
+    final void setPullToRefreshView(SDPullToRefreshView pullToRefreshView)
+    {
+        mPullToRefreshView = pullToRefreshView;
+    }
+
+    final void setLoadingViewType(SDPullToRefreshView.LoadingViewType loadingViewType)
+    {
+        mLoadingViewType = loadingViewType;
+    }
 
     @Override
     public SDPullToRefreshView.LoadingViewType getLoadingViewType()
@@ -36,9 +47,10 @@ public abstract class SDPullToRefreshLoadingView extends FrameLayout implements 
         return mLoadingViewType;
     }
 
-    final void setLoadingViewType(SDPullToRefreshView.LoadingViewType loadingViewType)
+    @Override
+    public SDPullToRefreshView getPullToRefreshView()
     {
-        mLoadingViewType = loadingViewType;
+        return mPullToRefreshView;
     }
 
     @Override

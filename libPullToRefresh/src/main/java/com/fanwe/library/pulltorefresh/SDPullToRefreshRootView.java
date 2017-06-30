@@ -34,7 +34,7 @@ class SDPullToRefreshRootView extends LinearLayout implements
         init();
     }
 
-    private ISDPullToRefreshView mPullToRefreshView;
+    private SDPullToRefreshView mPullToRefreshView;
 
     private LinearLayout ll_header;
     private LinearLayout ll_content;
@@ -53,12 +53,12 @@ class SDPullToRefreshRootView extends LinearLayout implements
         ll_footer = (LinearLayout) findViewById(R.id.ll_footer);
     }
 
-    public void setPullToRefreshView(ISDPullToRefreshView pullToRefreshView)
+    public void setPullToRefreshView(SDPullToRefreshView pullToRefreshView)
     {
         mPullToRefreshView = pullToRefreshView;
     }
 
-    public ISDPullToRefreshView getPullToRefreshView()
+    public SDPullToRefreshView getPullToRefreshView()
     {
         return mPullToRefreshView;
     }
@@ -75,6 +75,7 @@ class SDPullToRefreshRootView extends LinearLayout implements
             ll_header.removeAllViews();
             mHeaderView = headerView;
             headerView.setLoadingViewType(ISDPullToRefreshView.LoadingViewType.HEADER);
+            headerView.setPullToRefreshView(getPullToRefreshView());
             ll_header.addView(headerView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         }
     }
@@ -126,6 +127,7 @@ class SDPullToRefreshRootView extends LinearLayout implements
             ll_footer.removeAllViews();
             mFooterView = footerView;
             footerView.setLoadingViewType(ISDPullToRefreshView.LoadingViewType.FOOTER);
+            footerView.setPullToRefreshView(getPullToRefreshView());
             ll_footer.addView(footerView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         }
     }
