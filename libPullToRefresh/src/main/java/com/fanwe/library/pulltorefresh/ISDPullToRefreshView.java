@@ -7,6 +7,11 @@ package com.fanwe.library.pulltorefresh;
 public interface ISDPullToRefreshView
 {
     /**
+     * 默认的拖动消耗比例
+     */
+    float DEFAULT_COMSUME_SCROLL_PERCENT = 0.6f;
+
+    /**
      * 设置刷新模式
      *
      * @param mode
@@ -33,6 +38,13 @@ public interface ISDPullToRefreshView
      * @param onViewPositionChangedCallback
      */
     void setOnViewPositionChangedCallback(OnViewPositionChangedCallback onViewPositionChangedCallback);
+
+    /**
+     * 设置拖动的时候要消耗的拖动距离比例，默认是0.6
+     *
+     * @param comsumeScrollPercent [0-1]
+     */
+    void setComsumeScrollPercent(float comsumeScrollPercent);
 
     /**
      * 设置HeaderView处处于刷新状态

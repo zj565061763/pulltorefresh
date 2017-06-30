@@ -40,8 +40,6 @@ public class SDPullToRefreshView extends LinearLayout implements ISDPullToRefres
 
     private static final String TAG = "SDPullToRefreshView";
 
-    private static final int MAX_MOVE_DISTANCE = 500;
-
     private SDPullToRefreshRootView mRootLayout;
 
     private Mode mMode = Mode.BOTH;
@@ -57,13 +55,13 @@ public class SDPullToRefreshView extends LinearLayout implements ISDPullToRefres
      */
     private int mRootTopReset;
     /**
-     * 最大可以拖动的距离，默认为HeaderView高度的3倍
-     */
-    private int mMaxMoveDistance = MAX_MOVE_DISTANCE;
-    /**
      * 触发拦截拖动的最小移动距离
      */
     private int mTouchSlop;
+    /**
+     * 设置拖动的时候要消耗的拖动距离比例
+     */
+    private float mComsumeScrollPercent = DEFAULT_COMSUME_SCROLL_PERCENT;
 
     private ViewDragHelper mDragHelper;
 
@@ -78,7 +76,7 @@ public class SDPullToRefreshView extends LinearLayout implements ISDPullToRefres
 
     private void initInternal()
     {
-        mTouchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
+        mTouchSlop = (int) (ViewConfiguration.get(getContext()).getScaledTouchSlop() * 0.2f);
 
         addRootLayout();
         initViewDragHelper();
@@ -136,7 +134,7 @@ public class SDPullToRefreshView extends LinearLayout implements ISDPullToRefres
                     case HEADER_TO_FOOTER:
                         if (mMode == Mode.BOTH || mMode == Mode.PULL_FROM_HEADER)
                         {
-                            final int comsumeDistance = (int) (Math.abs(dy) * getScrollPercent());
+                            final int comsumeDistance = (int) (Math.abs(dy) * getComsumeScrollPercent());
                             if (top > mRootTopReset)
                             {
                                 top = top - comsumeDistance;
@@ -149,7 +147,7 @@ public class SDPullToRefreshView extends LinearLayout implements ISDPullToRefres
                     case FOOTER_TO_HEADER:
                         if (mMode == Mode.BOTH || mMode == Mode.PULL_FROM_FOOTER)
                         {
-                            final int comsumeDistance = (int) (Math.abs(dy) * getScrollPercent());
+                            final int comsumeDistance = (int) (Math.abs(dy) * getComsumeScrollPercent());
                             if (top < mRootTopReset)
                             {
                                 top = top + comsumeDistance;
@@ -360,14 +358,9 @@ public class SDPullToRefreshView extends LinearLayout implements ISDPullToRefres
         }
     }
 
-    private float getScrollPercent()
+    private float getComsumeScrollPercent()
     {
-        float value = getScrollDistance() / (float) mMaxMoveDistance;
-        if (value > 1)
-        {
-            value = 1;
-        }
-        return value;
+        return mComsumeScrollPercent;
     }
 
     //----------ISDPullToRefreshView implements start----------
@@ -397,6 +390,20 @@ public class SDPullToRefreshView extends LinearLayout implements ISDPullToRefres
     public void setOnViewPositionChangedCallback(OnViewPositionChangedCallback onViewPositionChangedCallback)
     {
         mOnViewPositionChangedCallback = onViewPositionChangedCallback;
+    }
+
+    @Override
+    public void setComsumeScrollPercent(float comsumeScrollPercent)
+    {
+        if (comsumeScrollPercent < 0)
+        {
+            comsumeScrollPercent = 0;
+        }
+        if (comsumeScrollPercent > 1)
+        {
+            comsumeScrollPercent = 1;
+        }
+        mComsumeScrollPercent = comsumeScrollPercent;
     }
 
     @Override
@@ -693,7 +700,6 @@ public class SDPullToRefreshView extends LinearLayout implements ISDPullToRefres
         int bottom = getHeight() + mRootLayout.getFooterHeight();
 
         mRootTopReset = top;
-        mMaxMoveDistance = mRootLayout.getHeaderHeight() * 3;
 
         mRootLayout.layout(left, top, right, bottom);
 
