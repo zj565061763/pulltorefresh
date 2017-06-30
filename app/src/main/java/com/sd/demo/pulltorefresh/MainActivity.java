@@ -84,7 +84,7 @@ public class MainActivity extends SDBaseActivity
         view_pull.setOnStateChangedCallback(new SDPullToRefreshView.OnStateChangedCallback()
         {
             @Override
-            public void onStateChanged(SDPullToRefreshView.State state)
+            public void onStateChanged(ISDPullToRefreshView.State state, SDPullToRefreshView view)
             {
                 LogUtil.i("onStateChanged:" + state);
             }

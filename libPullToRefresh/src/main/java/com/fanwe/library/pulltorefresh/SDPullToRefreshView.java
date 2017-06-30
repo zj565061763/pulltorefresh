@@ -307,7 +307,7 @@ public class SDPullToRefreshView extends LinearLayout implements ISDPullToRefres
             }
 
             //通知view改变状态
-            mRootLayout.onStateChanged(mState);
+            mRootLayout.onStateChanged(mState, this);
 
             //通知刷新回调
             if (mState == State.REFRESHING)
@@ -327,7 +327,7 @@ public class SDPullToRefreshView extends LinearLayout implements ISDPullToRefres
             //通知状态变化回调
             if (mOnStateChangedCallback != null)
             {
-                mOnStateChangedCallback.onStateChanged(mState);
+                mOnStateChangedCallback.onStateChanged(mState, this);
             }
 
             if (mState == State.RESET)

@@ -48,7 +48,7 @@ public class SDSimpleTextLoadingView extends SDPullToRefreshLoadingView
     }
 
     @Override
-    public void onStateChanged(SDPullToRefreshView.State state)
+    public void onStateChanged(ISDPullToRefreshView.State state, SDPullToRefreshView view)
     {
         switch (state)
         {

@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 
 import com.fanwe.library.pulltorefresh.ISDPullToRefreshView;
+import com.fanwe.library.pulltorefresh.SDPullToRefreshView;
 import com.fanwe.library.pulltorefresh.SDSimpleImageLoadingView;
 import com.fanwe.library.utils.SDViewUtil;
 
@@ -32,7 +33,7 @@ public class CustomPullToRefreshLoadingView extends SDSimpleImageLoadingView
     }
 
     @Override
-    public void onStateChanged(ISDPullToRefreshView.State state)
+    public void onStateChanged(ISDPullToRefreshView.State state, SDPullToRefreshView view)
     {
         switch (state)
         {
