@@ -76,7 +76,7 @@ public class SDPullToRefreshView extends LinearLayout implements ISDPullToRefres
 
     private void initInternal()
     {
-        mTouchSlop = (int) (ViewConfiguration.get(getContext()).getScaledTouchSlop() * 0.2f);
+        mTouchSlop = (int) (ViewConfiguration.get(getContext()).getScaledTouchSlop() * 0.1f);
 
         addRootLayout();
         initViewDragHelper();
