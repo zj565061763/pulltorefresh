@@ -93,8 +93,8 @@ public class SDPullToRefreshView extends LinearLayout implements ISDPullToRefres
         mRootLayout.setPullToRefreshView(this);
         addView(mRootLayout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-        mRootLayout.setHeaderView(new SDSimplePullToRefreshLoadingView(getContext()));
-        mRootLayout.setFooterView(new SDSimplePullToRefreshLoadingView(getContext()));
+        mRootLayout.setHeaderView(new SDSimpleTextLoadingView(getContext()));
+        mRootLayout.setFooterView(new SDSimpleTextLoadingView(getContext()));
     }
 
     /**
