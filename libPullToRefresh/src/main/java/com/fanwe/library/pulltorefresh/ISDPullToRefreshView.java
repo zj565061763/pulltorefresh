@@ -9,7 +9,7 @@ public interface ISDPullToRefreshView
     /**
      * 默认的拖动消耗比例
      */
-    float DEFAULT_COMSUME_SCROLL_PERCENT = 0.6f;
+    float DEFAULT_COMSUME_SCROLL_PERCENT = 0.5f;
 
     /**
      * 设置刷新模式
@@ -40,7 +40,7 @@ public interface ISDPullToRefreshView
     void setOnViewPositionChangedCallback(OnViewPositionChangedCallback onViewPositionChangedCallback);
 
     /**
-     * 设置拖动的时候要消耗的拖动距离比例，默认是0.6
+     * 设置拖动的时候要消耗的拖动距离比例，默认是0.5
      *
      * @param comsumeScrollPercent [0-1]
      */
