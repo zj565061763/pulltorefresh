@@ -54,28 +54,28 @@ public class SDSimpleTextLoadingView extends SDPullToRefreshLoadingView
         {
             case RESET:
             case PULL_TO_REFRESH:
-                if (getLoadingViewType() == SDPullToRefreshView.LoadingViewType.HEADER)
+                if (getLoadingViewType() == ISDPullToRefreshView.LoadingViewType.HEADER)
                 {
                     getTextView().setText(getResources().getString(R.string.state_pull_to_refresh_header));
-                } else if (getLoadingViewType() == SDPullToRefreshView.LoadingViewType.FOOTER)
+                } else if (getLoadingViewType() == ISDPullToRefreshView.LoadingViewType.FOOTER)
                 {
                     getTextView().setText(getResources().getString(R.string.state_pull_to_refresh_footer));
                 }
                 break;
             case RELEASE_TO_REFRESH:
-                if (getLoadingViewType() == SDPullToRefreshView.LoadingViewType.HEADER)
+                if (getLoadingViewType() == ISDPullToRefreshView.LoadingViewType.HEADER)
                 {
                     getTextView().setText(getResources().getString(R.string.state_release_to_refresh_header));
-                } else if (getLoadingViewType() == SDPullToRefreshView.LoadingViewType.FOOTER)
+                } else if (getLoadingViewType() == ISDPullToRefreshView.LoadingViewType.FOOTER)
                 {
                     getTextView().setText(getResources().getString(R.string.state_release_to_refresh_footer));
                 }
                 break;
             case REFRESHING:
-                if (getLoadingViewType() == SDPullToRefreshView.LoadingViewType.HEADER)
+                if (getLoadingViewType() == ISDPullToRefreshView.LoadingViewType.HEADER)
                 {
                     getTextView().setText(getResources().getString(R.string.state_refreshing_header));
-                } else if (getLoadingViewType() == SDPullToRefreshView.LoadingViewType.FOOTER)
+                } else if (getLoadingViewType() == ISDPullToRefreshView.LoadingViewType.FOOTER)
                 {
                     getTextView().setText(getResources().getString(R.string.state_refreshing_footer));
                 }
