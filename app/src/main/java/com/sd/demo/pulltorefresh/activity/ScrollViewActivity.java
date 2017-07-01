@@ -2,11 +2,11 @@ package com.sd.demo.pulltorefresh.activity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 
 import com.fanwe.library.activity.SDBaseActivity;
 import com.fanwe.library.pulltorefresh.ISDPullToRefreshView;
 import com.fanwe.library.pulltorefresh.SDPullToRefreshView;
-import com.fanwe.library.utils.SDToast;
 import com.sd.demo.pulltorefresh.R;
 
 public class ScrollViewActivity extends SDBaseActivity
@@ -14,12 +14,14 @@ public class ScrollViewActivity extends SDBaseActivity
     private static final String TAG = "ScrollViewActivity";
 
     private SDPullToRefreshView view_pull;
+    private Button btn;
 
     @Override
     protected void init(Bundle savedInstanceState)
     {
         setContentView(R.layout.activity_scrollview);
         view_pull = (SDPullToRefreshView) findViewById(R.id.view_pull);
+        btn = (Button) findViewById(R.id.btn);
 
         view_pull.setDebug(true);
         view_pull.setOnStateChangedCallback(new ISDPullToRefreshView.OnStateChangedCallback()
@@ -28,7 +30,7 @@ public class ScrollViewActivity extends SDBaseActivity
             public void onStateChanged(ISDPullToRefreshView.State state, SDPullToRefreshView view)
             {
                 //状态变化回调
-                SDToast.showToast(String.valueOf(view.getDirection()) + "->" + String.valueOf(state));
+                btn.setText(String.valueOf(view.getDirection()) + "->" + String.valueOf(state));
             }
         });
         view_pull.setOnViewPositionChangedCallback(new ISDPullToRefreshView.OnViewPositionChangedCallback()
