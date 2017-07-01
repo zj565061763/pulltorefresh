@@ -688,6 +688,7 @@ public class SDPullToRefreshView extends LinearLayout implements ISDPullToRefres
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b)
     {
+        super.onLayout(changed, l, t, r, b);
         int left = getPaddingLeft();
         int top = -mRootLayout.getHeaderHeight();
         int right = getWidth() - getPaddingRight();
