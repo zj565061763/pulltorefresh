@@ -34,6 +34,13 @@ public class CustomPullToRefreshLoadingView extends SDSimpleImageLoadingView
     }
 
     @Override
+    protected void init()
+    {
+        super.init();
+        SDViewUtil.setHeight(getImageView(), SDViewUtil.dp2px(35));
+    }
+
+    @Override
     public void onStateChanged(ISDPullToRefreshView.State state, SDPullToRefreshView view)
     {
         switch (state)
