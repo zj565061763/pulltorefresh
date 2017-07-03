@@ -11,13 +11,13 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.FrameLayout;
 
 /**
  * Created by Administrator on 2017/6/26.
  */
 
-public class SDPullToRefreshView extends LinearLayout implements ISDPullToRefreshView
+public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefreshView
 {
     public SDPullToRefreshView(@NonNull Context context)
     {
