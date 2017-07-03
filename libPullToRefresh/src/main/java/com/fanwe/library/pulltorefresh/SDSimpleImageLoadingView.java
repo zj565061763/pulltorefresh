@@ -34,7 +34,7 @@ public abstract class SDSimpleImageLoadingView extends SDPullToRefreshLoadingVie
 
     private ImageView iv_image;
 
-    private void init()
+    protected void init()
     {
         LayoutInflater.from(getContext()).inflate(R.layout.view_simple_image_loading, this, true);
         iv_image = (ImageView) findViewById(R.id.iv_image);
