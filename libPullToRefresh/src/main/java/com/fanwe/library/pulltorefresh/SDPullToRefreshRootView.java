@@ -37,11 +37,11 @@ class SDPullToRefreshRootView extends LinearLayout implements
     private SDPullToRefreshView mPullToRefreshView;
 
     private LinearLayout ll_header;
-    private LinearLayout ll_content;
+    private LinearLayout ll_refresh;
     private LinearLayout ll_footer;
 
     private SDPullToRefreshLoadingView mHeaderView;
-    private View mContentView;
+    private View mRefreshView;
     private SDPullToRefreshLoadingView mFooterView;
 
     private void init()
@@ -49,7 +49,7 @@ class SDPullToRefreshRootView extends LinearLayout implements
         LayoutInflater.from(getContext()).inflate(R.layout.view_pull_to_refresh_root, this, true);
 
         ll_header = (LinearLayout) findViewById(R.id.ll_header);
-        ll_content = (LinearLayout) findViewById(R.id.ll_content);
+        ll_refresh = (LinearLayout) findViewById(R.id.ll_refresh);
         ll_footer = (LinearLayout) findViewById(R.id.ll_footer);
     }
 
@@ -91,28 +91,28 @@ class SDPullToRefreshRootView extends LinearLayout implements
     }
 
     /**
-     * 设置内容view
+     * 设置要支持刷新的view
      *
-     * @param contentView
+     * @param refreshView
      */
-    public void setContentView(View contentView)
+    public void setRefreshView(View refreshView)
     {
-        if (contentView != null)
+        if (refreshView != null)
         {
-            ll_content.removeAllViews();
-            mContentView = contentView;
-            ll_content.addView(contentView);
+            ll_refresh.removeAllViews();
+            mRefreshView = refreshView;
+            ll_refresh.addView(refreshView);
         }
     }
 
     /**
-     * 返回内容view
+     * 返回要支持刷新的view
      *
      * @return
      */
-    public View getContentView()
+    public View getRefreshView()
     {
-        return mContentView;
+        return mRefreshView;
     }
 
     /**

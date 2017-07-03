@@ -1,5 +1,7 @@
 package com.fanwe.library.pulltorefresh;
 
+import android.view.View;
+
 /**
  * Created by Administrator on 2017/6/28.
  */
@@ -102,6 +104,13 @@ public interface ISDPullToRefreshView
      * @param footerView
      */
     void setFooterView(SDPullToRefreshLoadingView footerView);
+
+    /**
+     * 返回要支持刷新的view
+     *
+     * @return
+     */
+    View getRefreshView();
 
     /**
      * 返回当前拖动方向

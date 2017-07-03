@@ -482,6 +482,12 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
     }
 
     @Override
+    public View getRefreshView()
+    {
+        return mRootLayout.getRefreshView();
+    }
+
+    @Override
     public Direction getDirection()
     {
         return mLastDirection;
@@ -577,14 +583,14 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
     {
         return mTouchHelper.isMoveDown()
                 && (mMode == Mode.BOTH || mMode == Mode.PULL_FROM_HEADER)
-                && !ViewCompat.canScrollVertically(mRootLayout.getContentView(), -1);
+                && !ViewCompat.canScrollVertically(mRootLayout.getRefreshView(), -1);
     }
 
     private boolean canPullFromFooter()
     {
         return mTouchHelper.isMoveUp()
                 && (mMode == Mode.BOTH || mMode == Mode.PULL_FROM_FOOTER)
-                && !ViewCompat.canScrollVertically(mRootLayout.getContentView(), 1);
+                && !ViewCompat.canScrollVertically(mRootLayout.getRefreshView(), 1);
     }
 
     @Override
@@ -663,11 +669,11 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
             throw new IllegalArgumentException("you can only add one child to SDPullToRefreshView in your xml file");
         }
 
-        View contentView = getChildAt(1);
-        ViewGroup.LayoutParams params = contentView.getLayoutParams();
-        removeView(contentView);
-        contentView.setLayoutParams(params);
-        mRootLayout.setContentView(contentView);
+        View refreshView = getChildAt(1);
+        ViewGroup.LayoutParams params = refreshView.getLayoutParams();
+        removeView(refreshView);
+        refreshView.setLayoutParams(params);
+        mRootLayout.setRefreshView(refreshView);
     }
 
     @Override
