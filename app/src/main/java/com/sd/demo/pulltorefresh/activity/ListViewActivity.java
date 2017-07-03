@@ -28,7 +28,7 @@ public class ListViewActivity extends SDBaseActivity
         mListView = (ListView) findViewById(R.id.listView);
         mListView.setAdapter(mAdapter);
 
-        DemoUtil.handleAutoRefreshingFromFooter(view_pull);
+        DemoUtil.handleAutoRefreshingFromFooter(view_pull); //设置滚动到底部自动加载
 
         view_pull.setDebug(true);
         view_pull.setFooterView(new CustomPullToRefreshLoadingView(this)); //自定义FooterView

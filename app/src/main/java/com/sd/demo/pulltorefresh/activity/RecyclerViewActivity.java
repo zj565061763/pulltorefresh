@@ -28,7 +28,7 @@ public class RecyclerViewActivity extends SDBaseActivity
         mRecyclerView = (SDRecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setAdapter(mAdapter);
 
-        DemoUtil.handleAutoRefreshingFromFooter(view_pull);
+        DemoUtil.handleAutoRefreshingFromFooter(view_pull);//设置滚动到底部自动加载
 
         view_pull.setDebug(true);
         view_pull.setHeaderView(new CustomPullToRefreshLoadingView(this)); //自定义HeaderView
