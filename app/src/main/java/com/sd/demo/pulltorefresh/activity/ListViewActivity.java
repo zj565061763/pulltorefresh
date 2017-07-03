@@ -12,6 +12,7 @@ import com.fanwe.library.pulltorefresh.ISDPullToRefreshView;
 import com.fanwe.library.pulltorefresh.SDPullToRefreshView;
 import com.sd.demo.pulltorefresh.R;
 import com.sd.demo.pulltorefresh.model.DataModel;
+import com.sd.demo.pulltorefresh.utils.DemoUtil;
 import com.sd.demo.pulltorefresh.view.CustomPullToRefreshLoadingView;
 
 public class ListViewActivity extends SDBaseActivity
@@ -27,7 +28,7 @@ public class ListViewActivity extends SDBaseActivity
         mListView = (ListView) findViewById(R.id.listView);
         mListView.setAdapter(mAdapter);
 
-        RecyclerViewActivity.handleAutoRefreshingFromFooter(view_pull);
+        DemoUtil.handleAutoRefreshingFromFooter(view_pull);
 
         view_pull.setDebug(true);
         view_pull.setFooterView(new CustomPullToRefreshLoadingView(this)); //自定义FooterView
