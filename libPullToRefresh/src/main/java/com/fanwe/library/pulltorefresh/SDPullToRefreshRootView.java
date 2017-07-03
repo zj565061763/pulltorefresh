@@ -169,7 +169,7 @@ class SDPullToRefreshRootView extends LinearLayout implements
      */
     public int getHeaderHeight()
     {
-        return mHeaderView.getHeight();
+        return mHeaderView.getMeasuredHeight();
     }
 
     /**
@@ -179,7 +179,7 @@ class SDPullToRefreshRootView extends LinearLayout implements
      */
     public int getFooterHeight()
     {
-        return mFooterView.getHeight();
+        return mFooterView.getMeasuredHeight();
     }
 
     @Override
