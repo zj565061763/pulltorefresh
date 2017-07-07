@@ -611,6 +611,10 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
                 {
                     if (isViewDragging())
                     {
+                        if (mIsDebug)
+                        {
+                            Log.i(TAG, "processTouchEvent ACTION_MOVE");
+                        }
                         mDragHelper.processTouchEvent(event);
                     }
                 } else
