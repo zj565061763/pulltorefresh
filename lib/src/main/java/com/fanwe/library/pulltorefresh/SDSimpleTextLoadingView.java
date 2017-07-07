@@ -54,28 +54,28 @@ public class SDSimpleTextLoadingView extends SDPullToRefreshLoadingView
             case PULL_TO_REFRESH:
                 if (getLoadingViewType() == ISDPullToRefreshView.LoadingViewType.HEADER)
                 {
-                    getTextView().setText(getResources().getString(R.string.lib_pull_state_pull_to_refresh_header));
+                    getTextView().setText(getResources().getString(R.string.lib_ptr_state_pull_to_refresh_header));
                 } else if (getLoadingViewType() == ISDPullToRefreshView.LoadingViewType.FOOTER)
                 {
-                    getTextView().setText(getResources().getString(R.string.lib_pull_state_pull_to_refresh_footer));
+                    getTextView().setText(getResources().getString(R.string.lib_ptr_state_pull_to_refresh_footer));
                 }
                 break;
             case RELEASE_TO_REFRESH:
                 if (getLoadingViewType() == ISDPullToRefreshView.LoadingViewType.HEADER)
                 {
-                    getTextView().setText(getResources().getString(R.string.lib_pull_state_release_to_refresh_header));
+                    getTextView().setText(getResources().getString(R.string.lib_ptr_state_release_to_refresh_header));
                 } else if (getLoadingViewType() == ISDPullToRefreshView.LoadingViewType.FOOTER)
                 {
-                    getTextView().setText(getResources().getString(R.string.lib_pull_state_release_to_refresh_footer));
+                    getTextView().setText(getResources().getString(R.string.lib_ptr_state_release_to_refresh_footer));
                 }
                 break;
             case REFRESHING:
                 if (getLoadingViewType() == ISDPullToRefreshView.LoadingViewType.HEADER)
                 {
-                    getTextView().setText(getResources().getString(R.string.lib_pull_state_refreshing_header));
+                    getTextView().setText(getResources().getString(R.string.lib_ptr_state_refreshing_header));
                 } else if (getLoadingViewType() == ISDPullToRefreshView.LoadingViewType.FOOTER)
                 {
-                    getTextView().setText(getResources().getString(R.string.lib_pull_state_refreshing_footer));
+                    getTextView().setText(getResources().getString(R.string.lib_ptr_state_refreshing_footer));
                 }
                 break;
         }
