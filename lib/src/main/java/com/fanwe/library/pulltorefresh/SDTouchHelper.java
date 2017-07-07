@@ -5,7 +5,7 @@ import android.view.MotionEvent;
 /**
  * 触摸事件处理帮助类
  */
-class SDTouchEventHelper
+class SDTouchHelper
 {
     private boolean mIsNeedIntercept = false;
 

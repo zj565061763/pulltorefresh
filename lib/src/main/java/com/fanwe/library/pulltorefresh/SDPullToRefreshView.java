@@ -510,7 +510,7 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
         }
     }
 
-    private SDTouchEventHelper mTouchHelper = new SDTouchEventHelper();
+    private SDTouchHelper mTouchHelper = new SDTouchHelper();
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev)
