@@ -43,7 +43,7 @@ public class RecyclerViewActivity extends SDBaseActivity
                     @Override
                     public void run()
                     {
-                        mAdapter.updateData(DataModel.getListModel(5));
+                        mAdapter.updateData(DataModel.getListModel(20));
                         view.stopRefreshing();
                     }
                 }, 1000);
