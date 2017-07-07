@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">libPullToRefresh</string>
 
-    <string name="state_pull_to_refresh_header">下拉刷新</string>
-    <string name="state_pull_to_refresh_footer">上拉加载</string>
+    <string name="lib_pull_state_pull_to_refresh_header">下拉刷新</string>
+    <string name="lib_pull_state_pull_to_refresh_footer">上拉加载</string>
 
-    <string name="state_release_to_refresh_header">松开刷新</string>
-    <string name="state_release_to_refresh_footer">松开加载</string>
+    <string name="lib_pull_state_release_to_refresh_header">松开刷新</string>
+    <string name="lib_pull_state_release_to_refresh_footer">松开加载</string>
 
-    <string name="state_refreshing_header">刷新中...</string>
-    <string name="state_refreshing_footer">加载中...</string>
+    <string name="lib_pull_state_refreshing_header">刷新中...</string>
+    <string name="lib_pull_state_refreshing_footer">加载中...</string>
 
 </resources>
