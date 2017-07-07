@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center"
-        android:text="content"/>
+        android:textColor="@color/lib_ptr_text_loading_info"
+        android:textSize="@dimen/lib_ptr_text_loading_info"/>
 
 </LinearLayout>

@@ -1,7 +1,6 @@
 package com.fanwe.library.pulltorefresh;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -39,7 +38,6 @@ public class SDSimpleTextLoadingView extends SDPullToRefreshLoadingView
     {
         LayoutInflater.from(getContext()).inflate(R.layout.view_simple_text_loading, this, true);
         tv_content = (TextView) findViewById(R.id.tv_content);
-        tv_content.setTextColor(Color.GRAY);
     }
 
     public TextView getTextView()
