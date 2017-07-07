@@ -571,7 +571,7 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
 
     private boolean checkMoveParams()
     {
-        return Math.abs(mTouchHelper.getDistanceY()) > mTouchSlop && mTouchHelper.getDegreeY() < 30;
+        return Math.abs(mTouchHelper.getDistanceDownY()) > mTouchSlop && mTouchHelper.getDegreeY() < 30;
     }
 
     private boolean canPull()

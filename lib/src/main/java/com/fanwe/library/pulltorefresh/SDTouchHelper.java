@@ -1,13 +1,23 @@
 package com.fanwe.library.pulltorefresh;
 
+import android.support.v4.view.MotionEventCompat;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewParent;
 
 /**
  * 触摸事件处理帮助类
  */
 class SDTouchHelper
 {
+    /**
+     * onInterceptTouchEvent方法是否需要拦截事件
+     */
     private boolean mIsNeedIntercept = false;
+    /**
+     * onTouchEvent方法是否需要消费事件
+     */
+    private boolean mIsNeedCosume = false;
 
     private float mDownX;
     private float mDownY;
@@ -17,11 +27,11 @@ class SDTouchHelper
     private float mLastMoveX;
     private float mLastMoveY;
 
-    private float mMoveDistanceX;
-    private float mMoveDistanceY;
+    private float mDistanceMoveX;
+    private float mDistanceMoveY;
 
-    private float mDistanceX;
-    private float mDistanceY;
+    private float mDistanceDownX;
+    private float mDistanceDownY;
 
     private double mDegreeX;
     private double mDegreeY;
@@ -46,16 +56,16 @@ class SDTouchHelper
                 mMoveX = ev.getRawX();
                 mMoveY = ev.getRawY();
 
-                mMoveDistanceX = mMoveX - mLastMoveX;
-                mMoveDistanceY = mMoveY - mLastMoveY;
+                mDistanceMoveX = mMoveX - mLastMoveX;
+                mDistanceMoveY = mMoveY - mLastMoveY;
 
-                mDistanceX = mMoveX - mDownX;
-                mDistanceY = mMoveY - mDownY;
+                mDistanceDownX = mMoveX - mDownX;
+                mDistanceDownY = mMoveY - mDownY;
 
-                final float angleX = Math.abs(mMoveDistanceY) / Math.abs(mMoveDistanceX);
+                final float angleX = Math.abs(mDistanceMoveY) / Math.abs(mDistanceMoveX);
                 mDegreeX = Math.toDegrees(Math.atan(angleX));
 
-                final float angleY = Math.abs(mMoveDistanceX) / Math.abs(mMoveDistanceY);
+                final float angleY = Math.abs(mDistanceMoveX) / Math.abs(mDistanceMoveY);
                 mDegreeY = Math.toDegrees(Math.atan(angleY));
 
                 mLastMoveX = mMoveX;
@@ -69,7 +79,7 @@ class SDTouchHelper
     }
 
     /**
-     * 设置是否需要消费事件
+     * 设置onInterceptTouchEvent方法是否需要拦截事件
      *
      * @param needIntercept
      */
@@ -79,13 +89,33 @@ class SDTouchHelper
     }
 
     /**
-     * 是否需要消费事件
+     * onInterceptTouchEvent方法是否需要拦截事件
      *
      * @return
      */
     public boolean isNeedIntercept()
     {
         return mIsNeedIntercept;
+    }
+
+    /**
+     * 设置onTouchEvent方法是否需要消费事件
+     *
+     * @param needCosume
+     */
+    public void setNeedCosume(boolean needCosume)
+    {
+        mIsNeedCosume = needCosume;
+    }
+
+    /**
+     * onTouchEvent方法是否需要消费事件
+     *
+     * @return
+     */
+    public boolean isNeedCosume()
+    {
+        return mIsNeedCosume;
     }
 
     /**
@@ -135,9 +165,9 @@ class SDTouchHelper
      *
      * @return
      */
-    public float getMoveDistanceX()
+    public float getDistanceMoveX()
     {
-        return mMoveDistanceX;
+        return mDistanceMoveX;
     }
 
     /**
@@ -147,9 +177,9 @@ class SDTouchHelper
      *
      * @return
      */
-    public float getMoveDistanceY()
+    public float getDistanceMoveY()
     {
-        return mMoveDistanceY;
+        return mDistanceMoveY;
     }
 
     /**
@@ -157,9 +187,9 @@ class SDTouchHelper
      *
      * @return
      */
-    public float getDistanceX()
+    public float getDistanceDownX()
     {
-        return mDistanceX;
+        return mDistanceDownX;
     }
 
     /**
@@ -167,9 +197,9 @@ class SDTouchHelper
      *
      * @return
      */
-    public float getDistanceY()
+    public float getDistanceDownY()
     {
-        return mDistanceY;
+        return mDistanceDownY;
     }
 
     /**
@@ -179,7 +209,7 @@ class SDTouchHelper
      */
     public boolean isMoveLeft()
     {
-        return getMoveDistanceX() < 0;
+        return getDistanceMoveX() < 0;
     }
 
     /**
@@ -189,7 +219,7 @@ class SDTouchHelper
      */
     public boolean isMoveRight()
     {
-        return getMoveDistanceX() > 0;
+        return getDistanceMoveX() > 0;
     }
 
     /**
@@ -199,7 +229,7 @@ class SDTouchHelper
      */
     public boolean isMoveUp()
     {
-        return getMoveDistanceY() < 0;
+        return getDistanceMoveY() < 0;
     }
 
     /**
@@ -209,7 +239,7 @@ class SDTouchHelper
      */
     public boolean isMoveDown()
     {
-        return getMoveDistanceY() > 0;
+        return getDistanceMoveY() > 0;
     }
 
     /**
@@ -232,12 +262,43 @@ class SDTouchHelper
         return mDegreeY;
     }
 
+    //----------static method start----------
+
+    /**
+     * 是否请求当前view的父view不要拦截事件
+     *
+     * @param view
+     * @param disallowIntercept true-请求父view不要拦截，false-父view可以拦截
+     */
+    public static void requestDisallowInterceptTouchEvent(View view, boolean disallowIntercept)
+    {
+        ViewParent parent = view.getParent();
+        if (parent == null)
+        {
+            return;
+        }
+        parent.requestDisallowInterceptTouchEvent(disallowIntercept);
+    }
+
+    /**
+     * 返回MotionEvent的PointerId
+     *
+     * @param event
+     * @return
+     */
+    public static int getPointerId(MotionEvent event)
+    {
+        return event.getPointerId(MotionEventCompat.getActionIndex(event));
+    }
+
+    //----------static method end----------
+
     @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder("\r\n");
-        sb.append("mMoveDistanceX:").append(mMoveDistanceX).append("\r\n")
-                .append("mMoveDistanceY:").append(mMoveDistanceY).append("\r\n")
+        sb.append("mDistanceMoveX:").append(mDistanceMoveX).append("\r\n")
+                .append("mDistanceMoveY:").append(mDistanceMoveY).append("\r\n")
                 .append("mDegreeX:").append(mDegreeX).append("\r\n")
                 .append("mDegreeY:").append(mDegreeY).append("\r\n");
         return sb.toString();
