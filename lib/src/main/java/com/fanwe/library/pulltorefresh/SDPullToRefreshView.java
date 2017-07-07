@@ -46,10 +46,6 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
     private Direction mDirection = Direction.NONE;
     private Direction mLastDirection = Direction.NONE;
     /**
-     * 是否需要处理触摸事件
-     */
-    private boolean mIsNeedProcess = false;
-    /**
      * Reset状态下mRootLayout的top值
      */
     private int mRootTopReset;
@@ -165,7 +161,7 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
             public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy)
             {
                 super.onViewPositionChanged(changedView, left, top, dx, dy);
-                if (mIsNeedProcess && isViewCaptured())
+                if (mTouchHelper.isNeedCosume() && isViewCaptured())
                 {
                     //设置方向
                     if (dy > 0)
@@ -612,7 +608,7 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (mIsNeedProcess)
+                if (mTouchHelper.isNeedCosume())
                 {
                     if (isViewCaptured())
                     {
@@ -622,21 +618,15 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
                 {
                     if (isViewCaptured() && canPull())
                     {
-                        setNeedProcess(true, event);
+                        mTouchHelper.setNeedCosume(true);
                     }
                 }
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                setNeedProcess(false, event);
                 mDragHelper.processTouchEvent(event);
-                if (mIsDebug)
-                {
-                    if (mTouchHelper.isNeedIntercept())
-                    {
-                        Log.e(TAG, "onTouchEvent Intercept released with action " + event.getAction());
-                    }
-                }
+
+                mTouchHelper.setNeedCosume(false);
                 mTouchHelper.setNeedIntercept(false);
                 break;
             default:
@@ -644,15 +634,7 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
                 break;
         }
 
-        return super.onTouchEvent(event) || mIsNeedProcess || event.getAction() == MotionEvent.ACTION_DOWN;
-    }
-
-    private void setNeedProcess(boolean needProcess, MotionEvent event)
-    {
-        if (mIsNeedProcess != needProcess)
-        {
-            mIsNeedProcess = needProcess;
-        }
+        return super.onTouchEvent(event) || mTouchHelper.isNeedCosume() || event.getAction() == MotionEvent.ACTION_DOWN;
     }
 
     @Override
