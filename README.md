@@ -9,38 +9,68 @@
 支持覆盖的默认配置：<br>
 * strings
 ```xml
-    <string name="lib_ptr_state_pull_to_refresh_header">下拉刷新</string>
-    <string name="lib_ptr_state_pull_to_refresh_footer">上拉加载</string>
+<string name="lib_ptr_state_pull_to_refresh_header">下拉刷新</string>
+<string name="lib_ptr_state_pull_to_refresh_footer">上拉加载</string>
 
-    <string name="lib_ptr_state_release_to_refresh_header">松开刷新</string>
-    <string name="lib_ptr_state_release_to_refresh_footer">松开加载</string>
+<string name="lib_ptr_state_release_to_refresh_header">松开刷新</string>
+<string name="lib_ptr_state_release_to_refresh_footer">松开加载</string>
 
-    <string name="lib_ptr_state_refreshing_header">刷新中...</string>
-    <string name="lib_ptr_state_refreshing_footer">加载中...</string>
+<string name="lib_ptr_state_refreshing_header">刷新中...</string>
+<string name="lib_ptr_state_refreshing_footer">加载中...</string>
 ```
 * colors
 ```xml
-    <!-- 默认的加载view中提示文字的颜色 -->
-    <color name="lib_ptr_text_loading_info">#888888</color>
+<!-- 默认的加载view中提示文字的颜色 -->
+<color name="lib_ptr_text_loading_info">#888888</color>
 ```
 * dimens
 ```xml
-    <!-- 默认的加载view中提示文字的大小 -->
-    <dimen name="lib_ptr_text_loading_info">13sp</dimen>
+<!-- 默认的加载view中提示文字的大小 -->
+<dimen name="lib_ptr_text_loading_info">13sp</dimen>
 ```
+## 自定义效果
+![](http://thumbsnap.com/i/GFbZkldb.gif?0707)<br>
+demo中实现了简单的自定义效果
+1. 自定义加载view中根据状态变化设置不同的图片
+```java
+@Override
+public void onStateChanged(ISDPullToRefreshView.State state, SDPullToRefreshView view)
+{
+    switch (state)
+    {
+        case RESET:
+        case PULL_TO_REFRESH:
+            getImageView().setImageResource(R.drawable.ic_pull_refresh_normal);
+            break;
+        case RELEASE_TO_REFRESH:
+            getImageView().setImageResource(R.drawable.ic_pull_refresh_ready);
+            break;
+        case REFRESHING:
+            getImageView().setImageResource(R.drawable.ic_pull_refresh_refreshing);
+            SDViewUtil.startAnimationDrawable(getImageView().getDrawable());
+            break;
+    }
+}
+```
+2. 给SDPullToRefreshView对象设置加载view
+```java
+view_pull.setHeaderView(new CustomPullToRefreshLoadingView(this)); //自定义HeaderView
+view_pull.setFooterView(new CustomPullToRefreshLoadingView(this)); //自定义FooterView
+```
+
 
 ## Xml布局
 在xml中只能给SDPullToRefreshView添加一个child<br>
 child可以是RecyclerView,ListView,ScrollView等...
 ```xml
-    <com.fanwe.library.pulltorefresh.SDPullToRefreshView
-        android:id="@+id/view_pull"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+<com.fanwe.library.pulltorefresh.SDPullToRefreshView
+    android:id="@+id/view_pull"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-        <!--RecyclerView,ListView,ScrollView...-->
+    <!--RecyclerView,ListView,ScrollView...-->
 
-    </com.fanwe.library.pulltorefresh.SDPullToRefreshView>
+</com.fanwe.library.pulltorefresh.SDPullToRefreshView>
 ```
 
 ## 常用方法
