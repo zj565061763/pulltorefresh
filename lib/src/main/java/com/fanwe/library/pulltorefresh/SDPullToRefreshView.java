@@ -619,7 +619,7 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
                     }
                 } else
                 {
-                    if (isViewDragging() && canPull())
+                    if (canPull())
                     {
                         mTouchHelper.setNeedCosume(true);
                     }
