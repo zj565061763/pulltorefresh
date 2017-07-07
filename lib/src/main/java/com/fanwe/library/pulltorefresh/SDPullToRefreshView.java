@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -579,14 +578,14 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
     {
         return mTouchHelper.isMoveDown()
                 && (mMode == Mode.BOTH || mMode == Mode.PULL_FROM_HEADER)
-                && !ViewCompat.canScrollVertically(mRootLayout.getRefreshView(), -1);
+                && SDTouchHelper.isScrollToTop(mRootLayout.getRefreshView());
     }
 
     private boolean canPullFromFooter()
     {
         return mTouchHelper.isMoveUp()
                 && (mMode == Mode.BOTH || mMode == Mode.PULL_FROM_FOOTER)
-                && !ViewCompat.canScrollVertically(mRootLayout.getRefreshView(), 1);
+                && SDTouchHelper.isScrollToBottom(mRootLayout.getRefreshView());
     }
 
     @Override
