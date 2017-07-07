@@ -143,9 +143,21 @@ public interface ISDPullToRefreshView
 
     enum Mode
     {
+        /**
+         * 支持上下拉
+         */
         BOTH,
+        /**
+         * 只支持下拉
+         */
         PULL_FROM_HEADER,
+        /**
+         * 只支持上拉
+         */
         PULL_FROM_FOOTER,
+        /**
+         * 不支持上下拉
+         */
         DISABLE,
     }
 
