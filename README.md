@@ -53,12 +53,11 @@ view_pull.setOnStateChangedCallback(new ISDPullToRefreshView.OnStateChangedCallb
         //自定义的加载view继承库中的加载view基类后也可以收到此事件，可以根据状态展示不同的ui
     }
 });
-view_pull.setOnViewPositionChangedCallback(new ISDPullToRefreshView.OnViewPositionChangedCallback()
+view_pull.setOnViewPositionChangedCallback(new ISDPullToRefreshView.OnViewPositionChangedCallback() //设置view位置变化回调
 {
     @Override
     public void onViewPositionChanged(SDPullToRefreshView view)
     {
-        //view被拖动回调
         //自定义的加载view继承库中的加载view基类后也可以收到此事件，可以根据状态和滚动距离自定义各种炫酷ui
     }
 });
