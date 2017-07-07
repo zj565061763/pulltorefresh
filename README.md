@@ -2,7 +2,7 @@
 基于android.support.v4.widget.ViewDragHelper实现的下拉刷新和上拉加载的库
 
 ## Gradle
-`compile 'com.fanwe.android:pulltorefresh:1.0.6'`
+`compile 'com.fanwe.android:pulltorefresh:1.0.7'`
 
 ## 默认效果
 ![](http://thumbsnap.com/i/ZYFfADbW.gif?0707)<br>
