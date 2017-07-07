@@ -160,7 +160,7 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
             public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy)
             {
                 super.onViewPositionChanged(changedView, left, top, dx, dy);
-                if (mTouchHelper.isNeedCosume() && isViewCaptured())
+                if (mTouchHelper.isNeedCosume() && isViewDragging())
                 {
                     //设置方向
                     if (dy > 0)
@@ -542,7 +542,7 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
                 mTouchHelper.setNeedIntercept(false);
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (isViewCaptured() && canPull())
+                if (isViewDragging() && canPull())
                 {
                     mTouchHelper.setNeedIntercept(true);
                     if (mIsDebug)
@@ -559,7 +559,7 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
         return mTouchHelper.isNeedIntercept();
     }
 
-    private boolean isViewCaptured()
+    private boolean isViewDragging()
     {
         return mDragHelper.getViewDragState() == ViewDragHelper.STATE_DRAGGING;
     }
@@ -600,7 +600,7 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
         switch (event.getAction())
         {
             case MotionEvent.ACTION_DOWN:
-                if (!isViewCaptured())
+                if (!isViewDragging())
                 {
                     //触发ViewDragHelper的尝试捕捉
                     mDragHelper.processTouchEvent(event);
@@ -609,13 +609,13 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
             case MotionEvent.ACTION_MOVE:
                 if (mTouchHelper.isNeedCosume())
                 {
-                    if (isViewCaptured())
+                    if (isViewDragging())
                     {
                         mDragHelper.processTouchEvent(event);
                     }
                 } else
                 {
-                    if (isViewCaptured() && canPull())
+                    if (isViewDragging() && canPull())
                     {
                         mTouchHelper.setNeedCosume(true);
                     }
