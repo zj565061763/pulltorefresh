@@ -7,7 +7,7 @@ import android.view.MotionEvent;
  */
 class SDTouchEventHelper
 {
-    private boolean mIsNeedConsume = false;
+    private boolean mIsNeedIntercept = false;
 
     private float mDownX;
     private float mDownY;
@@ -71,11 +71,11 @@ class SDTouchEventHelper
     /**
      * 设置是否需要消费事件
      *
-     * @param needConsume
+     * @param needIntercept
      */
-    public void setNeedConsume(boolean needConsume)
+    public void setNeedIntercept(boolean needIntercept)
     {
-        mIsNeedConsume = needConsume;
+        mIsNeedIntercept = needIntercept;
     }
 
     /**
@@ -83,9 +83,9 @@ class SDTouchEventHelper
      *
      * @return
      */
-    public boolean isNeedConsume()
+    public boolean isNeedIntercept()
     {
-        return mIsNeedConsume;
+        return mIsNeedIntercept;
     }
 
     /**

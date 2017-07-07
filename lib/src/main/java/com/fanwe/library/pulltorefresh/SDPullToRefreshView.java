@@ -529,11 +529,11 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
         {
             return false;
         }
-        if (mTouchHelper.isNeedConsume())
+        if (mTouchHelper.isNeedIntercept())
         {
             if (mIsDebug)
             {
-                Log.e(TAG, "onInterceptTouchEvent Intercept success because isNeedConsume is true with action----------" + ev.getAction());
+                Log.e(TAG, "onInterceptTouchEvent Intercept success because isNeedIntercept is true with action----------" + ev.getAction());
             }
             return true;
         }
@@ -544,12 +544,12 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
             case MotionEvent.ACTION_DOWN:
                 //触发ViewDragHelper的尝试捕捉
                 mDragHelper.processTouchEvent(ev);
-                mTouchHelper.setNeedConsume(false);
+                mTouchHelper.setNeedIntercept(false);
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (isViewCaptured() && canPull())
                 {
-                    mTouchHelper.setNeedConsume(true);
+                    mTouchHelper.setNeedIntercept(true);
                     if (mIsDebug)
                     {
                         Log.e(TAG, "onInterceptTouchEvent Intercept success when isMoveDown:" + mTouchHelper.isMoveDown());
@@ -561,7 +561,7 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
                 mDragHelper.processTouchEvent(ev);
                 break;
         }
-        return mTouchHelper.isNeedConsume();
+        return mTouchHelper.isNeedIntercept();
     }
 
     private boolean isViewCaptured()
@@ -632,20 +632,19 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
                 mDragHelper.processTouchEvent(event);
                 if (mIsDebug)
                 {
-                    if (mTouchHelper.isNeedConsume())
+                    if (mTouchHelper.isNeedIntercept())
                     {
                         Log.e(TAG, "onTouchEvent Intercept released with action " + event.getAction());
                     }
                 }
-                mTouchHelper.setNeedConsume(false);
+                mTouchHelper.setNeedIntercept(false);
                 break;
             default:
                 mDragHelper.processTouchEvent(event);
                 break;
         }
 
-        boolean result = super.onTouchEvent(event) || mIsNeedProcess || event.getAction() == MotionEvent.ACTION_DOWN;
-        return result;
+        return super.onTouchEvent(event) || mIsNeedProcess || event.getAction() == MotionEvent.ACTION_DOWN;
     }
 
     private void setNeedProcess(boolean needProcess, MotionEvent event)
