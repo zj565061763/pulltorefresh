@@ -205,6 +205,9 @@ public interface ISDPullToRefreshView
         void onViewPositionChanged(SDPullToRefreshView view);
     }
 
+    /**
+     * 加载view基类接口
+     */
     interface IPullToRefreshLoadingView extends OnStateChangedCallback, OnViewPositionChangedCallback
     {
         /**
@@ -214,6 +217,11 @@ public interface ISDPullToRefreshView
          */
         int getRefreshHeight();
 
+        /**
+         * 返回加载view类型
+         *
+         * @return
+         */
         LoadingViewType getLoadingViewType();
 
         SDPullToRefreshView getPullToRefreshView();
