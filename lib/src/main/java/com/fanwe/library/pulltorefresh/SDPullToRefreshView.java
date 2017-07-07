@@ -542,7 +542,7 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
                 mTouchHelper.setNeedIntercept(false);
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (isViewDragging() && canPull())
+                if (canPull())
                 {
                     mTouchHelper.setNeedIntercept(true);
                     if (mIsDebug)
