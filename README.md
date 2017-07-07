@@ -18,6 +18,16 @@
     <string name="lib_ptr_state_refreshing_header">刷新中...</string>
     <string name="lib_ptr_state_refreshing_footer">加载中...</string>
 ```
+* colors
+```xml
+    <!-- 默认的加载view中提示文字的颜色 -->
+    <color name="lib_ptr_text_loading_info">#888888</color>
+```
+* dimens
+```xml
+    <!-- 默认的加载view中提示文字的大小 -->
+    <dimen name="lib_ptr_text_loading_info">13sp</dimen>
+```
 
 ## Xml布局
 在xml中只能给SDPullToRefreshView添加一个child<br>
