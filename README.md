@@ -6,16 +6,17 @@
 
 ## 默认效果
 ![](http://thumbsnap.com/i/ZYFfADbW.gif?0707)<br>
-可以在项目的strings中定义字符串覆盖库中的默认文字提示<br>
+支持覆盖的默认配置：<br>
+* strings
 ```xml
-    <string name="lib_pull_state_pull_to_refresh_header">下拉刷新</string>
-    <string name="lib_pull_state_pull_to_refresh_footer">上拉加载</string>
+    <string name="lib_ptr_state_pull_to_refresh_header">下拉刷新</string>
+    <string name="lib_ptr_state_pull_to_refresh_footer">上拉加载</string>
 
-    <string name="lib_pull_state_release_to_refresh_header">松开刷新</string>
-    <string name="lib_pull_state_release_to_refresh_footer">松开加载</string>
+    <string name="lib_ptr_state_release_to_refresh_header">松开刷新</string>
+    <string name="lib_ptr_state_release_to_refresh_footer">松开加载</string>
 
-    <string name="lib_pull_state_refreshing_header">刷新中...</string>
-    <string name="lib_pull_state_refreshing_footer">加载中...</string>
+    <string name="lib_ptr_state_refreshing_header">刷新中...</string>
+    <string name="lib_ptr_state_refreshing_footer">加载中...</string>
 ```
 
 ## Xml布局
