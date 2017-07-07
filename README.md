@@ -4,7 +4,7 @@
 ## Gradle
 `compile 'com.fanwe.android:pulltorefresh:1.0.6'`
 
-## In Xml File
+## Xml布局
 在xml中只能给SDPullToRefreshView添加一个child<br>
 child可以是RecyclerView,ListView,ScrollView等...
 ```xml
