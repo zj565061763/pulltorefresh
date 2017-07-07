@@ -17,18 +17,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
                 <Button
                     android:id="@+id/btn"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
                     android:text="button"/>
-
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1000dp"
                     android:background="@color/red"/>
-
             </LinearLayout>
         </ScrollView>
 
