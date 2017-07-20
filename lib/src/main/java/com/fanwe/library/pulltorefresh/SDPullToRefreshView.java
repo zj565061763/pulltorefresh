@@ -526,21 +526,34 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
      */
     private void updateViewPositionByStateReal()
     {
+        int startY = mRefreshView.getTop();
+        int endY = 0;
+
         switch (mState)
         {
             case RESET:
             case PULL_TO_REFRESH:
-                mScroller.startScrollToY(mRefreshView.getTop(), getTopReset());
+                endY = getTopReset();
+                if (mIsDebug)
+                {
+                    Log.i(TAG, "startScrollToY:" + mState + ":" + startY + "," + endY);
+                }
+                mScroller.startScrollToY(startY, endY);
                 break;
             case RELEASE_TO_REFRESH:
             case REFRESHING:
                 if (getDirection() == Direction.FROM_HEADER)
                 {
-                    mScroller.startScrollToY(mRefreshView.getTop(), getTopReset() + mHeaderView.getRefreshHeight());
+                    endY = getTopReset() + mHeaderView.getRefreshHeight();
                 } else
                 {
-                    mScroller.startScrollToY(mRefreshView.getTop(), getTopReset() - mFooterView.getRefreshHeight());
+                    endY = getTopReset() - mFooterView.getRefreshHeight();
                 }
+                if (mIsDebug)
+                {
+                    Log.i(TAG, "startScrollToY:" + mState + ":" + startY + "," + endY);
+                }
+                mScroller.startScrollToY(startY, endY);
                 break;
         }
         invalidate();
