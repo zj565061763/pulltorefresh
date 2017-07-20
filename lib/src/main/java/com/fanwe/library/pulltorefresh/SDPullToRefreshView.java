@@ -84,170 +84,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         mScroller.setMaxScrollDistance(1000);
     }
 
-    private void onActionUp()
-    {
-        if (mState == State.PULL_TO_REFRESH)
-        {
-            setState(State.RESET);
-        } else if (mState == State.RELEASE_TO_REFRESH)
-        {
-            setState(State.REFRESHING);
-        }
-        updateViewPositionByState();
-    }
-
-    /**
-     * 根据状态更新view的位置
-     */
-    private void updateViewPositionByState()
-    {
-        if (mHasOnLayout)
-        {
-            updateViewPositionByStateReal();
-        } else
-        {
-            mUpdatePositionRunnable = new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    updateViewPositionByStateReal();
-                }
-            };
-        }
-    }
-
-    private int getTopReset()
-    {
-        return 0;
-    }
-
-    /**
-     * 根据状态更新view的位置
-     */
-    private void updateViewPositionByStateReal()
-    {
-        switch (mState)
-        {
-            case RESET:
-            case PULL_TO_REFRESH:
-                mScroller.startScrollToY(mRefreshView.getTop(), getTopReset());
-                break;
-            case RELEASE_TO_REFRESH:
-            case REFRESHING:
-                if (mDirection == Direction.FROM_HEADER)
-                {
-                    mScroller.startScrollToY(mRefreshView.getTop(), getTopReset() + mHeaderView.getRefreshHeight());
-                } else if (mDirection == Direction.FROM_FOOTER)
-                {
-                    mScroller.startScrollToY(mRefreshView.getTop(), getTopReset() - mFooterView.getRefreshHeight());
-                }
-                break;
-        }
-        invalidate();
-    }
-
-    /**
-     * 更新当前状态
-     */
-    private void updateStateByScrollDistance()
-    {
-        int distance = Math.abs(getScrollDistance());
-        if (mDirection == Direction.FROM_HEADER)
-        {
-            if (distance < mHeaderView.getRefreshHeight())
-            {
-                setState(State.PULL_TO_REFRESH);
-            } else if (distance >= mHeaderView.getRefreshHeight())
-            {
-                setState(State.RELEASE_TO_REFRESH);
-            }
-        } else if (mDirection == Direction.FROM_FOOTER)
-        {
-            if (distance < mFooterView.getRefreshHeight())
-            {
-                setState(State.PULL_TO_REFRESH);
-            } else if (distance >= mFooterView.getRefreshHeight())
-            {
-                setState(State.RELEASE_TO_REFRESH);
-            }
-        }
-    }
-
-    /**
-     * 设置状态
-     *
-     * @param state
-     */
-    private void setState(State state)
-    {
-        if (mState != state)
-        {
-            mState = state;
-
-            if (mIsDebug)
-            {
-                Log.i(TAG, "setState:" + mState);
-            }
-
-            //通知view改变状态
-            mHeaderView.onStateChanged(mState, this);
-            mFooterView.onStateChanged(mState, this);
-
-            //通知刷新回调
-            if (mState == State.REFRESHING)
-            {
-                if (mOnRefreshCallback != null)
-                {
-                    if (mDirection == Direction.FROM_HEADER)
-                    {
-                        mOnRefreshCallback.onRefreshingFromHeader(this);
-                    } else if (mDirection == Direction.FROM_FOOTER)
-                    {
-                        mOnRefreshCallback.onRefreshingFromFooter(this);
-                    }
-                }
-            }
-
-            //通知状态变化回调
-            if (mOnStateChangedCallback != null)
-            {
-                mOnStateChangedCallback.onStateChanged(mState, this);
-            }
-
-            if (mState == State.RESET)
-            {
-                setDirection(Direction.NONE);
-            }
-        }
-    }
-
-
-    /**
-     * 设置拖动方向
-     *
-     * @param direction
-     */
-    private void setDirection(Direction direction)
-    {
-        if (direction != Direction.NONE)
-        {
-            if (mDirection == Direction.NONE)
-            {
-                mDirection = direction;
-                mLastDirection = direction;
-            }
-        } else
-        {
-            mDirection = Direction.NONE;
-        }
-    }
-
-    private float getComsumeScrollPercent()
-    {
-        return mComsumeScrollPercent;
-    }
-
     @Override
     protected LayoutParams generateDefaultLayoutParams()
     {
@@ -520,6 +356,21 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         return super.onTouchEvent(event) || mTouchHelper.isNeedCosume() || event.getAction() == MotionEvent.ACTION_DOWN;
     }
 
+    private void onActionUp()
+    {
+        if (mState == State.PULL_TO_REFRESH)
+        {
+            setState(State.RESET);
+        } else if (mState == State.RELEASE_TO_REFRESH)
+        {
+            setState(State.REFRESHING);
+        }
+        updateViewPositionByState();
+    }
+
+    /**
+     * 处理触摸移动事件
+     */
     private void processMoveEvent()
     {
         //设置方向
@@ -549,7 +400,158 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         if (canMove)
         {
             moveViews(mTouchHelper.getDistanceMoveY(), true);
-            updateStateByScrollDistance();
+            updateStateByMoveDistance();
+        }
+    }
+
+    /**
+     * 更新当前状态
+     */
+    private void updateStateByMoveDistance()
+    {
+        int distance = Math.abs(getScrollDistance());
+        if (mDirection == Direction.FROM_HEADER)
+        {
+            if (distance < mHeaderView.getRefreshHeight())
+            {
+                setState(State.PULL_TO_REFRESH);
+            } else if (distance >= mHeaderView.getRefreshHeight())
+            {
+                setState(State.RELEASE_TO_REFRESH);
+            }
+        } else if (mDirection == Direction.FROM_FOOTER)
+        {
+            if (distance < mFooterView.getRefreshHeight())
+            {
+                setState(State.PULL_TO_REFRESH);
+            } else if (distance >= mFooterView.getRefreshHeight())
+            {
+                setState(State.RELEASE_TO_REFRESH);
+            }
+        }
+    }
+
+    /**
+     * 设置状态
+     *
+     * @param state
+     */
+    private void setState(State state)
+    {
+        if (mState != state)
+        {
+            mState = state;
+
+            if (mIsDebug)
+            {
+                Log.i(TAG, "setState:" + mState);
+            }
+
+            //通知view改变状态
+            mHeaderView.onStateChanged(mState, this);
+            mFooterView.onStateChanged(mState, this);
+
+            //通知刷新回调
+            if (mState == State.REFRESHING)
+            {
+                if (mOnRefreshCallback != null)
+                {
+                    if (mDirection == Direction.FROM_HEADER)
+                    {
+                        mOnRefreshCallback.onRefreshingFromHeader(this);
+                    } else if (mDirection == Direction.FROM_FOOTER)
+                    {
+                        mOnRefreshCallback.onRefreshingFromFooter(this);
+                    }
+                }
+            }
+
+            //通知状态变化回调
+            if (mOnStateChangedCallback != null)
+            {
+                mOnStateChangedCallback.onStateChanged(mState, this);
+            }
+
+            if (mState == State.RESET)
+            {
+                setDirection(Direction.NONE);
+            }
+        }
+    }
+
+    private float getComsumeScrollPercent()
+    {
+        return mComsumeScrollPercent;
+    }
+
+    private int getTopReset()
+    {
+        return 0;
+    }
+
+    /**
+     * 根据状态更新view的位置
+     */
+    private void updateViewPositionByState()
+    {
+        if (mHasOnLayout)
+        {
+            updateViewPositionByStateReal();
+        } else
+        {
+            mUpdatePositionRunnable = new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    updateViewPositionByStateReal();
+                }
+            };
+        }
+    }
+
+    /**
+     * 根据状态更新view的位置
+     */
+    private void updateViewPositionByStateReal()
+    {
+        switch (mState)
+        {
+            case RESET:
+            case PULL_TO_REFRESH:
+                mScroller.startScrollToY(mRefreshView.getTop(), getTopReset());
+                break;
+            case RELEASE_TO_REFRESH:
+            case REFRESHING:
+                if (mDirection == Direction.FROM_HEADER)
+                {
+                    mScroller.startScrollToY(mRefreshView.getTop(), getTopReset() + mHeaderView.getRefreshHeight());
+                } else if (mDirection == Direction.FROM_FOOTER)
+                {
+                    mScroller.startScrollToY(mRefreshView.getTop(), getTopReset() - mFooterView.getRefreshHeight());
+                }
+                break;
+        }
+        invalidate();
+    }
+
+    /**
+     * 设置拖动方向
+     *
+     * @param direction
+     */
+    private void setDirection(Direction direction)
+    {
+        if (direction != Direction.NONE)
+        {
+            if (mDirection == Direction.NONE)
+            {
+                mDirection = direction;
+                mLastDirection = direction;
+            }
+        } else
+        {
+            mDirection = Direction.NONE;
         }
     }
 
