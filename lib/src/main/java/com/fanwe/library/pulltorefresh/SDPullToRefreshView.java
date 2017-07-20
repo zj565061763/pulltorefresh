@@ -496,8 +496,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         mTouchHelper.processTouchEvent(event);
         switch (event.getAction())
         {
-            case MotionEvent.ACTION_DOWN:
-                break;
             case MotionEvent.ACTION_MOVE:
                 if (mTouchHelper.isNeedCosume())
                 {
