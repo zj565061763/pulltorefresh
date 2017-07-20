@@ -260,6 +260,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         {
             moveViews(mScroller.getMoveY());
             invalidate();
+            if (mIsDebug)
+            {
+                Log.i(TAG, "computeScroll:" + mScroller.getMoveY());
+            }
         }
     }
 
@@ -672,6 +676,9 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         int bottomFooter = topFooter + mFooterView.getMeasuredHeight();
         mFooterView.layout(leftHeader, topFooter, rightFooter, bottomFooter);
 
+        mHasOnLayout = true;
+        runUpdatePositionRunnableIfNeed();
+
         if (mIsDebug)
         {
             Log.i(TAG, "onLayout views totalHeight:----------" + getHeight());
@@ -679,9 +686,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             Log.i(TAG, "RefreshView:" + topRefresh + "," + bottomRefresh);
             Log.i(TAG, "FooterView:" + topFooter + "," + bottomFooter);
         }
-
-        mHasOnLayout = true;
-        runUpdatePositionRunnableIfNeed();
     }
 
     private void runUpdatePositionRunnableIfNeed()
