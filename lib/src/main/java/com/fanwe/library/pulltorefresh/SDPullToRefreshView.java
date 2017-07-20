@@ -447,14 +447,20 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         {
             mState = state;
 
+            invalidate();
             if (mIsDebug)
             {
                 Log.i(TAG, "setState:" + mState);
             }
 
             //通知view改变状态
-            mHeaderView.onStateChanged(mState, this);
-            mFooterView.onStateChanged(mState, this);
+            if (mDirection == Direction.FROM_HEADER)
+            {
+                mHeaderView.onStateChanged(mState, this);
+            } else if (mDirection == Direction.FROM_FOOTER)
+            {
+                mFooterView.onStateChanged(mState, this);
+            }
 
             //通知刷新回调
             if (mState == State.REFRESHING)
