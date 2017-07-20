@@ -416,7 +416,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         {
             moveViews(distanceY);
             updateStateByMoveDistance();
-            invalidate();
         }
     }
 
@@ -457,6 +456,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         if (mState != state)
         {
             mState = state;
+            invalidate();
 
             if (mIsDebug)
             {
