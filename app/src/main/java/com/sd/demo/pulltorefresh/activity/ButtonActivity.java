@@ -28,14 +28,14 @@ public class ButtonActivity extends SDBaseActivity
             public void onRefreshingFromHeader(SDPullToRefreshView view)
             {
                 SDToast.showToast("头部刷新");
-                stopRefreshingDelayed(500);
+                stopRefreshingDelayed(1000);
             }
 
             @Override
             public void onRefreshingFromFooter(SDPullToRefreshView view)
             {
                 SDToast.showToast("尾部刷新");
-                stopRefreshingDelayed(500);
+                stopRefreshingDelayed(1000);
             }
         });
         view_pull.setOnViewPositionChangedCallback(new ISDPullToRefreshView.OnViewPositionChangedCallback()
@@ -46,6 +46,7 @@ public class ButtonActivity extends SDBaseActivity
                 LogUtil.i("FooterView top:" + view.getFooterView().getTop());
             }
         });
+        view_pull.startRefreshingFromHeader();
     }
 
     private void stopRefreshingDelayed(long delay)
