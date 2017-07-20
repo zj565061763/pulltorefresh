@@ -302,9 +302,14 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         return mTouchHelper.getDegreeY() < 30;
     }
 
+    private boolean isViewsReset()
+    {
+        return mRefreshView.getTop() == getTopReset();
+    }
+
     private boolean canPull()
     {
-        return checkMoveParams() && (canPullFromHeader() || canPullFromFooter());
+        return isViewsReset() && checkMoveParams() && (canPullFromHeader() || canPullFromFooter());
     }
 
     private boolean canPullFromHeader()
