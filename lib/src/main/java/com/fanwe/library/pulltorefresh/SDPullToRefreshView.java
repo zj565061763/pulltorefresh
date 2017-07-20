@@ -254,7 +254,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     {
         if (mScroller.computeScrollOffset())
         {
-            moveViews(mScroller.getMoveY(), false);
+            moveViews(mScroller.getMoveY());
             invalidate();
         }
     }
@@ -383,15 +383,16 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
 
         boolean canMove = false;
+        float distanceY = getComsumedDistance(mTouchHelper.getDistanceMoveY());
         if (mDirection == Direction.FROM_HEADER)
         {
-            if (mRefreshView.getTop() + mTouchHelper.getDistanceMoveY() >= 0)
+            if (mRefreshView.getTop() + distanceY >= 0)
             {
                 canMove = true;
             }
         } else if (mDirection == Direction.FROM_FOOTER)
         {
-            if (mRefreshView.getTop() + mTouchHelper.getDistanceMoveY() <= 0)
+            if (mRefreshView.getTop() + distanceY <= 0)
             {
                 canMove = true;
             }
@@ -399,7 +400,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
         if (canMove)
         {
-            moveViews(mTouchHelper.getDistanceMoveY(), true);
+            moveViews(distanceY);
             updateStateByMoveDistance();
         }
     }
@@ -555,12 +556,14 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
     }
 
-    private void moveViews(float distance, boolean comsume)
+    private float getComsumedDistance(float distance)
     {
-        if (comsume)
-        {
-            distance -= distance * getComsumeScrollPercent();
-        }
+        distance -= distance * getComsumeScrollPercent();
+        return distance;
+    }
+
+    private void moveViews(float distance)
+    {
         mHeaderView.offsetTopAndBottom((int) distance);
         mFooterView.offsetTopAndBottom((int) distance);
         mRefreshView.offsetTopAndBottom((int) distance);
