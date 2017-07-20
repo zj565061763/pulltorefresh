@@ -620,10 +620,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
         if (heightMode != MeasureSpec.EXACTLY)
         {
-            int heightHeader = mHeaderView.getMeasuredHeight();
-            int heightFooter = mFooterView.getMeasuredHeight();
-            int heightRefresh = mRefreshView.getMeasuredHeight();
-            height = heightHeader + heightFooter + heightRefresh;
+            height = mRefreshView.getMeasuredHeight();
         }
 
         mScroller.setMaxScrollDistance(mHeaderView.getMeasuredHeight() * 5);
@@ -646,15 +643,15 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         int bottomHeader = topHeader + mHeaderView.getMeasuredHeight();
         mHeaderView.layout(leftHeader, topHeader, rightHeader, bottomHeader);
 
-        int topFooter = getMeasuredHeight() - getPaddingBottom();
-        int rightFooter = leftHeader + mFooterView.getMeasuredWidth();
-        int bottomFooter = topFooter + mFooterView.getMeasuredHeight();
-        mFooterView.layout(leftHeader, topFooter, rightFooter, bottomFooter);
-
         int topRefresh = getPaddingTop();
         int rightRefresh = leftHeader + mRefreshView.getMeasuredWidth();
         int bottomRefresh = topRefresh + mRefreshView.getMeasuredHeight();
         mRefreshView.layout(leftHeader, topRefresh, rightRefresh, bottomRefresh);
+
+        int topFooter = getMeasuredHeight() - getPaddingBottom();
+        int rightFooter = leftHeader + mFooterView.getMeasuredWidth();
+        int bottomFooter = topFooter + mFooterView.getMeasuredHeight();
+        mFooterView.layout(leftHeader, topFooter, rightFooter, bottomFooter);
 
         if (mIsDebug)
         {
