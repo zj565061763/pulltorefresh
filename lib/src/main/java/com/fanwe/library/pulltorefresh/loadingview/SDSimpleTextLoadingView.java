@@ -1,4 +1,4 @@
-package com.fanwe.library.pulltorefresh;
+package com.fanwe.library.pulltorefresh.loadingview;
 
 import android.content.Context;
 import android.support.annotation.AttrRes;
@@ -7,6 +7,10 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.TextView;
+
+import com.fanwe.library.pulltorefresh.ISDPullToRefreshView;
+import com.fanwe.library.pulltorefresh.R;
+import com.fanwe.library.pulltorefresh.SDPullToRefreshView;
 
 /**
  * Created by Administrator on 2017/6/27.

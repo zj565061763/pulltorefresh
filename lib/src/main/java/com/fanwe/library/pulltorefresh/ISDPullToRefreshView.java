@@ -2,6 +2,8 @@ package com.fanwe.library.pulltorefresh;
 
 import android.view.View;
 
+import com.fanwe.library.pulltorefresh.loadingview.SDPullToRefreshLoadingView;
+
 /**
  * Created by Administrator on 2017/6/28.
  */

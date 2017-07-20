@@ -1,4 +1,4 @@
-package com.fanwe.library.pulltorefresh;
+package com.fanwe.library.pulltorefresh.loadingview;
 
 import android.content.Context;
 import android.support.annotation.AttrRes;
@@ -7,11 +7,14 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
+import com.fanwe.library.pulltorefresh.ISDPullToRefreshView;
+import com.fanwe.library.pulltorefresh.SDPullToRefreshView;
+
 /**
  * Created by Administrator on 2017/6/26.
  */
 
-public abstract class SDPullToRefreshLoadingView extends FrameLayout implements SDPullToRefreshView.IPullToRefreshLoadingView
+public abstract class SDPullToRefreshLoadingView extends FrameLayout implements ISDPullToRefreshView.IPullToRefreshLoadingView
 {
     public SDPullToRefreshLoadingView(@NonNull Context context)
     {
@@ -28,29 +31,25 @@ public abstract class SDPullToRefreshLoadingView extends FrameLayout implements 
         super(context, attrs, defStyleAttr);
     }
 
-    private SDPullToRefreshView mPullToRefreshView;
-    private SDPullToRefreshView.LoadingViewType mLoadingViewType;
-
-    final void setPullToRefreshView(SDPullToRefreshView pullToRefreshView)
+    @Override
+    public final ISDPullToRefreshView.LoadingViewType getLoadingViewType()
     {
-        mPullToRefreshView = pullToRefreshView;
-    }
-
-    final void setLoadingViewType(SDPullToRefreshView.LoadingViewType loadingViewType)
-    {
-        mLoadingViewType = loadingViewType;
+        if (getPullToRefreshView().getHeaderView() == this)
+        {
+            return ISDPullToRefreshView.LoadingViewType.HEADER;
+        } else if (getPullToRefreshView().getFooterView() == this)
+        {
+            return ISDPullToRefreshView.LoadingViewType.FOOTER;
+        } else
+        {
+            return null;
+        }
     }
 
     @Override
-    public SDPullToRefreshView.LoadingViewType getLoadingViewType()
+    public final SDPullToRefreshView getPullToRefreshView()
     {
-        return mLoadingViewType;
-    }
-
-    @Override
-    public SDPullToRefreshView getPullToRefreshView()
-    {
-        return mPullToRefreshView;
+        return (SDPullToRefreshView) getParent();
     }
 
     @Override

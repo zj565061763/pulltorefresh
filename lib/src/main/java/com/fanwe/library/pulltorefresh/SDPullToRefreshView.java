@@ -10,6 +10,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fanwe.library.pulltorefresh.loadingview.SDPullToRefreshLoadingView;
+import com.fanwe.library.pulltorefresh.loadingview.SDSimpleTextLoadingView;
+
 /**
  * Created by Administrator on 2017/6/26.
  */
@@ -197,8 +200,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             removeView(mHeaderView);
         }
         mHeaderView = headerView;
-        mHeaderView.setLoadingViewType(LoadingViewType.HEADER);
-        mHeaderView.setPullToRefreshView(this);
         addView(mHeaderView);
     }
 
@@ -220,8 +221,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             removeView(mFooterView);
         }
         mFooterView = footerView;
-        mFooterView.setLoadingViewType(LoadingViewType.FOOTER);
-        mFooterView.setPullToRefreshView(this);
         addView(mFooterView);
     }
 

@@ -6,6 +6,7 @@ import android.widget.Button;
 import com.fanwe.library.activity.SDBaseActivity;
 import com.fanwe.library.pulltorefresh.ISDPullToRefreshView;
 import com.fanwe.library.pulltorefresh.SDPullToRefreshView;
+import com.fanwe.library.utils.LogUtil;
 import com.fanwe.library.utils.SDToast;
 import com.fanwe.library.utils.SDViewUtil;
 import com.sd.demo.pulltorefresh.R;
@@ -35,6 +36,14 @@ public class ButtonActivity extends SDBaseActivity
             {
                 SDToast.showToast("尾部刷新");
                 stopRefreshingDelayed(500);
+            }
+        });
+        view_pull.setOnViewPositionChangedCallback(new ISDPullToRefreshView.OnViewPositionChangedCallback()
+        {
+            @Override
+            public void onViewPositionChanged(SDPullToRefreshView view)
+            {
+                LogUtil.i("FooterView top:" + view.getFooterView().getTop());
             }
         });
     }

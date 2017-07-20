@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 
 import com.fanwe.library.pulltorefresh.ISDPullToRefreshView;
 import com.fanwe.library.pulltorefresh.SDPullToRefreshView;
-import com.fanwe.library.pulltorefresh.SDSimpleImageLoadingView;
+import com.fanwe.library.pulltorefresh.loadingview.SDSimpleImageLoadingView;
 import com.fanwe.library.utils.SDViewUtil;
 import com.sd.demo.pulltorefresh.R;
 
