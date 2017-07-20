@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -58,7 +57,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
      */
     private float mComsumeScrollPercent = DEFAULT_COMSUME_SCROLL_PERCENT;
 
-    private ViewDragHelper mDragHelper;
+    private SDScroller mScroller;
 
     private boolean mHasOnLayout;
     private Runnable mUpdatePositionRunnable;
@@ -71,7 +70,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
     private void initInternal()
     {
-        initViewDragHelper();
+        initScroller();
     }
 
     public void setDebug(boolean debug)
@@ -79,125 +78,26 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         mIsDebug = debug;
     }
 
-    /**
-     * 初始化ViewDragHelper
-     */
-    private void initViewDragHelper()
+    private void initScroller()
     {
-        mDragHelper = ViewDragHelper.create(this, new ViewDragHelper.Callback()
+        mScroller = new SDScroller(getContext());
+        mScroller.setMaxScrollDistance(1000);
+    }
+
+    private void onActionUp()
+    {
+        if (mIsDebug)
         {
-            @Override
-            public boolean tryCaptureView(View child, int pointerId)
-            {
-                if (child != mRefreshView)
-                {
-                    return false;
-                }
-                if (mState != State.RESET)
-                {
-                    return false;
-                }
-                if (mIsDebug)
-                {
-                    Log.i(TAG, "ViewDragHelper tryCaptureView when scroll distance:" + getScrollDistance());
-                }
-                if (getScrollDistance() != 0)
-                {
-                    return false;
-                }
-                return true;
-            }
-
-            @Override
-            public int clampViewPositionVertical(View child, int top, int dy)
-            {
-                switch (mDirection)
-                {
-                    case HEADER_TO_FOOTER:
-                        if (mMode == Mode.BOTH || mMode == Mode.PULL_FROM_HEADER)
-                        {
-                            final int comsumeDistance = (int) (Math.abs(dy) * getComsumeScrollPercent());
-                            if (top > getTopReset())
-                            {
-                                top = top - comsumeDistance;
-                            }
-                            return Math.max(top, getTopReset());
-                        } else
-                        {
-                            return getTopReset();
-                        }
-                    case FOOTER_TO_HEADER:
-                        if (mMode == Mode.BOTH || mMode == Mode.PULL_FROM_FOOTER)
-                        {
-                            final int comsumeDistance = (int) (Math.abs(dy) * getComsumeScrollPercent());
-                            if (top < getTopReset())
-                            {
-                                top = top + comsumeDistance;
-                            }
-                            return Math.min(top, getTopReset());
-                        } else
-                        {
-                            return getTopReset();
-                        }
-                    case NONE:
-                        return top;
-                    default:
-                        return top;
-                }
-            }
-
-            @Override
-            public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy)
-            {
-                super.onViewPositionChanged(changedView, left, top, dx, dy);
-                if (mTouchHelper.isNeedCosume() && isViewDragging())
-                {
-                    //设置方向
-                    if (dy > 0)
-                    {
-                        setDirection(Direction.HEADER_TO_FOOTER);
-                    } else if (dy < 0)
-                    {
-                        setDirection(Direction.FOOTER_TO_HEADER);
-                    }
-                    updateStateByScrollDistance();
-                }
-
-                mHeaderView.onViewPositionChanged(SDPullToRefreshView.this);
-                mFooterView.onViewPositionChanged(SDPullToRefreshView.this);
-                if (mOnViewPositionChangedCallback != null)
-                {
-                    mOnViewPositionChangedCallback.onViewPositionChanged(SDPullToRefreshView.this);
-                }
-            }
-
-            @Override
-            public void onViewCaptured(View capturedChild, int activePointerId)
-            {
-                super.onViewCaptured(capturedChild, activePointerId);
-                if (mIsDebug)
-                {
-                    Log.i(TAG, "ViewDragHelper onViewCaptured");
-                }
-            }
-
-            @Override
-            public void onViewReleased(View releasedChild, float xvel, float yvel)
-            {
-                if (mIsDebug)
-                {
-                    Log.i(TAG, "ViewDragHelper onViewReleased");
-                }
-                if (mState == State.PULL_TO_REFRESH)
-                {
-                    setState(State.RESET);
-                } else if (mState == State.RELEASE_TO_REFRESH)
-                {
-                    setState(State.REFRESHING);
-                }
-                updateViewPositionByState();
-            }
-        });
+            Log.i(TAG, "onActionUp");
+        }
+        if (mState == State.PULL_TO_REFRESH)
+        {
+            setState(State.RESET);
+        } else if (mState == State.RELEASE_TO_REFRESH)
+        {
+            setState(State.REFRESHING);
+        }
+        updateViewPositionByState();
     }
 
     /**
@@ -235,16 +135,16 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         {
             case RESET:
             case PULL_TO_REFRESH:
-                mDragHelper.smoothSlideViewTo(mRefreshView, 0, getTopReset());
+                mScroller.startScrollToY(mRefreshView.getTop(), getTopReset());
                 break;
             case RELEASE_TO_REFRESH:
             case REFRESHING:
-                if (mDirection == Direction.HEADER_TO_FOOTER)
+                if (mDirection == Direction.FROM_HEADER)
                 {
-                    mDragHelper.smoothSlideViewTo(mRefreshView, 0, getTopReset() + mHeaderView.getRefreshHeight());
-                } else if (mDirection == Direction.FOOTER_TO_HEADER)
+                    mScroller.startScrollToY(mRefreshView.getTop(), getTopReset() + mHeaderView.getRefreshHeight());
+                } else if (mDirection == Direction.FROM_FOOTER)
                 {
-                    mDragHelper.smoothSlideViewTo(mRefreshView, 0, getTopReset() - mFooterView.getRefreshHeight());
+                    mScroller.startScrollToY(mRefreshView.getTop(), getTopReset() - mFooterView.getRefreshHeight());
                 }
                 break;
         }
@@ -257,7 +157,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     private void updateStateByScrollDistance()
     {
         int distance = Math.abs(getScrollDistance());
-        if (mDirection == Direction.HEADER_TO_FOOTER)
+        if (mDirection == Direction.FROM_HEADER)
         {
             if (distance < mHeaderView.getRefreshHeight())
             {
@@ -266,7 +166,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             {
                 setState(State.RELEASE_TO_REFRESH);
             }
-        } else if (mDirection == Direction.FOOTER_TO_HEADER)
+        } else if (mDirection == Direction.FROM_FOOTER)
         {
             if (distance < mFooterView.getRefreshHeight())
             {
@@ -303,10 +203,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             {
                 if (mOnRefreshCallback != null)
                 {
-                    if (mDirection == Direction.HEADER_TO_FOOTER)
+                    if (mDirection == Direction.FROM_HEADER)
                     {
                         mOnRefreshCallback.onRefreshingFromHeader(this);
-                    } else if (mDirection == Direction.FOOTER_TO_HEADER)
+                    } else if (mDirection == Direction.FROM_FOOTER)
                     {
                         mOnRefreshCallback.onRefreshingFromFooter(this);
                     }
@@ -412,7 +312,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         {
             return;
         }
-        setDirection(Direction.HEADER_TO_FOOTER);
+        setDirection(Direction.FROM_HEADER);
         setState(State.REFRESHING);
         updateViewPositionByState();
     }
@@ -428,7 +328,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         {
             return;
         }
-        setDirection(Direction.FOOTER_TO_HEADER);
+        setDirection(Direction.FROM_FOOTER);
         setState(State.REFRESHING);
         updateViewPositionByState();
     }
@@ -520,8 +420,9 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     @Override
     public void computeScroll()
     {
-        if (mDragHelper.continueSettling(true))
+        if (mScroller.computeScrollOffset())
         {
+            moveViews(mScroller.getMoveY(), false);
             invalidate();
         }
     }
@@ -558,8 +459,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         switch (ev.getAction())
         {
             case MotionEvent.ACTION_DOWN:
-                //触发ViewDragHelper的尝试捕捉
-                mDragHelper.processTouchEvent(ev);
                 mTouchHelper.setNeedIntercept(false);
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -572,17 +471,8 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                     }
                 }
                 break;
-
-            default:
-                mDragHelper.processTouchEvent(ev);
-                break;
         }
         return mTouchHelper.isNeedIntercept();
-    }
-
-    private boolean isViewDragging()
-    {
-        return mDragHelper.getViewDragState() == ViewDragHelper.STATE_DRAGGING;
     }
 
     private boolean checkMoveParams()
@@ -617,27 +507,24 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             return super.onTouchEvent(event);
         }
 
+        if (mIsDebug)
+        {
+            Log.i(TAG, "onTouchEvent:" + event.getAction());
+        }
+
         mTouchHelper.processTouchEvent(event);
         switch (event.getAction())
         {
             case MotionEvent.ACTION_DOWN:
-                if (!isViewDragging())
-                {
-                    //触发ViewDragHelper的尝试捕捉
-                    mDragHelper.processTouchEvent(event);
-                }
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (mTouchHelper.isNeedCosume())
                 {
-                    if (isViewDragging())
+                    if (mIsDebug)
                     {
-                        if (mIsDebug)
-                        {
-                            Log.i(TAG, "processTouchEvent ACTION_MOVE");
-                        }
-                        mDragHelper.processTouchEvent(event);
+                        Log.i(TAG, "processTouchEvent ACTION_MOVE");
                     }
+                    processMoveEvent();
                 } else
                 {
                     if (canPull())
@@ -648,17 +535,58 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                mDragHelper.processTouchEvent(event);
+                onActionUp();
 
                 mTouchHelper.setNeedCosume(false);
                 mTouchHelper.setNeedIntercept(false);
                 break;
-            default:
-                mDragHelper.processTouchEvent(event);
-                break;
         }
 
         return super.onTouchEvent(event) || mTouchHelper.isNeedCosume() || event.getAction() == MotionEvent.ACTION_DOWN;
+    }
+
+    private void processMoveEvent()
+    {
+        //设置方向
+        if (mTouchHelper.isMoveDown())
+        {
+            setDirection(Direction.FROM_HEADER);
+        } else if (mTouchHelper.isMoveUp())
+        {
+            setDirection(Direction.FROM_FOOTER);
+        }
+
+        boolean canMove = false;
+        if (mDirection == Direction.FROM_HEADER)
+        {
+            if (mRefreshView.getTop() + mTouchHelper.getDistanceMoveY() >= 0)
+            {
+                canMove = true;
+            }
+        } else if (mDirection == Direction.FROM_FOOTER)
+        {
+            if (mRefreshView.getTop() + mTouchHelper.getDistanceMoveY() <= 0)
+            {
+                canMove = true;
+            }
+        }
+
+        if (canMove)
+        {
+            moveViews(mTouchHelper.getDistanceMoveY(), true);
+            updateStateByScrollDistance();
+        }
+    }
+
+    private void moveViews(float distance, boolean comsume)
+    {
+        if (comsume)
+        {
+            distance -= distance * getComsumeScrollPercent();
+        }
+        mHeaderView.offsetTopAndBottom((int) distance);
+        mFooterView.offsetTopAndBottom((int) distance);
+        mRefreshView.offsetTopAndBottom((int) distance);
     }
 
     @Override
@@ -708,6 +636,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             height = heightHeader + heightFooter + heightRefresh;
         }
 
+        mScroller.setMaxScrollDistance(mHeaderView.getMeasuredHeight() * 5);
         setMeasuredDimension(width, height);
     }
 

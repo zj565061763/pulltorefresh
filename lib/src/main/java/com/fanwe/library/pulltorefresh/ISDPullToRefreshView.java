@@ -137,8 +137,8 @@ public interface ISDPullToRefreshView
     enum Direction
     {
         NONE,
-        HEADER_TO_FOOTER,
-        FOOTER_TO_HEADER,
+        FROM_HEADER,
+        FROM_FOOTER,
     }
 
     enum Mode
