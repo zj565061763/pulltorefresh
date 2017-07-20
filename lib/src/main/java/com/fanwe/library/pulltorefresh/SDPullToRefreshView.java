@@ -53,6 +53,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     private float mComsumeScrollPercent = DEFAULT_COMSUME_SCROLL_PERCENT;
 
     private SDScroller mScroller;
+    private boolean mIsNeedLayoutWhenScrollerFinished;
 
     private boolean mHasOnLayout;
     private Runnable mUpdatePositionRunnable;
@@ -251,9 +252,15 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         {
             moveViews(mScroller.getMoveY());
             invalidate();
-            if (mIsDebug)
+        } else
+        {
+            if (mIsNeedLayoutWhenScrollerFinished && mState == State.RESET)
             {
-                Log.i(TAG, "computeScroll:" + mScroller.getMoveY());
+                if (mIsDebug)
+                {
+                    Log.i(TAG, "requestLayout when scroller finished");
+                }
+                requestLayout();
             }
         }
     }
@@ -666,6 +673,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
 
         final boolean isScrollFinished = mScroller.isFinished();
+        mIsNeedLayoutWhenScrollerFinished = !isScrollFinished;
         int left = getPaddingLeft();
         int top = 0;
         int right = 0;
