@@ -660,32 +660,61 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b)
     {
-        int leftHeader = getPaddingLeft();
-        int topHeader = -mHeaderView.getMeasuredHeight() + getPaddingTop();
-        int rightHeader = leftHeader + mHeaderView.getMeasuredWidth();
-        int bottomHeader = topHeader + mHeaderView.getMeasuredHeight();
-        mHeaderView.layout(leftHeader, topHeader, rightHeader, bottomHeader);
-
-        int topRefresh = getPaddingTop();
-        int rightRefresh = leftHeader + mRefreshView.getMeasuredWidth();
-        int bottomRefresh = topRefresh + mRefreshView.getMeasuredHeight();
-        mRefreshView.layout(leftHeader, topRefresh, rightRefresh, bottomRefresh);
-
-        int topFooter = getMeasuredHeight() - getPaddingBottom();
-        int rightFooter = leftHeader + mFooterView.getMeasuredWidth();
-        int bottomFooter = topFooter + mFooterView.getMeasuredHeight();
-        mFooterView.layout(leftHeader, topFooter, rightFooter, bottomFooter);
-
-        mHasOnLayout = true;
-        runUpdatePositionRunnableIfNeed();
-
         if (mIsDebug)
         {
             Log.i(TAG, "onLayout views totalHeight:----------" + getHeight());
-            Log.i(TAG, "HeaderView:" + topHeader + "," + bottomHeader);
-            Log.i(TAG, "RefreshView:" + topRefresh + "," + bottomRefresh);
-            Log.i(TAG, "FooterView:" + topFooter + "," + bottomFooter);
         }
+
+        final boolean isScrollFinished = mScroller.isFinished();
+        int left = getPaddingLeft();
+        int top = 0;
+        int right = 0;
+        int bottom = 0;
+
+        // HeaderView
+        top = -mHeaderView.getMeasuredHeight() + getPaddingTop();
+        if (!isScrollFinished && getDirection() == Direction.FROM_HEADER)
+        {
+            top = mHeaderView.getTop();
+        }
+        right = left + mHeaderView.getMeasuredWidth();
+        bottom = top + mHeaderView.getMeasuredHeight();
+        mHeaderView.layout(left, top, right, bottom);
+        if (mIsDebug)
+        {
+            Log.i(TAG, "HeaderView:" + top + "," + bottom);
+        }
+
+        // RefreshView
+        top = getPaddingTop();
+        if (!isScrollFinished)
+        {
+            top = mRefreshView.getTop();
+        }
+        right = left + mRefreshView.getMeasuredWidth();
+        bottom = top + mRefreshView.getMeasuredHeight();
+        mRefreshView.layout(left, top, right, bottom);
+        if (mIsDebug)
+        {
+            Log.i(TAG, "RefreshView:" + top + "," + bottom);
+        }
+
+        // FooterView
+        top = getMeasuredHeight() - getPaddingBottom();
+        if (!isScrollFinished && getDirection() == Direction.FROM_FOOTER)
+        {
+            top = mFooterView.getTop();
+        }
+        right = left + mFooterView.getMeasuredWidth();
+        bottom = top + mFooterView.getMeasuredHeight();
+        mFooterView.layout(left, top, right, bottom);
+        if (mIsDebug)
+        {
+            Log.i(TAG, "FooterView:" + top + "," + bottom);
+        }
+
+        mHasOnLayout = true;
+        runUpdatePositionRunnableIfNeed();
     }
 
     private void runUpdatePositionRunnableIfNeed()
