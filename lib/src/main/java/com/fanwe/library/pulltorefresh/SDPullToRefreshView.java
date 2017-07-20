@@ -546,7 +546,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 endY = getTopReset();
                 if (mIsDebug)
                 {
-                    Log.i(TAG, "startScrollToY:" + mState + ":" + startY + "," + endY);
+                    Log.i(TAG, "updateViewPositionByState:" + mState + " startScrollToY:" + startY + "," + endY);
                 }
                 mScroller.startScrollToY(startY, endY);
                 break;
@@ -561,7 +561,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 }
                 if (mIsDebug)
                 {
-                    Log.i(TAG, "startScrollToY:" + mState + ":" + startY + "," + endY);
+                    Log.i(TAG, "updateViewPositionByState:" + mState + " startScrollToY:" + startY + "," + endY);
                 }
                 mScroller.startScrollToY(startY, endY);
                 break;
@@ -672,7 +672,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     {
         if (mIsDebug)
         {
-            Log.i(TAG, "onLayout views totalHeight:----------" + getHeight());
+            Log.i(TAG, "onLayout totalHeight:----------" + getHeight());
         }
 
         final boolean isScrollFinished = mScroller.isFinished();
