@@ -407,6 +407,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         {
             moveViews(distanceY);
             updateStateByMoveDistance();
+            invalidate();
         }
     }
 
@@ -448,7 +449,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         {
             mState = state;
 
-            invalidate();
             if (mIsDebug)
             {
                 Log.i(TAG, "setState:" + mState);
