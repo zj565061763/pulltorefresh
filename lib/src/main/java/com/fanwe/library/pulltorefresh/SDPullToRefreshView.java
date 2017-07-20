@@ -44,6 +44,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     private State mState = State.RESET;
     private Direction mDirection = Direction.NONE;
     private Direction mLastDirection = Direction.NONE;
+    private boolean mIsOverLayMode;
     /**
      * Reset状态下mRootLayout的top值
      */
@@ -388,13 +389,13 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
         boolean canMove = false;
         float distanceY = getComsumedDistance(mTouchHelper.getDistanceMoveY());
-        if (mDirection == Direction.FROM_HEADER)
+        if (getDirection() == Direction.FROM_HEADER)
         {
             if (mRefreshView.getTop() + distanceY >= 0)
             {
                 canMove = true;
             }
-        } else if (mDirection == Direction.FROM_FOOTER)
+        } else
         {
             if (mRefreshView.getTop() + distanceY <= 0)
             {
@@ -415,7 +416,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     private void updateStateByMoveDistance()
     {
         int distance = Math.abs(getScrollDistance());
-        if (mDirection == Direction.FROM_HEADER)
+        if (getDirection() == Direction.FROM_HEADER)
         {
             if (distance < mHeaderView.getRefreshHeight())
             {
@@ -424,7 +425,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             {
                 setState(State.RELEASE_TO_REFRESH);
             }
-        } else if (mDirection == Direction.FROM_FOOTER)
+        } else
         {
             if (distance < mFooterView.getRefreshHeight())
             {
@@ -454,10 +455,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             }
 
             //通知view改变状态
-            if (mDirection == Direction.FROM_HEADER)
+            if (getDirection() == Direction.FROM_HEADER)
             {
                 mHeaderView.onStateChanged(mState, this);
-            } else if (mDirection == Direction.FROM_FOOTER)
+            } else
             {
                 mFooterView.onStateChanged(mState, this);
             }
@@ -467,10 +468,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             {
                 if (mOnRefreshCallback != null)
                 {
-                    if (mDirection == Direction.FROM_HEADER)
+                    if (getDirection() == Direction.FROM_HEADER)
                     {
                         mOnRefreshCallback.onRefreshingFromHeader(this);
-                    } else if (mDirection == Direction.FROM_FOOTER)
+                    } else
                     {
                         mOnRefreshCallback.onRefreshingFromFooter(this);
                     }
@@ -534,10 +535,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 break;
             case RELEASE_TO_REFRESH:
             case REFRESHING:
-                if (mDirection == Direction.FROM_HEADER)
+                if (getDirection() == Direction.FROM_HEADER)
                 {
                     mScroller.startScrollToY(mRefreshView.getTop(), getTopReset() + mHeaderView.getRefreshHeight());
-                } else if (mDirection == Direction.FROM_FOOTER)
+                } else
                 {
                     mScroller.startScrollToY(mRefreshView.getTop(), getTopReset() - mFooterView.getRefreshHeight());
                 }
@@ -574,9 +575,21 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
     private void moveViews(float distance)
     {
-        mHeaderView.offsetTopAndBottom((int) distance);
-        mFooterView.offsetTopAndBottom((int) distance);
-        mRefreshView.offsetTopAndBottom((int) distance);
+        if (getDirection() == Direction.FROM_HEADER)
+        {
+            mHeaderView.offsetTopAndBottom((int) distance);
+            if (!mIsOverLayMode)
+            {
+                mRefreshView.offsetTopAndBottom((int) distance);
+            }
+        } else
+        {
+            if (!mIsOverLayMode)
+            {
+                mRefreshView.offsetTopAndBottom((int) distance);
+            }
+            mFooterView.offsetTopAndBottom((int) distance);
+        }
     }
 
     @Override
