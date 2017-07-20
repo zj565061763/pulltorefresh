@@ -45,14 +45,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     private Direction mDirection = Direction.NONE;
     private Direction mLastDirection = Direction.NONE;
     /**
-     * Reset状态下mRootLayout的top值
-     */
-    private int mRootTopReset;
-    /**
-     * 触发拦截拖动的最小移动距离，默认0
-     */
-    private int mTouchSlop;
-    /**
      * 设置拖动的时候要消耗的拖动距离比例
      */
     private float mComsumeScrollPercent = DEFAULT_COMSUME_SCROLL_PERCENT;
@@ -307,7 +299,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
     private boolean checkMoveParams()
     {
-        return Math.abs(mTouchHelper.getDistanceDownY()) > mTouchSlop && mTouchHelper.getDegreeY() < 30;
+        return mTouchHelper.getDegreeY() < 30;
     }
 
     private boolean canPull()
