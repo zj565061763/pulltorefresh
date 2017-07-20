@@ -12,7 +12,6 @@ import com.fanwe.library.pulltorefresh.SDPullToRefreshView;
 import com.fanwe.library.view.SDRecyclerView;
 import com.sd.demo.pulltorefresh.R;
 import com.sd.demo.pulltorefresh.model.DataModel;
-import com.sd.demo.pulltorefresh.utils.DemoUtil;
 import com.sd.demo.pulltorefresh.view.CustomPullToRefreshLoadingView;
 
 public class RecyclerViewActivity extends SDBaseActivity
@@ -28,8 +27,6 @@ public class RecyclerViewActivity extends SDBaseActivity
         mRecyclerView = (SDRecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setAdapter(mAdapter);
 
-        DemoUtil.handleAutoRefreshingFromFooter(view_pull);//设置滚动到底部自动加载
-
         view_pull.setDebug(true);
         view_pull.setHeaderView(new CustomPullToRefreshLoadingView(this)); //自定义HeaderView
         view_pull.setOnRefreshCallback(new ISDPullToRefreshView.OnRefreshCallback()
@@ -43,7 +40,7 @@ public class RecyclerViewActivity extends SDBaseActivity
                     @Override
                     public void run()
                     {
-                        mAdapter.updateData(DataModel.getListModel(20));
+                        mAdapter.updateData(DataModel.getListModel(5));
                         view.stopRefreshing();
                     }
                 }, 1000);
