@@ -44,7 +44,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     private State mState = State.RESET;
     private Direction mDirection = Direction.NONE;
     private Direction mLastDirection = Direction.NONE;
-    private boolean mIsOverLayMode;
     /**
      * Reset状态下mRootLayout的top值
      */
@@ -578,16 +577,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         if (getDirection() == Direction.FROM_HEADER)
         {
             mHeaderView.offsetTopAndBottom((int) distance);
-            if (!mIsOverLayMode)
-            {
-                mRefreshView.offsetTopAndBottom((int) distance);
-            }
+            mRefreshView.offsetTopAndBottom((int) distance);
         } else
         {
-            if (!mIsOverLayMode)
-            {
-                mRefreshView.offsetTopAndBottom((int) distance);
-            }
+            mRefreshView.offsetTopAndBottom((int) distance);
             mFooterView.offsetTopAndBottom((int) distance);
         }
     }
