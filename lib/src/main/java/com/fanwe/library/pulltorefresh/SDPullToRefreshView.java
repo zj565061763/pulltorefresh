@@ -747,5 +747,9 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         super.onDetachedFromWindow();
         mHasOnLayout = false;
         mUpdatePositionRunnable = null;
+        if (!mScroller.isFinished())
+        {
+            mScroller.abortAnimation();
+        }
     }
 }
