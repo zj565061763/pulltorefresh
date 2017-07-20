@@ -3,7 +3,7 @@ package com.fanwe.library.pulltorefresh;
 import android.content.Context;
 import android.widget.Scroller;
 
-public class SDScroller extends Scroller
+class SDScroller extends Scroller
 {
     /**
      * 移动像素每毫秒
