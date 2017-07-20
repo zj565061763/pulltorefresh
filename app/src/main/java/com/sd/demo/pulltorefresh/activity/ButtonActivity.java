@@ -47,7 +47,7 @@ public class ButtonActivity extends SDBaseActivity
             {
                 int height = SDViewUtil.getHeight(view_pull.getRefreshView());
 
-                SDViewUtil.setHeight(view_pull.getRefreshView(), height + height / 10);
+                SDViewUtil.setHeight(view_pull.getRefreshView(), height + height / 3);
 
                 view_pull.stopRefreshing();
             }
