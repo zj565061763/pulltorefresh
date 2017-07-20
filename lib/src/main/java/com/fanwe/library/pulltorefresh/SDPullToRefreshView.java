@@ -716,6 +716,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         {
             top = mFooterView.getTop();
         }
+        if (bottom > top)
+        {
+            top = bottom;
+        }
         right = left + mFooterView.getMeasuredWidth();
         bottom = top + mFooterView.getMeasuredHeight();
         mFooterView.layout(left, top, right, bottom);
