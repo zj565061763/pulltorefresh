@@ -711,11 +711,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
 
         // FooterView
-        top = getMeasuredHeight() - getPaddingBottom();
-        if (!isScrollFinished && getDirection() == Direction.FROM_FOOTER)
-        {
-            top = mFooterView.getTop();
-        }
+        top = bottom;
         right = left + mFooterView.getMeasuredWidth();
         bottom = top + mFooterView.getMeasuredHeight();
         mFooterView.layout(left, top, right, bottom);
