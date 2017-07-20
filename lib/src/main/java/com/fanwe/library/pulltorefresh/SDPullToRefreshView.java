@@ -526,6 +526,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 public void run()
                 {
                     updateViewPositionByStateReal();
+                    mUpdatePositionRunnable = null;
                 }
             };
         }
@@ -736,8 +737,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     {
         if (mHasOnLayout && mUpdatePositionRunnable != null)
         {
-            mUpdatePositionRunnable.run();
-            mUpdatePositionRunnable = null;
+            post(mUpdatePositionRunnable);
         }
     }
 
