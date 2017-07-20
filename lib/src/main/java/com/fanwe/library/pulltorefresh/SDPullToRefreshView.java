@@ -697,7 +697,11 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
 
         // RefreshView
-        top = bottom;
+        top = getPaddingTop();
+        if (!isScrollFinished)
+        {
+            top = mRefreshView.getTop();
+        }
         right = left + mRefreshView.getMeasuredWidth();
         bottom = top + mRefreshView.getMeasuredHeight();
         mRefreshView.layout(left, top, right, bottom);
@@ -707,7 +711,11 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
 
         // FooterView
-        top = bottom;
+        top = getMeasuredHeight() - getPaddingBottom();
+        if (!isScrollFinished && getDirection() == Direction.FROM_FOOTER)
+        {
+            top = mFooterView.getTop();
+        }
         right = left + mFooterView.getMeasuredWidth();
         bottom = top + mFooterView.getMeasuredHeight();
         mFooterView.layout(left, top, right, bottom);
