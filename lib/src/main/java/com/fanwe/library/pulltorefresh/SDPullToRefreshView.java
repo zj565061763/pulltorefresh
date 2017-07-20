@@ -86,10 +86,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
     private void onActionUp()
     {
-        if (mIsDebug)
-        {
-            Log.i(TAG, "onActionUp");
-        }
         if (mState == State.PULL_TO_REFRESH)
         {
             setState(State.RESET);
@@ -432,16 +428,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev)
     {
-        if (mIsDebug)
-        {
-            if (ev.getAction() == MotionEvent.ACTION_DOWN)
-            {
-                Log.i(TAG, "onInterceptTouchEvent:" + ev.getAction() + "--------------------");
-            } else
-            {
-                Log.i(TAG, "onInterceptTouchEvent:" + ev.getAction());
-            }
-        }
         if (mMode == Mode.DISABLE || isRefreshing())
         {
             return false;
@@ -507,11 +493,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             return super.onTouchEvent(event);
         }
 
-        if (mIsDebug)
-        {
-            Log.i(TAG, "onTouchEvent:" + event.getAction());
-        }
-
         mTouchHelper.processTouchEvent(event);
         switch (event.getAction())
         {
@@ -520,10 +501,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             case MotionEvent.ACTION_MOVE:
                 if (mTouchHelper.isNeedCosume())
                 {
-                    if (mIsDebug)
-                    {
-                        Log.i(TAG, "processTouchEvent ACTION_MOVE");
-                    }
                     processMoveEvent();
                 } else
                 {
