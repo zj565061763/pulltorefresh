@@ -27,14 +27,14 @@ public class ButtonActivity extends SDBaseActivity
             public void onRefreshingFromHeader(SDPullToRefreshView view)
             {
                 SDToast.showToast("头部刷新");
-                stopRefreshingDelayed(1000);
+                stopRefreshingDelayed(500);
             }
 
             @Override
             public void onRefreshingFromFooter(SDPullToRefreshView view)
             {
                 SDToast.showToast("尾部刷新");
-                stopRefreshingDelayed(1000);
+                stopRefreshingDelayed(500);
             }
         });
     }
