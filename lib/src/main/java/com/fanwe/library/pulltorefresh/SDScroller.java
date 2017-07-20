@@ -6,9 +6,9 @@ import android.widget.Scroller;
 public class SDScroller extends Scroller
 {
     /**
-     * 一像素每毫秒
+     * 移动像素每毫秒
      */
-    public static final int DEFAULT_SPEED = 1;
+    public static final float DEFAULT_SPEED = 0.5f;
 
     private int mScrollDuration;
     private int mMaxScrollDistance;
@@ -32,7 +32,7 @@ public class SDScroller extends Scroller
     public void setMaxScrollDistance(int maxScrollDistance)
     {
         mMaxScrollDistance = maxScrollDistance;
-        setScrollDuration(mMaxScrollDistance / DEFAULT_SPEED);
+        setScrollDuration((int) (mMaxScrollDistance / DEFAULT_SPEED));
     }
 
     // scroll
