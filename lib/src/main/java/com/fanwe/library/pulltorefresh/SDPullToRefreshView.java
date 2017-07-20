@@ -254,8 +254,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             {
                 Log.e(TAG, "computeScroll:" + mScroller.getMoveY());
             }
-            moveViews(mScroller.getMoveY());
-            invalidate();
+            moveViews(mScroller.getMoveY(), true);
         } else
         {
             if (mState == State.RESET)
@@ -418,7 +417,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
         if (canMove)
         {
-            moveViews(distanceY);
+            moveViews(distanceY, true);
             updateStateByMoveDistance();
         }
     }
@@ -460,7 +459,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         if (mState != state)
         {
             mState = state;
-            invalidate();
 
             if (mIsDebug)
             {
@@ -600,7 +598,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         return distance;
     }
 
-    private void moveViews(float distance)
+    private void moveViews(float distance, boolean invalidate)
     {
         if (getDirection() == Direction.FROM_HEADER)
         {
@@ -611,6 +609,12 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             mRefreshView.offsetTopAndBottom((int) distance);
             mFooterView.offsetTopAndBottom((int) distance);
         }
+
+        if (invalidate)
+        {
+            invalidate();
+        }
+
         if (mOnViewPositionChangedCallback != null)
         {
             mOnViewPositionChangedCallback.onViewPositionChanged(this);
