@@ -205,6 +205,8 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             removeView(mHeaderView);
         }
         mHeaderView = headerView;
+        mHeaderView.setLoadingViewType(LoadingViewType.HEADER);
+        mHeaderView.setPullToRefreshView(this);
         addView(mHeaderView);
     }
 
@@ -226,6 +228,8 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             removeView(mFooterView);
         }
         mFooterView = footerView;
+        mFooterView.setLoadingViewType(LoadingViewType.FOOTER);
+        mFooterView.setPullToRefreshView(this);
         addView(mFooterView);
     }
 
