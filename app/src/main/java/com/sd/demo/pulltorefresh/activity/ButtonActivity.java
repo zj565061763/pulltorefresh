@@ -1,6 +1,7 @@
 package com.sd.demo.pulltorefresh.activity;
 
 import android.os.Bundle;
+import android.widget.Button;
 
 import com.fanwe.library.activity.SDBaseActivity;
 import com.fanwe.library.pulltorefresh.ISDPullToRefreshView;
@@ -26,14 +27,14 @@ public class ButtonActivity extends SDBaseActivity
             public void onRefreshingFromHeader(SDPullToRefreshView view)
             {
                 SDToast.showToast("头部刷新");
-                stopRefreshingDelayed(2000);
+                stopRefreshingDelayed(1000);
             }
 
             @Override
             public void onRefreshingFromFooter(SDPullToRefreshView view)
             {
                 SDToast.showToast("尾部刷新");
-                stopRefreshingDelayed(2000);
+                stopRefreshingDelayed(1000);
             }
         });
     }
@@ -45,9 +46,8 @@ public class ButtonActivity extends SDBaseActivity
             @Override
             public void run()
             {
-                int height = SDViewUtil.getHeight(view_pull.getRefreshView());
-
-                SDViewUtil.setHeight(view_pull.getRefreshView(), height + height / 3);
+                Button btn = (Button) findViewById(R.id.btn);
+                SDViewUtil.setHeight(btn, btn.getHeight() + 500);
 
                 view_pull.stopRefreshing();
             }
