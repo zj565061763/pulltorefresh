@@ -254,13 +254,16 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             invalidate();
         } else
         {
-            if (mIsNeedLayoutWhenScrollerFinished && mState == State.RESET)
+            if (mState == State.RESET)
             {
-                if (mIsDebug)
+                if (mIsNeedLayoutWhenScrollerFinished)
                 {
-                    Log.i(TAG, "requestLayout when scroller finished");
+                    if (mIsDebug)
+                    {
+                        Log.i(TAG, "requestLayout when scroller finished");
+                    }
+                    requestLayout();
                 }
-                requestLayout();
             }
         }
     }
