@@ -656,6 +656,14 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         int bottomRefresh = topRefresh + mRefreshView.getMeasuredHeight();
         mRefreshView.layout(leftHeader, topRefresh, rightRefresh, bottomRefresh);
 
+        if (mIsDebug)
+        {
+            Log.i(TAG, "onLayout views totalHeight:----------" + getHeight());
+            Log.i(TAG, "HeaderView:" + topHeader + "," + bottomHeader);
+            Log.i(TAG, "RefreshView:" + topRefresh + "," + bottomRefresh);
+            Log.i(TAG, "FooterView:" + topFooter + "," + bottomFooter);
+        }
+
         mHasOnLayout = true;
         runUpdatePositionRunnableIfNeed();
     }
