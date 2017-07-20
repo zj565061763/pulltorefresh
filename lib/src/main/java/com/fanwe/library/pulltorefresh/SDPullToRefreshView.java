@@ -10,13 +10,12 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 /**
  * Created by Administrator on 2017/6/26.
  */
 
-public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefreshView
+public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshView
 {
     public SDPullToRefreshView(@NonNull Context context)
     {
@@ -38,7 +37,9 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
 
     private static final String TAG = "SDPullToRefreshView";
 
-    private SDPullToRefreshRootView mRootLayout;
+    private SDPullToRefreshLoadingView mHeaderView;
+    private SDPullToRefreshLoadingView mFooterView;
+    private View mRefreshView;
 
     private Mode mMode = Mode.BOTH;
     private State mState = State.RESET;
@@ -70,23 +71,12 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
 
     private void initInternal()
     {
-        addRootLayout();
         initViewDragHelper();
     }
 
     public void setDebug(boolean debug)
     {
         mIsDebug = debug;
-    }
-
-    private void addRootLayout()
-    {
-        mRootLayout = new SDPullToRefreshRootView(getContext());
-        mRootLayout.setPullToRefreshView(this);
-        addView(mRootLayout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
-        mRootLayout.setHeaderView(new SDSimpleTextLoadingView(getContext()));
-        mRootLayout.setFooterView(new SDSimpleTextLoadingView(getContext()));
     }
 
     /**
@@ -99,7 +89,7 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
             @Override
             public boolean tryCaptureView(View child, int pointerId)
             {
-                if (child != mRootLayout)
+                if (child != mRefreshView)
                 {
                     return false;
                 }
@@ -127,27 +117,27 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
                         if (mMode == Mode.BOTH || mMode == Mode.PULL_FROM_HEADER)
                         {
                             final int comsumeDistance = (int) (Math.abs(dy) * getComsumeScrollPercent());
-                            if (top > mRootTopReset)
+                            if (top > getTopReset())
                             {
                                 top = top - comsumeDistance;
                             }
-                            return Math.max(top, mRootTopReset);
+                            return Math.max(top, getTopReset());
                         } else
                         {
-                            return mRootTopReset;
+                            return getTopReset();
                         }
                     case FOOTER_TO_HEADER:
                         if (mMode == Mode.BOTH || mMode == Mode.PULL_FROM_FOOTER)
                         {
                             final int comsumeDistance = (int) (Math.abs(dy) * getComsumeScrollPercent());
-                            if (top < mRootTopReset)
+                            if (top < getTopReset())
                             {
                                 top = top + comsumeDistance;
                             }
-                            return Math.min(top, mRootTopReset);
+                            return Math.min(top, getTopReset());
                         } else
                         {
-                            return mRootTopReset;
+                            return getTopReset();
                         }
                     case NONE:
                         return top;
@@ -173,7 +163,8 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
                     updateStateByScrollDistance();
                 }
 
-                mRootLayout.onViewPositionChanged(SDPullToRefreshView.this);
+                mHeaderView.onViewPositionChanged(SDPullToRefreshView.this);
+                mFooterView.onViewPositionChanged(SDPullToRefreshView.this);
                 if (mOnViewPositionChangedCallback != null)
                 {
                     mOnViewPositionChangedCallback.onViewPositionChanged(SDPullToRefreshView.this);
@@ -230,6 +221,11 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
         }
     }
 
+    private int getTopReset()
+    {
+        return 0;
+    }
+
     /**
      * 根据状态更新view的位置
      */
@@ -239,16 +235,16 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
         {
             case RESET:
             case PULL_TO_REFRESH:
-                mDragHelper.smoothSlideViewTo(mRootLayout, 0, mRootTopReset);
+                mDragHelper.smoothSlideViewTo(mRefreshView, 0, getTopReset());
                 break;
             case RELEASE_TO_REFRESH:
             case REFRESHING:
                 if (mDirection == Direction.HEADER_TO_FOOTER)
                 {
-                    mDragHelper.smoothSlideViewTo(mRootLayout, 0, mRootTopReset + mRootLayout.getHeaderRefreshHeight());
+                    mDragHelper.smoothSlideViewTo(mRefreshView, 0, getTopReset() + mHeaderView.getRefreshHeight());
                 } else if (mDirection == Direction.FOOTER_TO_HEADER)
                 {
-                    mDragHelper.smoothSlideViewTo(mRootLayout, 0, mRootTopReset - mRootLayout.getFooterRefreshHeight());
+                    mDragHelper.smoothSlideViewTo(mRefreshView, 0, getTopReset() - mFooterView.getRefreshHeight());
                 }
                 break;
         }
@@ -260,22 +256,22 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
      */
     private void updateStateByScrollDistance()
     {
-        int dis = getScrollDistance();
+        int distance = Math.abs(getScrollDistance());
         if (mDirection == Direction.HEADER_TO_FOOTER)
         {
-            if (dis <= mRootLayout.getHeaderRefreshHeight())
+            if (distance < mHeaderView.getRefreshHeight())
             {
                 setState(State.PULL_TO_REFRESH);
-            } else if (dis >= mRootLayout.getHeaderRefreshHeight())
+            } else if (distance >= mHeaderView.getRefreshHeight())
             {
                 setState(State.RELEASE_TO_REFRESH);
             }
         } else if (mDirection == Direction.FOOTER_TO_HEADER)
         {
-            if (dis <= mRootLayout.getFooterRefreshHeight())
+            if (distance < mFooterView.getRefreshHeight())
             {
                 setState(State.PULL_TO_REFRESH);
-            } else if (dis >= mRootLayout.getFooterRefreshHeight())
+            } else if (distance >= mFooterView.getRefreshHeight())
             {
                 setState(State.RELEASE_TO_REFRESH);
             }
@@ -299,7 +295,8 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
             }
 
             //通知view改变状态
-            mRootLayout.onStateChanged(mState, this);
+            mHeaderView.onStateChanged(mState, this);
+            mFooterView.onStateChanged(mState, this);
 
             //通知刷新回调
             if (mState == State.REFRESHING)
@@ -353,6 +350,12 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
     private float getComsumeScrollPercent()
     {
         return mComsumeScrollPercent;
+    }
+
+    @Override
+    protected LayoutParams generateDefaultLayoutParams()
+    {
+        return new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
     }
 
     //----------ISDPullToRefreshView implements start----------
@@ -455,31 +458,49 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
     @Override
     public SDPullToRefreshLoadingView getHeaderView()
     {
-        return mRootLayout.getHeaderView();
+        return mHeaderView;
     }
 
     @Override
     public void setHeaderView(SDPullToRefreshLoadingView headerView)
     {
-        mRootLayout.setHeaderView(headerView);
+        if (headerView == null)
+        {
+            return;
+        }
+        if (mHeaderView != null)
+        {
+            removeView(mHeaderView);
+        }
+        mHeaderView = headerView;
+        addView(mHeaderView);
     }
 
     @Override
     public SDPullToRefreshLoadingView getFooterView()
     {
-        return mRootLayout.getFooterView();
+        return mFooterView;
     }
 
     @Override
     public void setFooterView(SDPullToRefreshLoadingView footerView)
     {
-        mRootLayout.setFooterView(footerView);
+        if (footerView == null)
+        {
+            return;
+        }
+        if (mFooterView != null)
+        {
+            removeView(mFooterView);
+        }
+        mFooterView = footerView;
+        addView(mFooterView);
     }
 
     @Override
     public View getRefreshView()
     {
-        return mRootLayout.getRefreshView();
+        return mRefreshView;
     }
 
     @Override
@@ -491,7 +512,7 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
     @Override
     public int getScrollDistance()
     {
-        return Math.abs(mRootLayout.getTop() - mRootTopReset);
+        return mRefreshView.getTop();
     }
 
     //----------ISDPullToRefreshView implements end----------
@@ -578,14 +599,14 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
     {
         return mTouchHelper.isMoveDown()
                 && (mMode == Mode.BOTH || mMode == Mode.PULL_FROM_HEADER)
-                && SDTouchHelper.isScrollToTop(mRootLayout.getRefreshView());
+                && SDTouchHelper.isScrollToTop(mRefreshView);
     }
 
     private boolean canPullFromFooter()
     {
         return mTouchHelper.isMoveUp()
                 && (mMode == Mode.BOTH || mMode == Mode.PULL_FROM_FOOTER)
-                && SDTouchHelper.isScrollToBottom(mRootLayout.getRefreshView());
+                && SDTouchHelper.isScrollToBottom(mRefreshView);
     }
 
     @Override
@@ -645,54 +666,79 @@ public class SDPullToRefreshView extends FrameLayout implements ISDPullToRefresh
     {
         super.onFinishInflate();
 
-        if (getChildCount() < 2)
+        if (getChildCount() <= 0)
         {
             throw new IllegalArgumentException("you must add one child to SDPullToRefreshView in your xml file");
-        } else if (getChildCount() > 2)
+        } else if (getChildCount() > 1)
         {
             throw new IllegalArgumentException("you can only add one child to SDPullToRefreshView in your xml file");
         }
 
-        View refreshView = getChildAt(1);
-        ViewGroup.LayoutParams params = refreshView.getLayoutParams();
-        removeView(refreshView);
-        refreshView.setLayoutParams(params);
-        mRootLayout.setRefreshView(refreshView);
+        mRefreshView = getChildAt(0);
+        addLoadingView();
+    }
+
+    private void addLoadingView()
+    {
+        setHeaderView(new SDSimpleTextLoadingView(getContext()));
+        setFooterView(new SDSimpleTextLoadingView(getContext()));
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
     {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        int width = MeasureSpec.getSize(widthMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         int height = MeasureSpec.getSize(heightMeasureSpec);
 
-        int headerHeight = mRootLayout.getHeaderHeight();
-        int footerHeight = mRootLayout.getFooterHeight();
-        height = height + headerHeight + footerHeight;
+        int widthMeasureSpecLoadingView = MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY);
+        int heightMeasureSpecLoadingView = MeasureSpec.makeMeasureSpec(height, MeasureSpec.UNSPECIFIED);
 
-        heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, heightMode);
-        measureChildren(widthMeasureSpec, heightMeasureSpec);
+        measureLoadingView(mHeaderView, widthMeasureSpecLoadingView, heightMeasureSpecLoadingView);
+        measureLoadingView(mFooterView, widthMeasureSpecLoadingView, heightMeasureSpecLoadingView);
+
+        measureChild(mRefreshView, widthMeasureSpec, heightMeasureSpec);
+
+        if (heightMode != MeasureSpec.EXACTLY)
+        {
+            int heightHeader = mHeaderView.getMeasuredHeight();
+            int heightFooter = mFooterView.getMeasuredHeight();
+            int heightRefresh = mRefreshView.getMeasuredHeight();
+            height = heightHeader + heightFooter + heightRefresh;
+        }
+
+        setMeasuredDimension(width, height);
+    }
+
+    private void measureLoadingView(View loadingView, int widthMeasureSpec, int heightMeasureSpec)
+    {
+        LayoutParams params = loadingView.getLayoutParams();
+        loadingView.measure(getChildMeasureSpec(widthMeasureSpec, getPaddingLeft() + getPaddingRight(), params.width),
+                getChildMeasureSpec(heightMeasureSpec, 0, params.height));
     }
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b)
     {
-        super.onLayout(changed, l, t, r, b);
-        int left = getPaddingLeft();
-        int top = -mRootLayout.getHeaderHeight();
-        int right = getWidth() - getPaddingRight();
-        int bottom = getHeight() + mRootLayout.getFooterHeight();
+        int leftHeader = getPaddingLeft();
+        int topHeader = -mHeaderView.getMeasuredHeight() + getPaddingTop();
+        int rightHeader = leftHeader + mHeaderView.getMeasuredWidth();
+        int bottomHeader = topHeader + mHeaderView.getMeasuredHeight();
+        mHeaderView.layout(leftHeader, topHeader, rightHeader, bottomHeader);
 
-        mRootTopReset = top;
+        int topFooter = getMeasuredHeight() - getPaddingBottom();
+        int rightFooter = leftHeader + mFooterView.getMeasuredWidth();
+        int bottomFooter = topFooter + mFooterView.getMeasuredHeight();
+        mFooterView.layout(leftHeader, topFooter, rightFooter, bottomFooter);
 
-        mRootLayout.layout(left, top, right, bottom);
+        int topRefresh = getPaddingTop();
+        int rightRefresh = leftHeader + mRefreshView.getMeasuredWidth();
+        int bottomRefresh = topRefresh + mRefreshView.getMeasuredHeight();
+        mRefreshView.layout(leftHeader, topRefresh, rightRefresh, bottomRefresh);
 
-        if (top != 0 && bottom != getHeight())
-        {
-            mHasOnLayout = true;
-            runUpdatePositionRunnableIfNeed();
-        }
+        mHasOnLayout = true;
+        runUpdatePositionRunnableIfNeed();
     }
 
     private void runUpdatePositionRunnableIfNeed()
