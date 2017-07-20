@@ -597,6 +597,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             mRefreshView.offsetTopAndBottom((int) distance);
             mFooterView.offsetTopAndBottom((int) distance);
         }
+        if (mOnViewPositionChangedCallback != null)
+        {
+            mOnViewPositionChangedCallback.onViewPositionChanged(this);
+        }
     }
 
     @Override
