@@ -6,6 +6,7 @@ import com.fanwe.library.activity.SDBaseActivity;
 import com.fanwe.library.pulltorefresh.ISDPullToRefreshView;
 import com.fanwe.library.pulltorefresh.SDPullToRefreshView;
 import com.fanwe.library.utils.SDToast;
+import com.fanwe.library.utils.SDViewUtil;
 import com.sd.demo.pulltorefresh.R;
 
 public class ButtonActivity extends SDBaseActivity
@@ -35,7 +36,6 @@ public class ButtonActivity extends SDBaseActivity
                 stopRefreshingDelayed(2000);
             }
         });
-        view_pull.startRefreshingFromHeader();
     }
 
     private void stopRefreshingDelayed(long delay)
@@ -45,6 +45,10 @@ public class ButtonActivity extends SDBaseActivity
             @Override
             public void run()
             {
+                int height = SDViewUtil.getHeight(view_pull.getRefreshView());
+
+                SDViewUtil.setHeight(view_pull.getRefreshView(), height + height / 10);
+
                 view_pull.stopRefreshing();
             }
         }, delay);
