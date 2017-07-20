@@ -250,6 +250,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     {
         if (mScroller.computeScrollOffset())
         {
+            if (mIsDebug)
+            {
+                Log.e(TAG, "computeScroll:" + mScroller.getMoveY());
+            }
             moveViews(mScroller.getMoveY());
             invalidate();
         } else
