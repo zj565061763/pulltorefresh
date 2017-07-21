@@ -44,6 +44,13 @@ public interface ISDPullToRefreshView
     void setOnViewPositionChangedCallback(OnViewPositionChangedCallback onViewPositionChangedCallback);
 
     /**
+     * 设置HeaderView和FooterView是否是覆盖的模式（默认false）
+     *
+     * @param overLayMode
+     */
+    void setOverLayMode(boolean overLayMode);
+
+    /**
      * 设置拖动的时候要消耗的拖动距离比例，默认是0.5
      *
      * @param comsumeScrollPercent [0-1]

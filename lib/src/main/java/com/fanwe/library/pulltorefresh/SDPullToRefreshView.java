@@ -47,7 +47,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     private State mState = State.RESET;
     private Direction mDirection = Direction.NONE;
     private Direction mLastDirection = Direction.NONE;
-
+    /**
+     * HeaderView和FooterView是否是覆盖的模式
+     */
+    private boolean mIsOverLayMode = false;
     /**
      * Reset并且view没有被拖动状态下RefreshView的top值
      */
@@ -61,9 +64,9 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     /**
      * 当Scroller滚动结束的时候是否需要重新layout
      */
-    private boolean mIsNeedLayoutWhenScrollerFinished;
+    private boolean mIsNeedLayoutWhenScrollerFinished = false;
 
-    private boolean mHasOnLayout;
+    private boolean mHasOnLayout = false;
     private Runnable mUpdatePositionRunnable;
 
     private OnRefreshCallback mOnRefreshCallback;
@@ -121,6 +124,12 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     public void setOnViewPositionChangedCallback(OnViewPositionChangedCallback onViewPositionChangedCallback)
     {
         mOnViewPositionChangedCallback = onViewPositionChangedCallback;
+    }
+
+    @Override
+    public void setOverLayMode(boolean overLayMode)
+    {
+        mIsOverLayMode = overLayMode;
     }
 
     @Override
@@ -248,7 +257,13 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     @Override
     public int getScrollDistance()
     {
-        return mRefreshView.getTop();
+        if (getDirection() == Direction.FROM_HEADER)
+        {
+            return mHeaderView.getTop() - getPositionReset();
+        } else
+        {
+            return mFooterView.getTop() - getPositionReset();
+        }
     }
 
     //----------ISDPullToRefreshView implements end----------
@@ -654,10 +669,16 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         if (getDirection() == Direction.FROM_HEADER)
         {
             mHeaderView.offsetTopAndBottom((int) distance);
-            mRefreshView.offsetTopAndBottom((int) distance);
+            if (!mIsOverLayMode)
+            {
+                mRefreshView.offsetTopAndBottom((int) distance);
+            }
         } else
         {
-            mRefreshView.offsetTopAndBottom((int) distance);
+            if (!mIsOverLayMode)
+            {
+                mRefreshView.offsetTopAndBottom((int) distance);
+            }
             mFooterView.offsetTopAndBottom((int) distance);
         }
 
