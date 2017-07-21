@@ -1,10 +1,11 @@
 # pulltorefresh
-基于android.support.v4.widget.ViewDragHelper实现的下拉刷新和上拉加载的库
+Scroller+ViewGroup实现的下拉刷新和上拉加载的库
 
 ## Gradle
-`compile 'com.fanwe.android:pulltorefresh:1.0.7'`
+`compile 'com.fanwe.android:pulltorefresh:1.0.8'`
 
-## 默认效果
+## 简单效果
+![](http://thumbsnap.com/i/fBCTn1t1.gif?0721)<br>
 ![](http://thumbsnap.com/i/ZYFfADbW.gif?0707)<br>
 支持覆盖的默认配置：<br>
 * strings
@@ -77,6 +78,7 @@ child可以是RecyclerView,ListView,ScrollView等...
 ```java
 view_pull.setDebug(true); //设置调试模式，会打印log
 view_pull.setMode(ISDPullToRefreshView.Mode.BOTH); //刷新模式，BOTH，PULL_FROM_HEADER，PULL_FROM_FOOTER，DISABLE
+view_pull.setOverLayMode(false); //设置LoadingView是覆盖模式，还是拖拽模式，默认拖拽模式
 view_pull.startRefreshingFromHeader(); //触发下拉刷新，此方法只受DISABLE模式限制，不受其他模式限制
 view_pull.startRefreshingFromFooter(); //触发上拉加载，此方法只受DISABLE模式限制，不受其他模式限制
 view_pull.stopRefreshing(); //停止刷新或者加载
@@ -153,6 +155,20 @@ public interface ISDPullToRefreshView
      * @param onViewPositionChangedCallback
      */
     void setOnViewPositionChangedCallback(OnViewPositionChangedCallback onViewPositionChangedCallback);
+
+    /**
+     * 设置HeaderView和FooterView是否是覆盖的模式（默认false）
+     *
+     * @param overLayMode
+     */
+    void setOverLayMode(boolean overLayMode);
+
+    /**
+     * 是否是覆盖的模式
+     *
+     * @return
+     */
+    boolean isOverLayMode();
 
     /**
      * 设置拖动的时候要消耗的拖动距离比例，默认是0.5
@@ -250,8 +266,8 @@ public interface ISDPullToRefreshView
     enum Direction
     {
         NONE,
-        HEADER_TO_FOOTER,
-        FOOTER_TO_HEADER,
+        FROM_HEADER,
+        FROM_FOOTER,
     }
 
     enum Mode
