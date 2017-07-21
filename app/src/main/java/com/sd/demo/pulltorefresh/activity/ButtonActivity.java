@@ -1,38 +1,51 @@
 package com.sd.demo.pulltorefresh.activity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import com.fanwe.library.activity.SDBaseActivity;
 import com.fanwe.library.pulltorefresh.ISDPullToRefreshView;
 import com.fanwe.library.pulltorefresh.SDPullToRefreshView;
 import com.fanwe.library.utils.LogUtil;
-import com.fanwe.library.utils.SDToast;
 import com.sd.demo.pulltorefresh.R;
+import com.sd.demo.pulltorefresh.view.CustomPullToRefreshLoadingView;
 
 public class ButtonActivity extends SDBaseActivity
 {
     private SDPullToRefreshView view_pull;
+    private Button btn;
 
     @Override
     protected void init(Bundle savedInstanceState)
     {
         setContentView(R.layout.activity_button);
         view_pull = (SDPullToRefreshView) findViewById(R.id.view_pull);
+        btn = (Button) findViewById(R.id.btn);
+
+        btn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                view_pull.setOverLayMode(!view_pull.isOverLayMode());
+                btn.setText(view_pull.isOverLayMode() ? "覆盖模式" : "拖拽模式");
+            }
+        });
 
         view_pull.setDebug(true);
+        view_pull.setHeaderView(new CustomPullToRefreshLoadingView(this));
         view_pull.setOnRefreshCallback(new ISDPullToRefreshView.OnRefreshCallback()
         {
             @Override
             public void onRefreshingFromHeader(SDPullToRefreshView view)
             {
-                SDToast.showToast("头部刷新");
                 stopRefreshingDelayed(1000);
             }
 
             @Override
             public void onRefreshingFromFooter(SDPullToRefreshView view)
             {
-                SDToast.showToast("尾部刷新");
                 stopRefreshingDelayed(1000);
             }
         });
