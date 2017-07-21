@@ -41,7 +41,7 @@ public class ButtonActivity extends SDBaseActivity
             @Override
             public void onViewPositionChanged(SDPullToRefreshView view)
             {
-                LogUtil.i("FooterView top:" + view.getFooterView().getTop());
+                LogUtil.i("scroll distance:" + view.getScrollDistance());
             }
         });
         view_pull.startRefreshingFromHeader();
