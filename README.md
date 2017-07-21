@@ -1,5 +1,6 @@
 # pulltorefresh
-Scroller+ViewGroup实现的下拉刷新和上拉加载的库
+Scroller+ViewGroup实现的下拉刷新和上拉加载的库<br>
+[更新日志](https://github.com/zj565061763/pulltorefresh/blob/master/CHANGELOG.md)
 
 ## Gradle
 `compile 'com.fanwe.android:pulltorefresh:1.0.8'`
