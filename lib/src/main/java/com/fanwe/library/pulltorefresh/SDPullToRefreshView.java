@@ -395,6 +395,31 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         updateViewPositionByState();
     }
 
+    private boolean checkMoveRange(int distanceY)
+    {
+        boolean canMove = false;
+
+        int posReset = getPositionReset();
+        int futureTop = 0;
+
+        if (getDirection() == Direction.FROM_HEADER)
+        {
+            futureTop = mHeaderView.getTop() + distanceY;
+            if (futureTop >= posReset)
+            {
+                canMove = true;
+            }
+        } else
+        {
+            futureTop = mFooterView.getTop() + distanceY;
+            if (futureTop <= posReset)
+            {
+                canMove = true;
+            }
+        }
+        return canMove;
+    }
+
     /**
      * 处理触摸移动事件
      */
@@ -409,21 +434,8 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             setDirection(Direction.FROM_FOOTER);
         }
 
-        boolean canMove = false;
-        float distanceY = getComsumedDistance(mTouchHelper.getDistanceMoveY());
-        if (getDirection() == Direction.FROM_HEADER)
-        {
-            if (mRefreshView.getTop() + distanceY >= 0)
-            {
-                canMove = true;
-            }
-        } else
-        {
-            if (mRefreshView.getTop() + distanceY <= 0)
-            {
-                canMove = true;
-            }
-        }
+        int distanceY = getComsumedDistance(mTouchHelper.getDistanceMoveY());
+        boolean canMove = checkMoveRange(distanceY);
 
         if (canMove)
         {
@@ -619,10 +631,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
     }
 
-    private float getComsumedDistance(float distance)
+    private int getComsumedDistance(float distance)
     {
         distance -= distance * getComsumeScrollPercent();
-        return distance;
+        return (int) distance;
     }
 
     private void moveViews(float distance, boolean invalidate)
