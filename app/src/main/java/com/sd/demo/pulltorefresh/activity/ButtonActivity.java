@@ -36,6 +36,7 @@ public class ButtonActivity extends SDBaseActivity
 
         view_pull.setDebug(true);
         view_pull.setHeaderView(new CustomPullToRefreshLoadingView(this));
+        view_pull.setOverLayMode(true); //设置LoadingView是覆盖模式，还是拖拽模式
         view_pull.setOnRefreshCallback(new ISDPullToRefreshView.OnRefreshCallback()
         {
             @Override
@@ -50,7 +51,6 @@ public class ButtonActivity extends SDBaseActivity
                 stopRefreshingDelayed(1000);
             }
         });
-        view_pull.setOverLayMode(true);
         view_pull.setOnViewPositionChangedCallback(new ISDPullToRefreshView.OnViewPositionChangedCallback()
         {
             @Override
