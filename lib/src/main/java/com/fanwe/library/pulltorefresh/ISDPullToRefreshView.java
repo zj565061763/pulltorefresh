@@ -51,6 +51,13 @@ public interface ISDPullToRefreshView
     void setOverLayMode(boolean overLayMode);
 
     /**
+     * 是否是覆盖的模式
+     *
+     * @return
+     */
+    boolean isOverLayMode();
+
+    /**
      * 设置拖动的时候要消耗的拖动距离比例，默认是0.5
      *
      * @param comsumeScrollPercent [0-1]
