@@ -9,10 +9,9 @@
         android:id="@+id/view_pull"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
         android:background="@color/yellow"
         android:gravity="center"
-        android:padding="20dp">
+        android:padding="10dp">
 
         <Button
             android:id="@+id/btn"
