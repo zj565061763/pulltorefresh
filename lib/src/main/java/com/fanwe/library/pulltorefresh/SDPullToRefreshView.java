@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -219,6 +220,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
         mHeaderView = headerView;
         addView(mHeaderView);
+        ViewCompat.setZ(mHeaderView, 100);
     }
 
     @Override
@@ -240,6 +242,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
         mFooterView = footerView;
         addView(mFooterView);
+        ViewCompat.setZ(mFooterView, 100);
     }
 
     @Override
@@ -707,6 +710,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
 
         mRefreshView = getChildAt(0);
+        ViewCompat.setZ(mRefreshView, 0);
         addLoadingView();
     }
 

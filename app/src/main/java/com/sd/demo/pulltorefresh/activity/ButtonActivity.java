@@ -36,6 +36,7 @@ public class ButtonActivity extends SDBaseActivity
                 stopRefreshingDelayed(1000);
             }
         });
+        view_pull.setOverLayMode(true);
         view_pull.setOnViewPositionChangedCallback(new ISDPullToRefreshView.OnViewPositionChangedCallback()
         {
             @Override
