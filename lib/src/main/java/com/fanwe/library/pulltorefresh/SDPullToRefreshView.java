@@ -220,7 +220,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
         mHeaderView = headerView;
         addView(mHeaderView);
-        ViewCompat.setZ(mHeaderView, 100);
     }
 
     @Override
@@ -242,7 +241,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
         mFooterView = footerView;
         addView(mFooterView);
-        ViewCompat.setZ(mFooterView, 100);
     }
 
     @Override
@@ -672,17 +670,31 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         if (getDirection() == Direction.FROM_HEADER)
         {
             mHeaderView.offsetTopAndBottom((int) distance);
-            if (!mIsOverLayMode)
+            if (mIsOverLayMode)
+            {
+                //覆盖模式
+                if (ViewCompat.getZ(mHeaderView) <= ViewCompat.getZ(mRefreshView))
+                {
+                    ViewCompat.setZ(mHeaderView, ViewCompat.getZ(mRefreshView) + 1);
+                }
+            } else
             {
                 mRefreshView.offsetTopAndBottom((int) distance);
             }
         } else
         {
-            if (!mIsOverLayMode)
+            mFooterView.offsetTopAndBottom((int) distance);
+            if (mIsOverLayMode)
+            {
+                //覆盖模式
+                if (ViewCompat.getZ(mFooterView) <= ViewCompat.getZ(mRefreshView))
+                {
+                    ViewCompat.setZ(mFooterView, ViewCompat.getZ(mRefreshView) + 1);
+                }
+            } else
             {
                 mRefreshView.offsetTopAndBottom((int) distance);
             }
-            mFooterView.offsetTopAndBottom((int) distance);
         }
 
         if (invalidate)
@@ -710,7 +722,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
 
         mRefreshView = getChildAt(0);
-        ViewCompat.setZ(mRefreshView, 0);
         addLoadingView();
     }
 
