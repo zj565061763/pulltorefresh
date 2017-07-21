@@ -47,6 +47,12 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     private State mState = State.RESET;
     private Direction mDirection = Direction.NONE;
     private Direction mLastDirection = Direction.NONE;
+
+    /**
+     * Reset并且view没有被拖动状态下RefreshView的top值
+     */
+    private int mRefreshTopReset;
+
     /**
      * 设置拖动的时候要消耗的拖动距离比例
      */
@@ -78,6 +84,8 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     {
         mScroller = new SDScroller(getContext());
         mScroller.setMaxScrollDistance(1000);
+
+        mRefreshTopReset = getPaddingTop();
     }
 
     @Override
@@ -316,7 +324,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
     private boolean isViewsReset()
     {
-        return mRefreshView.getTop() == getTopReset();
+        return true;
     }
 
     private boolean canPull()
@@ -507,11 +515,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         return mComsumeScrollPercent;
     }
 
-    private int getTopReset()
-    {
-        return 0;
-    }
-
     /**
      * 根据状态更新view的位置
      */
@@ -534,19 +537,41 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
     }
 
+    private int getPositionReset()
+    {
+        if (getDirection() == Direction.FROM_HEADER)
+        {
+            return mRefreshTopReset - mHeaderView.getMeasuredHeight();
+        } else
+        {
+            return getMeasuredHeight() - getPaddingBottom();
+        }
+    }
+
+    private int getPositionStart()
+    {
+        if (getDirection() == Direction.FROM_HEADER)
+        {
+            return mHeaderView.getTop();
+        } else
+        {
+            return mFooterView.getTop();
+        }
+    }
+
     /**
      * 根据状态更新view的位置
      */
     private void updateViewPositionByStateReal()
     {
-        int startY = mRefreshView.getTop();
+        int startY = getPositionStart();
         int endY = 0;
 
         switch (mState)
         {
             case RESET:
             case PULL_TO_REFRESH:
-                endY = getTopReset();
+                endY = getPositionReset();
                 if (mIsDebug)
                 {
                     Log.i(TAG, "updateViewPositionByState:" + mState + " startScrollToY:" + startY + "," + endY);
@@ -557,10 +582,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             case REFRESHING:
                 if (getDirection() == Direction.FROM_HEADER)
                 {
-                    endY = getTopReset() + mHeaderView.getRefreshHeight();
+                    endY = getPositionReset() + mHeaderView.getRefreshHeight();
                 } else
                 {
-                    endY = getTopReset() - mFooterView.getRefreshHeight();
+                    endY = getPositionReset() - mFooterView.getRefreshHeight();
                 }
                 if (mIsDebug)
                 {
@@ -663,6 +688,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         if (heightMode != MeasureSpec.EXACTLY)
         {
             height = mRefreshView.getMeasuredHeight();
+            if (height == 0)
+            {
+                height = Math.max(mHeaderView.getMeasuredHeight(), mFooterView.getMeasuredHeight());
+            }
         }
 
         mScroller.setMaxScrollDistance(mHeaderView.getMeasuredHeight() * 5);
