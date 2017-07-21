@@ -52,13 +52,15 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
      * Reset并且view没有被拖动状态下RefreshView的top值
      */
     private int mRefreshTopReset;
-
     /**
      * 设置拖动的时候要消耗的拖动距离比例
      */
     private float mComsumeScrollPercent = DEFAULT_COMSUME_SCROLL_PERCENT;
 
     private SDScroller mScroller;
+    /**
+     * 当Scroller滚动结束的时候是否需要重新layout
+     */
     private boolean mIsNeedLayoutWhenScrollerFinished;
 
     private boolean mHasOnLayout;
@@ -271,7 +273,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 {
                     if (mIsDebug)
                     {
-                        Log.i(TAG, "requestLayout when scroller finished");
+                        Log.i(TAG, "requestLayout when state reset and scroller finished");
                     }
                     requestLayout();
                 }
