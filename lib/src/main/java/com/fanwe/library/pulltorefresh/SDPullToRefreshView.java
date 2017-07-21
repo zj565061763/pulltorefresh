@@ -54,10 +54,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     private boolean mIsOverLayMode = false;
     private Boolean mTempIsOverLayMode = null;
     /**
-     * Reset并且view没有被拖动状态下RefreshView的top值
-     */
-    private int mRefreshTopReset;
-    /**
      * 设置拖动的时候要消耗的拖动距离比例
      */
     private float mComsumeScrollPercent = DEFAULT_COMSUME_SCROLL_PERCENT;
@@ -90,7 +86,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     private void initScroller()
     {
         mScroller = new SDScroller(getContext());
-        mRefreshTopReset = getPaddingTop();
     }
 
     @Override
@@ -273,10 +268,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     {
         if (getDirection() == Direction.FROM_HEADER)
         {
-            return mHeaderView.getTop() - getPositionReset();
+            return mHeaderView.getTop() - getPositionScrollReset();
         } else
         {
-            return mFooterView.getTop() - getPositionReset();
+            return mFooterView.getTop() - getPositionScrollReset();
         }
     }
 
@@ -366,7 +361,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             return false;
         }
 
-        int positionReset = getPositionReset();
+        int positionReset = getPositionScrollReset();
         if (getDirection() == Direction.FROM_HEADER)
         {
             return mHeaderView.getTop() == positionReset;
@@ -449,7 +444,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     {
         boolean canMove = false;
 
-        int positionReset = getPositionReset();
+        int positionReset = getPositionScrollReset();
         int futureTop = 0;
 
         if (getDirection() == Direction.FROM_HEADER)
@@ -608,27 +603,47 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     }
 
     /**
-     * Reset状态下的位置
+     * 返回与当前view顶部对齐的值
      *
      * @return
      */
-    private int getPositionReset()
+    private int getPositionAlignTop()
+    {
+        return getPaddingTop();
+    }
+
+    /**
+     * 返回与当前view底部对齐的值
+     *
+     * @return
+     */
+    private int getPositionAlignBottom()
+    {
+        return getHeight() - getPaddingBottom();
+    }
+
+    /**
+     * 返回滚动到Reset状态下静止的位置
+     *
+     * @return
+     */
+    private int getPositionScrollReset()
     {
         if (getDirection() == Direction.FROM_HEADER)
         {
-            return mRefreshTopReset - mHeaderView.getMeasuredHeight();
+            return getPositionAlignTop() - mHeaderView.getMeasuredHeight();
         } else
         {
-            return getMeasuredHeight() - getPaddingBottom();
+            return getPositionAlignBottom();
         }
     }
 
     /**
-     * 起始位置
+     * 返回滚动的起始位置
      *
      * @return
      */
-    private int getPositionStart()
+    private int getPositionScrollStart()
     {
         if (getDirection() == Direction.FROM_HEADER)
         {
@@ -644,9 +659,9 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
      */
     private void smoothScrollViewByStateReal()
     {
-        int startY = getPositionStart();
+        int startY = getPositionScrollStart();
         int endY = 0;
-        int positionReset = getPositionReset();
+        int positionReset = getPositionScrollReset();
 
         switch (mState)
         {
@@ -848,7 +863,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         int bottom = 0;
 
         // HeaderView
-        top = -mHeaderView.getMeasuredHeight() + getPaddingTop();
+        top = getPositionAlignTop() - mHeaderView.getMeasuredHeight();
         if (!isScrollFinished && getDirection() == Direction.FROM_HEADER)
         {
             top = mHeaderView.getTop();
@@ -862,7 +877,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
 
         // RefreshView
-        top = getPaddingTop();
+        top = getPositionAlignTop();
         if (!isScrollFinished)
         {
             top = mRefreshView.getTop();
@@ -876,12 +891,12 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
 
         // FooterView
-        top = getMeasuredHeight() - getPaddingBottom();
+        top = getPositionAlignBottom();
         if (!isScrollFinished && getDirection() == Direction.FROM_FOOTER)
         {
             top = mFooterView.getTop();
         }
-        if (bottom > top && bottom <= (getMeasuredHeight() - getPaddingBottom()))
+        if (bottom > top && bottom <= getPositionAlignBottom())
         {
             top = bottom;
         }
