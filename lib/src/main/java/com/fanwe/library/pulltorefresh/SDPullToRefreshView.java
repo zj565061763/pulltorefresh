@@ -359,9 +359,29 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         return mTouchHelper.getDegreeY() < 30;
     }
 
+    private boolean isViewReset()
+    {
+        if (!mScroller.isFinished())
+        {
+            return false;
+        }
+
+        int positionReset = getPositionReset();
+        if (getDirection() == Direction.FROM_HEADER)
+        {
+            return mHeaderView.getTop() == positionReset;
+        } else if (getDirection() == Direction.FROM_FOOTER)
+        {
+            return mFooterView.getTop() == positionReset;
+        } else
+        {
+            return true;
+        }
+    }
+
     private boolean canPull()
     {
-        return checkMoveParams() && (canPullFromHeader() || canPullFromFooter());
+        return checkMoveParams() && (canPullFromHeader() || canPullFromFooter()) && isViewReset();
     }
 
     private boolean canPullFromHeader()
@@ -429,20 +449,20 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     {
         boolean canMove = false;
 
-        int posReset = getPositionReset();
+        int positionReset = getPositionReset();
         int futureTop = 0;
 
         if (getDirection() == Direction.FROM_HEADER)
         {
             futureTop = mHeaderView.getTop() + distanceY;
-            if (futureTop >= posReset)
+            if (futureTop >= positionReset)
             {
                 canMove = true;
             }
         } else
         {
             futureTop = mFooterView.getTop() + distanceY;
-            if (futureTop <= posReset)
+            if (futureTop <= positionReset)
             {
                 canMove = true;
             }
@@ -514,7 +534,13 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
             if (mIsDebug)
             {
-                Log.i(TAG, "setState:" + mState);
+                if (mState == State.RESET)
+                {
+                    Log.e(TAG, "setState:" + mState);
+                } else
+                {
+                    Log.i(TAG, "setState:" + mState);
+                }
             }
 
             //通知view改变状态
@@ -627,11 +653,14 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             case RESET:
             case PULL_TO_REFRESH:
                 endY = positionReset;
-                if (mIsDebug)
+
+                if (mScroller.startScrollToY(startY, endY, -1))
                 {
-                    Log.i(TAG, "smoothScrollViewByState:" + mState + " startScrollToY:" + startY + "," + endY);
+                    if (mIsDebug)
+                    {
+                        Log.i(TAG, "smoothScrollViewByState:" + mState + " startScrollToY:" + startY + "," + endY);
+                    }
                 }
-                mScroller.startScrollToY(startY, endY, -1);
                 break;
             case RELEASE_TO_REFRESH:
             case REFRESHING:
@@ -642,11 +671,14 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 {
                     endY = positionReset - mFooterView.getRefreshHeight();
                 }
-                if (mIsDebug)
+
+                if (mScroller.startScrollToY(startY, endY, -1))
                 {
-                    Log.i(TAG, "smoothScrollViewByState:" + mState + " startScrollToY:" + startY + "," + endY);
+                    if (mIsDebug)
+                    {
+                        Log.i(TAG, "smoothScrollViewByState:" + mState + " startScrollToY:" + startY + "," + endY);
+                    }
                 }
-                mScroller.startScrollToY(startY, endY, -1);
                 break;
         }
         invalidate();
@@ -659,16 +691,29 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
      */
     private void setDirection(Direction direction)
     {
+        if (mDirection == direction)
+        {
+            return;
+        }
         if (direction != Direction.NONE)
         {
             if (mDirection == Direction.NONE)
             {
                 mDirection = direction;
                 mLastDirection = direction;
+
+                if (mIsDebug)
+                {
+                    Log.i(TAG, "setDirection:" + mDirection);
+                }
             }
         } else
         {
             mDirection = Direction.NONE;
+            if (mIsDebug)
+            {
+                Log.i(TAG, "setDirection:" + mDirection);
+            }
         }
     }
 
@@ -836,7 +881,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         {
             top = mFooterView.getTop();
         }
-        if (bottom > top)
+        if (bottom > top && bottom <= (getMeasuredHeight() - getPaddingBottom()))
         {
             top = bottom;
         }
