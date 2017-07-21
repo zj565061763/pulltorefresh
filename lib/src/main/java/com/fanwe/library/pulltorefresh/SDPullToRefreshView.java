@@ -150,7 +150,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
         setDirection(Direction.FROM_HEADER);
         setState(State.REFRESHING);
-        updateViewPositionByState();
+        smoothScrollViewByState();
     }
 
     @Override
@@ -166,7 +166,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
         setDirection(Direction.FROM_FOOTER);
         setState(State.REFRESHING);
-        updateViewPositionByState();
+        smoothScrollViewByState();
     }
 
     @Override
@@ -175,7 +175,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         if (mState != State.RESET)
         {
             setState(State.RESET);
-            updateViewPositionByState();
+            smoothScrollViewByState();
         }
     }
 
@@ -322,14 +322,9 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         return mTouchHelper.getDegreeY() < 30;
     }
 
-    private boolean isViewsReset()
-    {
-        return true;
-    }
-
     private boolean canPull()
     {
-        return isViewsReset() && checkMoveParams() && (canPullFromHeader() || canPullFromFooter());
+        return checkMoveParams() && (canPullFromHeader() || canPullFromFooter());
     }
 
     private boolean canPullFromHeader()
@@ -390,7 +385,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         {
             setState(State.REFRESHING);
         }
-        updateViewPositionByState();
+        smoothScrollViewByState();
     }
 
     private boolean checkMoveRange(int distanceY)
@@ -528,13 +523,13 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     }
 
     /**
-     * 根据状态更新view的位置
+     * 根据当前状态滚动view到对应的位置
      */
-    private void updateViewPositionByState()
+    private void smoothScrollViewByState()
     {
         if (mHasOnLayout)
         {
-            updateViewPositionByStateReal();
+            smoothScrollViewByStateReal();
         } else
         {
             mUpdatePositionRunnable = new Runnable()
@@ -542,13 +537,18 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 @Override
                 public void run()
                 {
-                    updateViewPositionByStateReal();
+                    smoothScrollViewByStateReal();
                     mUpdatePositionRunnable = null;
                 }
             };
         }
     }
 
+    /**
+     * Reset状态下的位置
+     *
+     * @return
+     */
     private int getPositionReset()
     {
         if (getDirection() == Direction.FROM_HEADER)
@@ -560,6 +560,11 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
     }
 
+    /**
+     * 起始位置
+     *
+     * @return
+     */
     private int getPositionStart()
     {
         if (getDirection() == Direction.FROM_HEADER)
@@ -572,9 +577,9 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     }
 
     /**
-     * 根据状态更新view的位置
+     * 根据当前状态滚动view到对应的位置
      */
-    private void updateViewPositionByStateReal()
+    private void smoothScrollViewByStateReal()
     {
         int startY = getPositionStart();
         int endY = 0;
@@ -586,7 +591,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 endY = getPositionReset();
                 if (mIsDebug)
                 {
-                    Log.i(TAG, "updateViewPositionByState:" + mState + " startScrollToY:" + startY + "," + endY);
+                    Log.i(TAG, "smoothScrollViewByState:" + mState + " startScrollToY:" + startY + "," + endY);
                 }
                 mScroller.startScrollToY(startY, endY, -1);
                 break;
@@ -601,7 +606,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 }
                 if (mIsDebug)
                 {
-                    Log.i(TAG, "updateViewPositionByState:" + mState + " startScrollToY:" + startY + "," + endY);
+                    Log.i(TAG, "smoothScrollViewByState:" + mState + " startScrollToY:" + startY + "," + endY);
                 }
                 mScroller.startScrollToY(startY, endY, -1);
                 break;
@@ -629,12 +634,24 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
     }
 
+    /**
+     * 真实距离根据消耗比例算出的最终距离
+     *
+     * @param distance
+     * @return
+     */
     private int getComsumedDistance(float distance)
     {
         distance -= distance * getComsumeScrollPercent();
         return (int) distance;
     }
 
+    /**
+     * 移动view
+     *
+     * @param distance   要移动的距离
+     * @param invalidate 是否需要重绘
+     */
     private void moveViews(float distance, boolean invalidate)
     {
         if (getDirection() == Direction.FROM_HEADER)
@@ -702,6 +719,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             height = mRefreshView.getMeasuredHeight();
             if (height == 0)
             {
+                //如果刷新view的高度为0，则给当前view一个默认高度，否则会出现代码触发刷新的时候HeaderView或者FooterView看不见
                 height = Math.max(mHeaderView.getMeasuredHeight(), mFooterView.getMeasuredHeight());
             }
         }
