@@ -767,6 +767,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             {
                 ViewCompat.offsetTopAndBottom(mRefreshView, (int) distance);
             }
+            mHeaderView.onViewPositionChanged(this);
         } else
         {
             ViewCompat.offsetTopAndBottom(mFooterView, (int) distance);
@@ -781,6 +782,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             {
                 ViewCompat.offsetTopAndBottom(mRefreshView, (int) distance);
             }
+            mFooterView.onViewPositionChanged(this);
         }
 
         if (mOnViewPositionChangedCallback != null)
