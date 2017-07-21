@@ -85,7 +85,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     private void initScroller()
     {
         mScroller = new SDScroller(getContext());
-        mScroller.setMaxScrollDistance(1000);
+        mScroller.setScrollDuration(1000);
 
         mRefreshTopReset = getPaddingTop();
     }
