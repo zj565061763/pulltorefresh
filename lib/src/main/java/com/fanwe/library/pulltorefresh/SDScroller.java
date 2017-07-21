@@ -35,33 +35,55 @@ class SDScroller extends Scroller
     }
 
     // scroll
-    public void startScrollX(int startX, int dx, long duration)
+    public boolean startScrollX(int startX, int dx, long duration)
     {
-        startScroll(startX, 0, dx, 0, (int) duration);
+        return startScrollExtend(startX, 0, dx, 0, duration);
     }
 
-    public void startScrollY(int startY, int dy, long duration)
+    public boolean startScrollY(int startY, int dy, long duration)
     {
-        startScroll(0, startY, 0, dy, (int) duration);
+        return startScrollExtend(0, startY, 0, dy, duration);
     }
 
     // scrollTo
-    public void startScrollToX(int startX, int endX, long duration)
+    public boolean startScrollToX(int startX, int endX, long duration)
     {
-        startScrollTo(startX, 0, endX, 0, duration);
+        return startScrollTo(startX, 0, endX, 0, duration);
     }
 
-    public void startScrollToY(int startY, int endY, long duration)
+    public boolean startScrollToY(int startY, int endY, long duration)
     {
-        startScrollTo(0, startY, 0, endY, duration);
+        return startScrollTo(0, startY, 0, endY, duration);
     }
 
-    public void startScrollTo(int startX, int startY, int endX, int endY, long duration)
+    public boolean startScrollTo(int startX, int startY, int endX, int endY, long duration)
     {
         int dx = endX - startX;
         int dy = endY - startY;
 
-        startScroll(startX, startY, dx, dy, (int) duration);
+        return startScrollExtend(startX, startY, dx, dy, duration);
+    }
+
+    /**
+     * 所有此类的滚动扩展方法最终需要调用的方法
+     *
+     * @param startX
+     * @param startY
+     * @param dx
+     * @param dy
+     * @param duration
+     * @return true-提交滚动任务成功
+     */
+    public boolean startScrollExtend(int startX, int startY, int dx, int dy, long duration)
+    {
+        if (dx == 0 && dy == 0)
+        {
+            return false;
+        } else
+        {
+            startScroll(startX, startY, dx, dy, (int) duration);
+            return true;
+        }
     }
 
     @Override
