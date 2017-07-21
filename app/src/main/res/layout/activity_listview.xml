@@ -8,7 +8,8 @@
     <com.fanwe.library.pulltorefresh.SDPullToRefreshView
         android:id="@+id/view_pull"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/yellow">
 
         <ListView
             android:id="@+id/listView"
