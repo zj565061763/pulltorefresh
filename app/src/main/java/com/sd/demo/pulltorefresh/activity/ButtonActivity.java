@@ -2,6 +2,7 @@ package com.sd.demo.pulltorefresh.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.fanwe.library.activity.SDBaseActivity;
@@ -68,6 +69,10 @@ public class ButtonActivity extends SDBaseActivity
             @Override
             public void run()
             {
+                ViewGroup.LayoutParams params = btn.getLayoutParams();
+                params.height = btn.getHeight() + btn.getHeight() / 3;
+                btn.setLayoutParams(params);
+
                 view_pull.stopRefreshing();
             }
         }, delay);
