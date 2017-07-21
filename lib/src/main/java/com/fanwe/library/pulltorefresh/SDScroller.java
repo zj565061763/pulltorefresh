@@ -8,7 +8,7 @@ class SDScroller extends Scroller
     /**
      * 移动像素每毫秒
      */
-    public static final float DEFAULT_SPEED = 0.5f;
+    public static final float DEFAULT_SPEED = 0.6f;
 
     private float mScrollSpeed = DEFAULT_SPEED;
 
