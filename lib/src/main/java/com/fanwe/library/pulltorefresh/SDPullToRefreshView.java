@@ -719,9 +719,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 //如果刷新view的高度为0，则给当前view一个默认高度，否则会出现代码触发刷新的时候HeaderView或者FooterView看不见
                 height = Math.max(mHeaderView.getMeasuredHeight(), mFooterView.getMeasuredHeight());
             }
+            height += (getPaddingTop() + getPaddingBottom());
         }
 
-        setMeasuredDimension(width, height + getPaddingTop() + getPaddingBottom());
+        setMeasuredDimension(width, height);
     }
 
     private void measureLoadingView(View loadingView, int widthMeasureSpec, int heightMeasureSpec)
