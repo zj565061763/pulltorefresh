@@ -10,13 +10,18 @@ class SDScroller extends Scroller
      */
     public static final float DEFAULT_SPEED = 0.5f;
 
-    private int mScrollDuration;
-    private int mMaxScrollDistance;
+    private float mScrollSpeed = DEFAULT_SPEED;
 
     private int mLastX;
     private int mLastY;
 
+    /**
+     * 两次computeScrollOffset()之间x移动的距离
+     */
     private int mMoveX;
+    /**
+     * 两次computeScrollOffset()之间y移动的距离
+     */
     private int mMoveY;
 
     public SDScroller(Context context)
@@ -24,58 +29,54 @@ class SDScroller extends Scroller
         super(context);
     }
 
-    public void setScrollDuration(int scrollDuration)
+    public void setScrollSpeed(float scrollSpeed)
     {
-        mScrollDuration = scrollDuration;
-    }
-
-    public void setMaxScrollDistance(int maxScrollDistance)
-    {
-        mMaxScrollDistance = maxScrollDistance;
-        setScrollDuration((int) (mMaxScrollDistance / DEFAULT_SPEED));
+        mScrollSpeed = scrollSpeed;
     }
 
     // scroll
-    public void startScrollX(int startX, int dx)
+    public void startScrollX(int startX, int dx, long duration)
     {
-        int duration = getDurationPercent(dx, 0);
-        startScroll(startX, 0, dx, 0, duration);
+        startScroll(startX, 0, dx, 0, (int) duration);
     }
 
-    public void startScrollY(int startY, int dy)
+    public void startScrollY(int startY, int dy, long duration)
     {
-        int duration = getDurationPercent(dy, 0);
-        startScroll(0, startY, 0, dy, duration);
+        startScroll(0, startY, 0, dy, (int) duration);
     }
 
     // scrollTo
-    public void startScrollToX(int startX, int endX)
+    public void startScrollToX(int startX, int endX, long duration)
     {
-        startScrollTo(startX, 0, endX, 0);
+        startScrollTo(startX, 0, endX, 0, duration);
     }
 
-    public void startScrollToY(int startY, int endY)
+    public void startScrollToY(int startY, int endY, long duration)
     {
-        startScrollTo(0, startY, 0, endY);
+        startScrollTo(0, startY, 0, endY, duration);
     }
 
-    public void startScrollTo(int startX, int startY, int endX, int endY)
+    public void startScrollTo(int startX, int startY, int endX, int endY, long duration)
     {
-        int dx = 0;
-        int dy = 0;
+        int dx = endX - startX;
+        int dy = endY - startY;
 
-        dx = endX - startX;
-        dy = endY - startY;
-
-        int duration = getDurationPercent(dx, dy);
-        startScroll(startX, startY, dx, dy, duration);
+        startScroll(startX, startY, dx, dy, (int) duration);
     }
 
     @Override
     public void startScroll(int startX, int startY, int dx, int dy, int duration)
     {
+        //最终调用的方法
+
         mLastX = startX;
         mLastY = startY;
+
+        if (duration < 0)
+        {
+            duration = (int) getDurationCalculate(dx, dy);
+        }
+
         super.startScroll(startX, startY, dx, dy, duration);
     }
 
@@ -84,38 +85,49 @@ class SDScroller extends Scroller
     {
         boolean result = super.computeScrollOffset();
 
-        mMoveX = getCurrX() - mLastX;
-        mMoveY = getCurrY() - mLastY;
+        int currX = getCurrX();
+        int currY = getCurrY();
 
-        mLastX = getCurrX();
-        mLastY = getCurrY();
+        mMoveX = currX - mLastX;
+        mMoveY = currY - mLastY;
+
+        mLastX = currX;
+        mLastY = currY;
         return result;
     }
 
+    /**
+     * 两次computeScrollOffset()之间x移动的距离
+     *
+     * @return
+     */
     public int getMoveX()
     {
         return mMoveX;
     }
 
+    /**
+     * 两次computeScrollOffset()之间y移动的距离
+     *
+     * @return
+     */
     public int getMoveY()
     {
         return mMoveY;
     }
 
-    public int getDurationPercent(float dx, float dy)
+    /**
+     * 返回根据滚动距离和滚动速度算出的滚动时长
+     *
+     * @param dx x滚动距离
+     * @param dy y滚动距离
+     * @return
+     */
+    public long getDurationCalculate(float dx, float dy)
     {
-        return getDurationPercent(dx, dy, mMaxScrollDistance, mScrollDuration);
-    }
-
-    public static int getDurationPercent(float dx, float dy, float maxDistance, long maxDuration)
-    {
-        int result = 0;
         float distance = (float) Math.sqrt(Math.abs(dx * dx) + Math.abs(dy * dy));
-        float percent = Math.abs(distance) / Math.abs(maxDistance);
-        float duration = percent * (float) maxDuration;
+        float duration = distance / mScrollSpeed;
 
-        result = (int) duration;
-        return result;
+        return (long) duration;
     }
-
 }

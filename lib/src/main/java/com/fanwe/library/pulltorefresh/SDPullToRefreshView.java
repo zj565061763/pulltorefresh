@@ -85,8 +85,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     private void initScroller()
     {
         mScroller = new SDScroller(getContext());
-        mScroller.setScrollDuration(1000);
-
         mRefreshTopReset = getPaddingTop();
     }
 
@@ -590,7 +588,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 {
                     Log.i(TAG, "updateViewPositionByState:" + mState + " startScrollToY:" + startY + "," + endY);
                 }
-                mScroller.startScrollToY(startY, endY);
+                mScroller.startScrollToY(startY, endY, -1);
                 break;
             case RELEASE_TO_REFRESH:
             case REFRESHING:
@@ -605,7 +603,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 {
                     Log.i(TAG, "updateViewPositionByState:" + mState + " startScrollToY:" + startY + "," + endY);
                 }
-                mScroller.startScrollToY(startY, endY);
+                mScroller.startScrollToY(startY, endY, -1);
                 break;
         }
         invalidate();
@@ -708,7 +706,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             }
         }
 
-        mScroller.setMaxScrollDistance(mHeaderView.getMeasuredHeight() * 5);
         setMeasuredDimension(width, height);
     }
 
