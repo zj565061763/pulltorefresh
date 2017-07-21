@@ -274,7 +274,8 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     {
         if (mScroller.computeScrollOffset())
         {
-            moveViews(mScroller.getMoveY(), true);
+            moveViews(mScroller.getMoveY());
+            ViewCompat.postInvalidateOnAnimation(this);
         } else
         {
             if (mState == State.RESET)
@@ -444,7 +445,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
         if (canMove)
         {
-            moveViews(distanceY, true);
+            moveViews(distanceY);
             updateStateByMoveDistance();
         }
     }
@@ -662,14 +663,13 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     /**
      * 移动view
      *
-     * @param distance   要移动的距离
-     * @param invalidate 是否需要重绘
+     * @param distance 要移动的距离
      */
-    private void moveViews(float distance, boolean invalidate)
+    private void moveViews(float distance)
     {
         if (getDirection() == Direction.FROM_HEADER)
         {
-            mHeaderView.offsetTopAndBottom((int) distance);
+            ViewCompat.offsetTopAndBottom(mHeaderView, (int) distance);
             if (mIsOverLayMode)
             {
                 //覆盖模式
@@ -679,11 +679,11 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 }
             } else
             {
-                mRefreshView.offsetTopAndBottom((int) distance);
+                ViewCompat.offsetTopAndBottom(mRefreshView, (int) distance);
             }
         } else
         {
-            mFooterView.offsetTopAndBottom((int) distance);
+            ViewCompat.offsetTopAndBottom(mFooterView, (int) distance);
             if (mIsOverLayMode)
             {
                 //覆盖模式
@@ -693,13 +693,8 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 }
             } else
             {
-                mRefreshView.offsetTopAndBottom((int) distance);
+                ViewCompat.offsetTopAndBottom(mRefreshView, (int) distance);
             }
-        }
-
-        if (invalidate)
-        {
-            invalidate();
         }
 
         if (mOnViewPositionChangedCallback != null)
