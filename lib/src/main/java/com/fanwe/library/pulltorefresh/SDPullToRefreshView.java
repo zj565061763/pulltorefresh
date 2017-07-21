@@ -724,7 +724,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             }
         }
 
-        setMeasuredDimension(width, height);
+        setMeasuredDimension(width, height + getPaddingTop() + getPaddingBottom());
     }
 
     private void measureLoadingView(View loadingView, int widthMeasureSpec, int heightMeasureSpec)
