@@ -268,10 +268,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     {
         if (getDirection() == Direction.FROM_HEADER)
         {
-            return mHeaderView.getTop() - getPositionScrollReset();
+            return mHeaderView.getTop() - getTopScrollReset();
         } else
         {
-            return mFooterView.getTop() - getPositionScrollReset();
+            return mFooterView.getTop() - getTopScrollReset();
         }
     }
 
@@ -361,13 +361,13 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             return false;
         }
 
-        int positionReset = getPositionScrollReset();
+        int topReset = getTopScrollReset();
         if (getDirection() == Direction.FROM_HEADER)
         {
-            return mHeaderView.getTop() == positionReset;
+            return mHeaderView.getTop() == topReset;
         } else if (getDirection() == Direction.FROM_FOOTER)
         {
-            return mFooterView.getTop() == positionReset;
+            return mFooterView.getTop() == topReset;
         } else
         {
             return true;
@@ -444,20 +444,20 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     {
         boolean canMove = false;
 
-        int positionReset = getPositionScrollReset();
-        int futureTop = 0;
+        int topReset = getTopScrollReset();
+        int topFuture = 0;
 
         if (getDirection() == Direction.FROM_HEADER)
         {
-            futureTop = mHeaderView.getTop() + distanceY;
-            if (futureTop >= positionReset)
+            topFuture = mHeaderView.getTop() + distanceY;
+            if (topFuture >= topReset)
             {
                 canMove = true;
             }
         } else
         {
-            futureTop = mFooterView.getTop() + distanceY;
-            if (futureTop <= positionReset)
+            topFuture = mFooterView.getTop() + distanceY;
+            if (topFuture <= topReset)
             {
                 canMove = true;
             }
@@ -607,7 +607,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
      *
      * @return
      */
-    private int getPositionAlignTop()
+    private int getTopAlignTop()
     {
         return getPaddingTop();
     }
@@ -617,24 +617,24 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
      *
      * @return
      */
-    private int getPositionAlignBottom()
+    private int getTopAlignBottom()
     {
         return getHeight() - getPaddingBottom();
     }
 
     /**
-     * 返回滚动到Reset状态下静止的位置
+     * 返回滚动到Reset静止状态下的位置
      *
      * @return
      */
-    private int getPositionScrollReset()
+    private int getTopScrollReset()
     {
         if (getDirection() == Direction.FROM_HEADER)
         {
-            return getPositionAlignTop() - mHeaderView.getMeasuredHeight();
+            return getTopAlignTop() - mHeaderView.getMeasuredHeight();
         } else
         {
-            return getPositionAlignBottom();
+            return getTopAlignBottom();
         }
     }
 
@@ -643,7 +643,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
      *
      * @return
      */
-    private int getPositionScrollStart()
+    private int getTopScrollStart()
     {
         if (getDirection() == Direction.FROM_HEADER)
         {
@@ -659,15 +659,15 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
      */
     private void smoothScrollViewByStateReal()
     {
-        int startY = getPositionScrollStart();
+        int startY = getTopScrollStart();
         int endY = 0;
-        int positionReset = getPositionScrollReset();
+        int topReset = getTopScrollReset();
 
         switch (mState)
         {
             case RESET:
             case PULL_TO_REFRESH:
-                endY = positionReset;
+                endY = topReset;
 
                 if (mScroller.startScrollToY(startY, endY, -1))
                 {
@@ -681,10 +681,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             case REFRESHING:
                 if (getDirection() == Direction.FROM_HEADER)
                 {
-                    endY = positionReset + mHeaderView.getRefreshHeight();
+                    endY = topReset + mHeaderView.getRefreshHeight();
                 } else
                 {
-                    endY = positionReset - mFooterView.getRefreshHeight();
+                    endY = topReset - mFooterView.getRefreshHeight();
                 }
 
                 if (mScroller.startScrollToY(startY, endY, -1))
@@ -863,7 +863,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         int bottom = 0;
 
         // HeaderView
-        top = getPositionAlignTop() - mHeaderView.getMeasuredHeight();
+        top = getTopAlignTop() - mHeaderView.getMeasuredHeight();
         if (!isScrollFinished && getDirection() == Direction.FROM_HEADER)
         {
             top = mHeaderView.getTop();
@@ -877,7 +877,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
 
         // RefreshView
-        top = getPositionAlignTop();
+        top = getTopAlignTop();
         if (!isScrollFinished)
         {
             top = mRefreshView.getTop();
@@ -891,12 +891,12 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
 
         // FooterView
-        top = getPositionAlignBottom();
+        top = getTopAlignBottom();
         if (!isScrollFinished && getDirection() == Direction.FROM_FOOTER)
         {
             top = mFooterView.getTop();
         }
-        if (bottom > top && bottom <= getPositionAlignBottom())
+        if (bottom > top && bottom <= getTopAlignBottom())
         {
             top = bottom;
         }
