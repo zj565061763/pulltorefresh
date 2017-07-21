@@ -17,7 +17,7 @@
             android:id="@+id/btn"
             android:layout_width="match_parent"
             android:layout_height="500dp"
-            android:text="button"/>
+            android:text="OverLayMode 覆盖模式"/>
 
     </com.fanwe.library.pulltorefresh.SDPullToRefreshView>
 
