@@ -669,7 +669,8 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             case PULL_TO_REFRESH:
                 endY = topReset;
 
-                if (mScroller.startScrollToY(startY, endY, -1))
+                // 滚动时长应该根据当前滚动速度和距离百分比计算，暂时直接写死
+                if (mScroller.startScrollToY(startY, endY, 600))
                 {
                     if (mIsDebug)
                     {
@@ -687,7 +688,8 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                     endY = topReset - mFooterView.getRefreshHeight();
                 }
 
-                if (mScroller.startScrollToY(startY, endY, -1))
+                // 滚动时长应该根据当前滚动速度和距离百分比计算，暂时直接写死
+                if (mScroller.startScrollToY(startY, endY, 1000))
                 {
                     if (mIsDebug)
                     {
