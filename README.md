@@ -3,7 +3,7 @@ Scroller+ViewGroup实现的下拉刷新和上拉加载的库，提供拖动回�
 [更新日志](https://github.com/zj565061763/pulltorefresh/blob/master/CHANGELOG.md)
 
 ## Gradle
-`compile 'com.fanwe.android:pulltorefresh:1.0.8'`
+`compile 'com.fanwe.android:pulltorefresh:1.0.9'`
 
 ## 简单效果
 ![](http://thumbsnap.com/i/fBCTn1t1.gif?0721)<br>
