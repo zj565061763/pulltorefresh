@@ -16,21 +16,21 @@ import com.fanwe.library.pulltorefresh.SDPullToRefreshView;
  * Created by Administrator on 2017/6/27.
  */
 
-public class SDSimpleTextLoadingView extends SDPullToRefreshLoadingView
+public class SimpleTextLoadingView extends SDPullToRefreshLoadingView
 {
-    public SDSimpleTextLoadingView(@NonNull Context context)
+    public SimpleTextLoadingView(@NonNull Context context)
     {
         super(context);
         init();
     }
 
-    public SDSimpleTextLoadingView(@NonNull Context context, @Nullable AttributeSet attrs)
+    public SimpleTextLoadingView(@NonNull Context context, @Nullable AttributeSet attrs)
     {
         super(context, attrs);
         init();
     }
 
-    public SDSimpleTextLoadingView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr)
+    public SimpleTextLoadingView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
         init();

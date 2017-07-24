@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fanwe.library.pulltorefresh.loadingview.SDPullToRefreshLoadingView;
-import com.fanwe.library.pulltorefresh.loadingview.SDSimpleTextLoadingView;
+import com.fanwe.library.pulltorefresh.loadingview.SimpleTextLoadingView;
 
 /**
  * Created by Administrator on 2017/6/26.
@@ -810,8 +810,8 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
     private void addLoadingView()
     {
-        setHeaderView(new SDSimpleTextLoadingView(getContext()));
-        setFooterView(new SDSimpleTextLoadingView(getContext()));
+        setHeaderView(new SimpleTextLoadingView(getContext()));
+        setFooterView(new SimpleTextLoadingView(getContext()));
     }
 
     @Override

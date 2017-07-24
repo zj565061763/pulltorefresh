@@ -14,21 +14,21 @@ import com.fanwe.library.pulltorefresh.R;
  * Created by Administrator on 2017/6/30.
  */
 
-public abstract class SDSimpleImageLoadingView extends SDPullToRefreshLoadingView
+public abstract class SimpleImageLoadingView extends SDPullToRefreshLoadingView
 {
-    public SDSimpleImageLoadingView(@NonNull Context context)
+    public SimpleImageLoadingView(@NonNull Context context)
     {
         super(context);
         init();
     }
 
-    public SDSimpleImageLoadingView(@NonNull Context context, @Nullable AttributeSet attrs)
+    public SimpleImageLoadingView(@NonNull Context context, @Nullable AttributeSet attrs)
     {
         super(context, attrs);
         init();
     }
 
-    public SDSimpleImageLoadingView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr)
+    public SimpleImageLoadingView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
         init();

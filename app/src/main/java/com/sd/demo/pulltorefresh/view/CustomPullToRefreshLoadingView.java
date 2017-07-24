@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 
 import com.fanwe.library.pulltorefresh.ISDPullToRefreshView;
 import com.fanwe.library.pulltorefresh.SDPullToRefreshView;
-import com.fanwe.library.pulltorefresh.loadingview.SDSimpleImageLoadingView;
+import com.fanwe.library.pulltorefresh.loadingview.SimpleImageLoadingView;
 import com.fanwe.library.utils.SDViewUtil;
 import com.sd.demo.pulltorefresh.R;
 
@@ -16,7 +16,7 @@ import com.sd.demo.pulltorefresh.R;
  * Created by Administrator on 2017/6/30.
  */
 
-public class CustomPullToRefreshLoadingView extends SDSimpleImageLoadingView
+public class CustomPullToRefreshLoadingView extends SimpleImageLoadingView
 {
     public CustomPullToRefreshLoadingView(@NonNull Context context)
     {
