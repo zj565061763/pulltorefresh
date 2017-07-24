@@ -689,7 +689,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 }
 
                 // 滚动时长应该根据当前滚动速度和距离百分比计算，暂时直接写死
-                if (mScroller.startScrollToY(startY, endY, 1000))
+                if (mScroller.startScrollToY(startY, endY, 600))
                 {
                     if (mIsDebug)
                     {
