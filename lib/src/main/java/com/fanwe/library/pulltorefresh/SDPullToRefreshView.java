@@ -393,10 +393,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         {
             return false;
         }
-        if (mState != State.RESET)
-        {
-            return false;
-        }
         return true;
     }
 
