@@ -882,22 +882,19 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         // 初始值
         int top = getTopHeaderViewReset();
 
-        if (!mScroller.isFinished() || mTouchHelper.isNeedCosume())
+        if (getDirection() == Direction.FROM_HEADER)
         {
-            if (getDirection() == Direction.FROM_HEADER)
+            if (!mScroller.isFinished() || mTouchHelper.isNeedCosume())
             {
                 top = mHeaderView.getTop();
-            }
-        } else
-        {
-            switch (mState)
+            } else
             {
-                case REFRESHING:
-                    if (getDirection() == Direction.FROM_HEADER)
-                    {
+                switch (mState)
+                {
+                    case REFRESHING:
                         top = getTopAlignTop();
-                    }
-                    break;
+                        break;
+                }
             }
         }
         return top;
@@ -908,22 +905,19 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         // 初始值
         int top = getTopFooterViewReset();
 
-        if (!mScroller.isFinished() || mTouchHelper.isNeedCosume())
+        if (getDirection() == Direction.FROM_FOOTER)
         {
-            if (getDirection() == Direction.FROM_FOOTER)
+            if (!mScroller.isFinished() || mTouchHelper.isNeedCosume())
             {
                 top = mFooterView.getTop();
-            }
-        } else
-        {
-            switch (mState)
+            } else
             {
-                case REFRESHING:
-                    if (getDirection() == Direction.FROM_FOOTER)
-                    {
+                switch (mState)
+                {
+                    case REFRESHING:
                         top = getTopAlignBottom() - mFooterView.getMeasuredHeight();
-                    }
-                    break;
+                        break;
+                }
             }
         }
         return top;
