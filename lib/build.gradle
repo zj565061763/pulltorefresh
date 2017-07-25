@@ -8,8 +8,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 17072402
-        versionName "1.0.11"
+        versionCode 17072501
+        versionName "1.0.12"
     }
     buildTypes {
         release {
@@ -33,7 +33,7 @@ publish {
     userOrg = 'zj565061763'
     groupId = 'com.fanwe.android'
     artifactId = 'pulltorefresh'
-    publishVersion = '1.0.11'
+    publishVersion = '1.0.12'
     desc = 'android pull to refresh library'
     website = 'https://github.com/zj565061763/pulltorefresh'
 }
