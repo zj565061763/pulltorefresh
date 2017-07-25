@@ -41,7 +41,6 @@ demo中实现了简单的自定义效果
 1. 自定义加载view中根据状态变化设置不同的图片
 ```java
 @Override
-@Override
 public void onStateChanged(ISDPullToRefreshView.State newState, ISDPullToRefreshView.State oldState, SDPullToRefreshView view)
 {
     switch (newState)
