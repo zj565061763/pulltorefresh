@@ -50,9 +50,9 @@ public class SimpleTextLoadingView extends SDPullToRefreshLoadingView
     }
 
     @Override
-    public void onStateChanged(ISDPullToRefreshView.State state, SDPullToRefreshView view)
+    public void onStateChanged(ISDPullToRefreshView.State newState, ISDPullToRefreshView.State oldState, SDPullToRefreshView view)
     {
-        switch (state)
+        switch (newState)
         {
             case RESET:
             case PULL_TO_REFRESH:
@@ -98,6 +98,18 @@ public class SimpleTextLoadingView extends SDPullToRefreshLoadingView
                 } else if (getLoadingViewType() == ISDPullToRefreshView.LoadingViewType.FOOTER)
                 {
                     getTextView().setText(getResources().getString(R.string.lib_ptr_state_refreshing_failure_footer));
+                }
+                break;
+            case REFRESH_FINISH:
+                if (oldState == ISDPullToRefreshView.State.REFRESHING)
+                {
+                    if (getLoadingViewType() == ISDPullToRefreshView.LoadingViewType.HEADER)
+                    {
+                        getTextView().setText(getResources().getString(R.string.lib_ptr_state_pull_to_refresh_header));
+                    } else if (getLoadingViewType() == ISDPullToRefreshView.LoadingViewType.FOOTER)
+                    {
+                        getTextView().setText(getResources().getString(R.string.lib_ptr_state_pull_to_refresh_footer));
+                    }
                 }
                 break;
         }

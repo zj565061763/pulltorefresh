@@ -548,6 +548,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     {
         if (mState != state)
         {
+            final State oldState = mState;
             mState = state;
 
             if (mIsDebug)
@@ -570,16 +571,16 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             //通知view改变状态
             if (getDirection() == Direction.FROM_HEADER)
             {
-                mHeaderView.onStateChanged(mState, this);
+                mHeaderView.onStateChanged(mState, oldState, this);
             } else
             {
-                mFooterView.onStateChanged(mState, this);
+                mFooterView.onStateChanged(mState, oldState, this);
             }
 
             //通知状态变化回调
             if (mOnStateChangedCallback != null)
             {
-                mOnStateChangedCallback.onStateChanged(mState, this);
+                mOnStateChangedCallback.onStateChanged(mState, oldState, this);
             }
 
             //通知刷新回调

@@ -41,9 +41,9 @@ public class CustomPullToRefreshLoadingView extends SimpleImageLoadingView
     }
 
     @Override
-    public void onStateChanged(ISDPullToRefreshView.State state, SDPullToRefreshView view)
+    public void onStateChanged(ISDPullToRefreshView.State newState, ISDPullToRefreshView.State oldState, SDPullToRefreshView view)
     {
-        switch (state)
+        switch (newState)
         {
             case RESET:
             case PULL_TO_REFRESH:
@@ -55,6 +55,12 @@ public class CustomPullToRefreshLoadingView extends SimpleImageLoadingView
             case REFRESHING:
                 getImageView().setImageResource(R.drawable.ic_pull_refresh_refreshing);
                 SDViewUtil.startAnimationDrawable(getImageView().getDrawable());
+                break;
+            case REFRESH_FINISH:
+                if (oldState == ISDPullToRefreshView.State.REFRESHING)
+                {
+                    getImageView().setImageResource(R.drawable.ic_pull_refresh_normal);
+                }
                 break;
         }
     }

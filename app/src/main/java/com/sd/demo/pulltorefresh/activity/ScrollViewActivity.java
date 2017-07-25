@@ -27,10 +27,10 @@ public class ScrollViewActivity extends SDBaseActivity
         view_pull.setOnStateChangedCallback(new ISDPullToRefreshView.OnStateChangedCallback()
         {
             @Override
-            public void onStateChanged(ISDPullToRefreshView.State state, SDPullToRefreshView view)
+            public void onStateChanged(ISDPullToRefreshView.State newState, ISDPullToRefreshView.State oldState, SDPullToRefreshView view)
             {
                 //状态变化回调
-                btn.setText(String.valueOf(view.getDirection()) + "->" + String.valueOf(state));
+                btn.setText(String.valueOf(view.getDirection()) + "->" + String.valueOf(newState));
             }
         });
         view_pull.setOnViewPositionChangedCallback(new ISDPullToRefreshView.OnViewPositionChangedCallback()

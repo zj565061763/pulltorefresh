@@ -230,10 +230,11 @@ public interface ISDPullToRefreshView
         /**
          * 状态变化回调
          *
-         * @param state
+         * @param newState
+         * @param oldState
          * @param view
          */
-        void onStateChanged(State state, SDPullToRefreshView view);
+        void onStateChanged(State newState, State oldState, SDPullToRefreshView view);
     }
 
     interface OnRefreshCallback
