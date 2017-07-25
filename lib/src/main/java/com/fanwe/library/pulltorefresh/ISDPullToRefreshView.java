@@ -162,12 +162,34 @@ public interface ISDPullToRefreshView
 
     enum State
     {
+        /**
+         * 重置
+         */
         RESET,
+        /**
+         * 下拉刷新
+         */
         PULL_TO_REFRESH,
+        /**
+         * 松开刷新
+         */
         RELEASE_TO_REFRESH,
+        /**
+         * 刷新中
+         */
         REFRESHING,
+        /**
+         * 刷新结果，成功
+         */
         REFRESH_SUCCESS,
+        /**
+         * 刷新结果，失败
+         */
         REFRESH_FAILURE,
+        /**
+         * 刷新完成
+         */
+        REFRESH_FINISH,
     }
 
     enum Direction

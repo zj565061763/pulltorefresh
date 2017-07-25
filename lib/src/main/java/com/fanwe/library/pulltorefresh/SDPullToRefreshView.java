@@ -201,9 +201,9 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     @Override
     public void stopRefreshing()
     {
-        if (mState != State.RESET)
+        if (mState != State.RESET && mState != State.REFRESH_FINISH)
         {
-            setState(State.RESET);
+            setState(State.REFRESH_FINISH);
             smoothScrollViewByState();
         }
     }
@@ -312,28 +312,34 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             ViewCompat.postInvalidateOnAnimation(this);
         } else
         {
-            if (mState == State.RESET)
+            switch (mState)
             {
-                if (mIsNeedLayoutWhenScrollerFinished)
-                {
-                    if (mIsDebug)
+                case PULL_TO_REFRESH:
+                case REFRESH_FINISH:
+                    setState(State.RESET);
+                    break;
+                case RESET:
+                    if (mIsNeedLayoutWhenScrollerFinished)
                     {
-                        Log.i(TAG, "requestLayout when state reset and scroller finished");
+                        if (mIsDebug)
+                        {
+                            Log.i(TAG, "requestLayout when state reset and scroller finished");
+                        }
+                        mIsNeedLayoutWhenScrollerFinished = false;
+                        requestLayout();
                     }
-                    mIsNeedLayoutWhenScrollerFinished = false;
-                    requestLayout();
-                }
 
-                if (mTempIsOverLayMode != null)
-                {
-                    mIsOverLayMode = mTempIsOverLayMode;
-                    mTempIsOverLayMode = null;
-
-                    if (mIsDebug)
+                    if (mTempIsOverLayMode != null)
                     {
-                        Log.i(TAG, "tempIsOverLayMode is not null update isOverLayMode:" + mIsOverLayMode);
+                        mIsOverLayMode = mTempIsOverLayMode;
+                        mTempIsOverLayMode = null;
+
+                        if (mIsDebug)
+                        {
+                            Log.i(TAG, "tempIsOverLayMode is not null update isOverLayMode:" + mIsOverLayMode);
+                        }
                     }
-                }
+                    break;
             }
         }
     }
@@ -450,10 +456,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
     private void onActionUp()
     {
-        if (mState == State.PULL_TO_REFRESH)
-        {
-            setState(State.RESET);
-        } else if (mState == State.RELEASE_TO_REFRESH)
+        if (mState == State.RELEASE_TO_REFRESH)
         {
             setState(State.REFRESHING);
         }
@@ -722,6 +725,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         {
             case RESET:
             case PULL_TO_REFRESH:
+            case REFRESH_FINISH:
                 endY = topReset;
 
                 if (mScroller.startScrollToY(startY, endY, -1))
