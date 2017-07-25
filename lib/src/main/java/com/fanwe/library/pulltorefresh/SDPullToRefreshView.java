@@ -284,6 +284,11 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         {
             moveViews(mScroller.getMoveY());
             ViewCompat.postInvalidateOnAnimation(this);
+
+            if (mIsDebug)
+            {
+                Log.e(TAG, "computeScroll:" + mScroller.getMoveY());
+            }
         } else
         {
             if (mState == State.RESET)
@@ -294,6 +299,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                     {
                         Log.i(TAG, "requestLayout when state reset and scroller finished");
                     }
+                    mIsNeedLayoutWhenScrollerFinished = false;
                     requestLayout();
                 }
 
@@ -623,6 +629,26 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     }
 
     /**
+     * 返回HeaderView的Reset静止状态下top值
+     *
+     * @return
+     */
+    private int getTopHeaderViewReset()
+    {
+        return getTopAlignTop() - mHeaderView.getMeasuredHeight();
+    }
+
+    /**
+     * 返回FooterView的Reset静止状态下top值
+     *
+     * @return
+     */
+    private int getTopFooterViewReset()
+    {
+        return getTopAlignBottom();
+    }
+
+    /**
      * 返回滚动到Reset静止状态下的位置
      *
      * @return
@@ -631,10 +657,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     {
         if (getDirection() == Direction.FROM_HEADER)
         {
-            return getTopAlignTop() - mHeaderView.getMeasuredHeight();
+            return getTopHeaderViewReset();
         } else
         {
-            return getTopAlignBottom();
+            return getTopFooterViewReset();
         }
     }
 
@@ -671,6 +697,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
                 if (mScroller.startScrollToY(startY, endY, -1))
                 {
+                    mIsNeedLayoutWhenScrollerFinished = true;
                     if (mIsDebug)
                     {
                         Log.i(TAG, "smoothScrollViewByState:" + mState + " startScrollToY:" + startY + "," + endY);
@@ -689,6 +716,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
                 if (mScroller.startScrollToY(startY, endY, -1))
                 {
+                    mIsNeedLayoutWhenScrollerFinished = true;
                     if (mIsDebug)
                     {
                         Log.i(TAG, "smoothScrollViewByState:" + mState + " startScrollToY:" + startY + "," + endY);
@@ -849,30 +877,104 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 getChildMeasureSpec(heightMeasureSpec, 0, params.height));
     }
 
+    private int getTopLayoutLoadingView(boolean isHeader)
+    {
+        int top = 0;
+
+        if (!mScroller.isFinished() || mTouchHelper.isNeedCosume())
+        {
+            if (isHeader)
+            {
+                if (getDirection() == Direction.FROM_HEADER)
+                {
+                    top = mHeaderView.getTop();
+                } else
+                {
+                    top = getTopHeaderViewReset();
+                }
+            } else
+            {
+                if (getDirection() == Direction.FROM_FOOTER)
+                {
+                    top = mFooterView.getTop();
+                } else
+                {
+                    top = getTopFooterViewReset();
+                }
+            }
+        } else
+        {
+            switch (mState)
+            {
+                case RESET:
+                    if (isHeader)
+                    {
+                        top = getTopHeaderViewReset();
+                    } else
+                    {
+                        top = getTopFooterViewReset();
+                    }
+                    break;
+                case REFRESHING:
+                    if (isHeader)
+                    {
+                        top = getTopAlignTop();
+                    } else
+                    {
+                        top = getTopAlignBottom() - mFooterView.getMeasuredHeight();
+                    }
+                    break;
+            }
+        }
+        return top;
+    }
+
+    private int getTopLayoutRefreshView()
+    {
+        // 初始值对齐当前view顶部
+        int top = getTopAlignTop();
+
+        if (mIsOverLayMode)
+        {
+        } else
+        {
+            if (!mScroller.isFinished() || mTouchHelper.isNeedCosume())
+            {
+                top = mRefreshView.getTop();
+            } else
+            {
+                switch (mState)
+                {
+                    case REFRESHING:
+                        if (getDirection() == Direction.FROM_HEADER)
+                        {
+                            top += mHeaderView.getMeasuredHeight();
+                        } else if (getDirection() == Direction.FROM_FOOTER)
+                        {
+                            top -= mFooterView.getMeasuredHeight();
+                        }
+                        break;
+                }
+            }
+        }
+        return top;
+    }
+
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b)
     {
         if (mIsDebug)
         {
-            Log.i(TAG, "onLayout totalHeight:----------" + getHeight());
+            Log.i(TAG, "onLayout " + mState + " totalHeight:----------" + getHeight());
         }
 
-        final boolean isScrollFinished = mScroller.isFinished();
-        mIsNeedLayoutWhenScrollerFinished = !isScrollFinished;
         int left = getPaddingLeft();
         int top = 0;
         int right = 0;
         int bottom = 0;
 
         // HeaderView
-        top = getTopAlignTop() - mHeaderView.getMeasuredHeight();
-        if (getDirection() == Direction.FROM_HEADER)
-        {
-            if (!isScrollFinished)
-            {
-                top = mHeaderView.getTop();
-            }
-        }
+        top = getTopLayoutLoadingView(true);
         right = left + mHeaderView.getMeasuredWidth();
         bottom = top + mHeaderView.getMeasuredHeight();
         mHeaderView.layout(left, top, right, bottom);
@@ -882,14 +984,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
 
         // RefreshView
-        top = getTopAlignTop();
-        if (!mIsOverLayMode)
-        {
-            if (!isScrollFinished)
-            {
-                top = mRefreshView.getTop();
-            }
-        }
+        top = getTopLayoutRefreshView();
         right = left + mRefreshView.getMeasuredWidth();
         bottom = top + mRefreshView.getMeasuredHeight();
         mRefreshView.layout(left, top, right, bottom);
@@ -899,14 +994,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
 
         // FooterView
-        top = getTopAlignBottom();
-        if (getDirection() == Direction.FROM_FOOTER)
-        {
-            if (!isScrollFinished)
-            {
-                top = mFooterView.getTop();
-            }
-        }
+        top = getTopLayoutLoadingView(false);
         if (bottom > top && bottom <= getTopAlignBottom())
         {
             top = bottom;
