@@ -736,6 +736,9 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                     {
                         Log.i(TAG, "smoothScrollViewByState:" + mState + " startScrollToY:" + startY + "," + endY);
                     }
+                } else
+                {
+                    setState(State.RESET);
                 }
                 break;
             case RELEASE_TO_REFRESH:
