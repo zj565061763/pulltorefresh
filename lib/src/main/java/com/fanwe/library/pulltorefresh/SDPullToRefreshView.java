@@ -62,10 +62,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
      */
     private int mShowRefreshResultDuration = DEFAULT_SHOW_REFRESH_RESULT_DURATION;
     private SDScroller mScroller;
-    /**
-     * 当Scroller滚动结束的时候是否需要重新layout
-     */
-    private boolean mIsNeedLayoutWhenScrollerFinished = false;
+    private boolean mIsScrollerStartSuccess = false;
 
     private boolean mHasOnLayout = false;
     private Runnable mUpdatePositionRunnable;
@@ -312,34 +309,37 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             ViewCompat.postInvalidateOnAnimation(this);
         } else
         {
-            switch (mState)
+            if (mIsScrollerStartSuccess)
             {
-                case PULL_TO_REFRESH:
-                case REFRESH_FINISH:
-                    setState(State.RESET);
-                    break;
-                case RESET:
-                    if (mIsNeedLayoutWhenScrollerFinished)
-                    {
-                        if (mIsDebug)
+                final boolean isScrollerStartSuccess = mIsScrollerStartSuccess;
+                mIsScrollerStartSuccess = false;
+                switch (mState)
+                {
+                    case PULL_TO_REFRESH:
+                    case REFRESH_FINISH:
+                        setState(State.RESET);
+                        break;
+                    case RESET:
+                        if (isScrollerStartSuccess)
                         {
-                            Log.i(TAG, "requestLayout when state reset and scroller finished");
+                            if (mIsDebug)
+                            {
+                                Log.i(TAG, "requestLayout when state reset and scroller finished");
+                            }
+                            requestLayout();
                         }
-                        mIsNeedLayoutWhenScrollerFinished = false;
-                        requestLayout();
-                    }
-
-                    if (mTempIsOverLayMode != null)
-                    {
-                        mIsOverLayMode = mTempIsOverLayMode;
-                        mTempIsOverLayMode = null;
-
-                        if (mIsDebug)
+                        if (mTempIsOverLayMode != null)
                         {
-                            Log.i(TAG, "tempIsOverLayMode is not null update isOverLayMode:" + mIsOverLayMode);
+                            mIsOverLayMode = mTempIsOverLayMode;
+                            mTempIsOverLayMode = null;
+
+                            if (mIsDebug)
+                            {
+                                Log.i(TAG, "tempIsOverLayMode is not null update isOverLayMode:" + mIsOverLayMode);
+                            }
                         }
-                    }
-                    break;
+                        break;
+                }
             }
         }
     }
@@ -730,7 +730,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
                 if (mScroller.startScrollToY(startY, endY, -1))
                 {
-                    mIsNeedLayoutWhenScrollerFinished = true;
+                    mIsScrollerStartSuccess = true;
                     if (mIsDebug)
                     {
                         Log.i(TAG, "smoothScrollViewByState:" + mState + " startScrollToY:" + startY + "," + endY);
@@ -749,7 +749,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
                 if (mScroller.startScrollToY(startY, endY, -1))
                 {
-                    mIsNeedLayoutWhenScrollerFinished = true;
+                    mIsScrollerStartSuccess = true;
                     if (mIsDebug)
                     {
                         Log.i(TAG, "smoothScrollViewByState:" + mState + " startScrollToY:" + startY + "," + endY);
