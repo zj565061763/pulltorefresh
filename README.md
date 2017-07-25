@@ -41,12 +41,14 @@ demo中实现了简单的自定义效果
 1. 自定义加载view中根据状态变化设置不同的图片
 ```java
 @Override
+@Override
 public void onStateChanged(ISDPullToRefreshView.State newState, ISDPullToRefreshView.State oldState, SDPullToRefreshView view)
 {
     switch (newState)
     {
         case RESET:
         case PULL_TO_REFRESH:
+        case REFRESH_FINISH:
             getImageView().setImageResource(R.drawable.ic_pull_refresh_normal);
             break;
         case RELEASE_TO_REFRESH:
@@ -55,12 +57,6 @@ public void onStateChanged(ISDPullToRefreshView.State newState, ISDPullToRefresh
         case REFRESHING:
             getImageView().setImageResource(R.drawable.ic_pull_refresh_refreshing);
             SDViewUtil.startAnimationDrawable(getImageView().getDrawable());
-            break;
-        case REFRESH_FINISH:
-            if (oldState == ISDPullToRefreshView.State.REFRESHING)
-            {
-                getImageView().setImageResource(R.drawable.ic_pull_refresh_normal);
-            }
             break;
     }
 }
