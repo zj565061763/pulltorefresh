@@ -80,6 +80,13 @@ public interface ISDPullToRefreshView
     void stopRefreshing();
 
     /**
+     * 停止刷新并展示刷新结果，当状态处于刷新中的时候此方法调用才有效
+     *
+     * @param success true-刷新成功，false-刷新失败
+     */
+    void stopRefreshingWithResult(boolean success);
+
+    /**
      * 是否处于刷新中
      *
      * @return
@@ -148,6 +155,8 @@ public interface ISDPullToRefreshView
         PULL_TO_REFRESH,
         RELEASE_TO_REFRESH,
         REFRESHING,
+        REFRESH_SUCCESS,
+        REFRESH_FAILURE,
     }
 
     enum Direction

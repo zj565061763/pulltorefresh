@@ -82,6 +82,24 @@ public class SimpleTextLoadingView extends SDPullToRefreshLoadingView
                     getTextView().setText(getResources().getString(R.string.lib_ptr_state_refreshing_footer));
                 }
                 break;
+            case REFRESH_SUCCESS:
+                if (getLoadingViewType() == ISDPullToRefreshView.LoadingViewType.HEADER)
+                {
+                    getTextView().setText(getResources().getString(R.string.lib_ptr_state_refreshing_success_header));
+                } else if (getLoadingViewType() == ISDPullToRefreshView.LoadingViewType.FOOTER)
+                {
+                    getTextView().setText(getResources().getString(R.string.lib_ptr_state_refreshing_success_footer));
+                }
+                break;
+            case REFRESH_FAILURE:
+                if (getLoadingViewType() == ISDPullToRefreshView.LoadingViewType.HEADER)
+                {
+                    getTextView().setText(getResources().getString(R.string.lib_ptr_state_refreshing_failure_header));
+                } else if (getLoadingViewType() == ISDPullToRefreshView.LoadingViewType.FOOTER)
+                {
+                    getTextView().setText(getResources().getString(R.string.lib_ptr_state_refreshing_failure_footer));
+                }
+                break;
         }
     }
 }

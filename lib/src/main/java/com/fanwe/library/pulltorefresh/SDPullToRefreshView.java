@@ -162,13 +162,12 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         {
             return;
         }
-        if (isRefreshing())
+        if (mState == State.RESET)
         {
-            return;
+            setDirection(Direction.FROM_HEADER);
+            setState(State.REFRESHING);
+            smoothScrollViewByState();
         }
-        setDirection(Direction.FROM_HEADER);
-        setState(State.REFRESHING);
-        smoothScrollViewByState();
     }
 
     @Override
@@ -178,13 +177,12 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         {
             return;
         }
-        if (isRefreshing())
+        if (mState == State.RESET)
         {
-            return;
+            setDirection(Direction.FROM_FOOTER);
+            setState(State.REFRESHING);
+            smoothScrollViewByState();
         }
-        setDirection(Direction.FROM_FOOTER);
-        setState(State.REFRESHING);
-        smoothScrollViewByState();
     }
 
     @Override
@@ -192,8 +190,24 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     {
         if (mState != State.RESET)
         {
+            removeCallbacks(mStopRefreshingRunnable);
             setState(State.RESET);
             smoothScrollViewByState();
+        }
+    }
+
+    @Override
+    public void stopRefreshingWithResult(boolean success)
+    {
+        if (mState == State.REFRESHING)
+        {
+            if (success)
+            {
+                setState(State.REFRESH_SUCCESS);
+            } else
+            {
+                setState(State.REFRESH_FAILURE);
+            }
         }
     }
 
@@ -284,11 +298,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         {
             moveViews(mScroller.getMoveY());
             ViewCompat.postInvalidateOnAnimation(this);
-
-            if (mIsDebug)
-            {
-                Log.e(TAG, "computeScroll:" + mScroller.getMoveY());
-            }
         } else
         {
             if (mState == State.RESET)
@@ -363,6 +372,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     private boolean isViewReset()
     {
         if (!mScroller.isFinished())
+        {
+            return false;
+        }
+        if (mState != State.RESET)
         {
             return false;
         }
@@ -533,6 +546,12 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 }
             }
 
+            removeCallbacks(mStopRefreshingRunnable);
+            if (mState == State.REFRESH_SUCCESS || mState == State.REFRESH_FAILURE)
+            {
+                postDelayed(mStopRefreshingRunnable, 1000);
+            }
+
             //通知view改变状态
             if (getDirection() == Direction.FROM_HEADER)
             {
@@ -540,6 +559,12 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             } else
             {
                 mFooterView.onStateChanged(mState, this);
+            }
+
+            //通知状态变化回调
+            if (mOnStateChangedCallback != null)
+            {
+                mOnStateChangedCallback.onStateChanged(mState, this);
             }
 
             //通知刷新回调
@@ -557,18 +582,21 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 }
             }
 
-            //通知状态变化回调
-            if (mOnStateChangedCallback != null)
-            {
-                mOnStateChangedCallback.onStateChanged(mState, this);
-            }
-
             if (mState == State.RESET)
             {
                 setDirection(Direction.NONE);
             }
         }
     }
+
+    private Runnable mStopRefreshingRunnable = new Runnable()
+    {
+        @Override
+        public void run()
+        {
+            stopRefreshing();
+        }
+    };
 
     private float getComsumeScrollPercent()
     {
@@ -881,6 +909,8 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 switch (mState)
                 {
                     case REFRESHING:
+                    case REFRESH_SUCCESS:
+                    case REFRESH_FAILURE:
                         top = getTopAlignTop();
                         break;
                 }
@@ -904,6 +934,8 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 switch (mState)
                 {
                     case REFRESHING:
+                    case REFRESH_SUCCESS:
+                    case REFRESH_FAILURE:
                         top = getTopAlignBottom() - mFooterView.getMeasuredHeight();
                         break;
                 }
@@ -929,6 +961,8 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 switch (mState)
                 {
                     case REFRESHING:
+                    case REFRESH_SUCCESS:
+                    case REFRESH_FAILURE:
                         if (getDirection() == Direction.FROM_HEADER)
                         {
                             top += mHeaderView.getMeasuredHeight();
@@ -1015,6 +1049,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     protected void onDetachedFromWindow()
     {
         super.onDetachedFromWindow();
+        removeCallbacks(mStopRefreshingRunnable);
         mHasOnLayout = false;
         mUpdatePositionRunnable = null;
         if (!mScroller.isFinished())
