@@ -47,8 +47,6 @@ public class ButtonActivity extends SDBaseActivity
                 stopRefreshingDelayed(1000);
             }
         });
-
-        view_pull.startRefreshingFromHeader();
         updateBtnMode();
     }
 
@@ -60,7 +58,7 @@ public class ButtonActivity extends SDBaseActivity
             public void run()
             {
                 changeViewHeight(btn, 100);
-                view_pull.stopRefreshing();
+                view_pull.stopRefreshingWithResult(true);
             }
         }, delay);
     }
