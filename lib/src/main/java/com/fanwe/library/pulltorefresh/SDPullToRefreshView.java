@@ -1006,7 +1006,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             Log.i(TAG, "FooterView:" + top + "," + bottom);
         }
 
-        int maxScrollDistance = Math.max(mHeaderView.getHeight(), mFooterView.getHeight());
+        int maxScrollDistance = Math.max(mHeaderView.getMeasuredHeight(), mFooterView.getMeasuredHeight());
         mScroller.setMaxScrollDistance(maxScrollDistance);
 
         mHasOnLayout = true;
