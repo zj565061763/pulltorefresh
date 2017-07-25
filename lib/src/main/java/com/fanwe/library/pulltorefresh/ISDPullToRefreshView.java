@@ -17,7 +17,7 @@ public interface ISDPullToRefreshView
     /**
      * 默认的显示刷新结果的时长（毫秒）
      */
-    int DEFAULT_SHOW_REFRESH_RESULT_DURATION = 600;
+    int DEFAULT_DURATION_SHOW_REFRESH_RESULT = 600;
 
     /**
      * 设置刷新模式
@@ -69,11 +69,11 @@ public interface ISDPullToRefreshView
     void setComsumeScrollPercent(float comsumeScrollPercent);
 
     /**
-     * 设置显示刷新结果的时长，默认{@link #DEFAULT_SHOW_REFRESH_RESULT_DURATION}
+     * 设置显示刷新结果的时长，默认{@link #DEFAULT_DURATION_SHOW_REFRESH_RESULT}
      *
-     * @param showRefreshResultDuration
+     * @param durationShowRefreshResult
      */
-    void setShowRefreshResultDuration(int showRefreshResultDuration);
+    void setDurationShowRefreshResult(int durationShowRefreshResult);
 
     /**
      * 设置HeaderView处处于刷新状态

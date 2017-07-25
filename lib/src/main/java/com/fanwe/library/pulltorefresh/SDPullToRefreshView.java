@@ -60,7 +60,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     /**
      * 显示刷新结果的时长
      */
-    private int mShowRefreshResultDuration = DEFAULT_SHOW_REFRESH_RESULT_DURATION;
+    private int mDurationShowRefreshResult = DEFAULT_DURATION_SHOW_REFRESH_RESULT;
     private SDScroller mScroller;
     private boolean mIsScrollerStartSuccess = false;
 
@@ -156,13 +156,13 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     }
 
     @Override
-    public void setShowRefreshResultDuration(int showRefreshResultDuration)
+    public void setDurationShowRefreshResult(int durationShowRefreshResult)
     {
-        if (showRefreshResultDuration < 0)
+        if (durationShowRefreshResult < 0)
         {
-            showRefreshResultDuration = DEFAULT_SHOW_REFRESH_RESULT_DURATION;
+            durationShowRefreshResult = DEFAULT_DURATION_SHOW_REFRESH_RESULT;
         }
-        mShowRefreshResultDuration = showRefreshResultDuration;
+        mDurationShowRefreshResult = durationShowRefreshResult;
     }
 
     @Override
@@ -565,7 +565,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             removeCallbacks(mStopRefreshingRunnable);
             if (mState == State.REFRESH_SUCCESS || mState == State.REFRESH_FAILURE)
             {
-                postDelayed(mStopRefreshingRunnable, mShowRefreshResultDuration);
+                postDelayed(mStopRefreshingRunnable, mDurationShowRefreshResult);
             }
 
             //通知view改变状态
