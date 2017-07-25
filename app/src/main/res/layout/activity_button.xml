@@ -5,6 +5,24 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <Button
+        android:id="@+id/btn_stop"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="停止刷新"/>
+
+    <Button
+        android:id="@+id/btn_stop_success"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="停止刷新->成功"/>
+
+    <Button
+        android:id="@+id/btn_stop_failure"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="停止刷新->失败"/>
+
     <com.fanwe.library.pulltorefresh.SDPullToRefreshView
         android:id="@+id/view_pull"
         android:layout_width="match_parent"
@@ -13,7 +31,7 @@
         android:gravity="center">
 
         <Button
-            android:id="@+id/btn"
+            android:id="@+id/btn_overlay"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:background="@color/white"
