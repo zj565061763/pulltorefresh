@@ -10,7 +10,6 @@ import com.fanwe.library.pulltorefresh.ISDPullToRefreshView;
 import com.fanwe.library.pulltorefresh.SDPullToRefreshView;
 import com.fanwe.library.utils.LogUtil;
 import com.sd.demo.pulltorefresh.R;
-import com.sd.demo.pulltorefresh.view.CustomPullToRefreshLoadingView;
 
 public class ButtonActivity extends SDBaseActivity
 {
@@ -35,7 +34,7 @@ public class ButtonActivity extends SDBaseActivity
         });
 
         view_pull.setDebug(true);
-        view_pull.setHeaderView(new CustomPullToRefreshLoadingView(this));
+//        view_pull.setHeaderView(new CustomPullToRefreshLoadingView(this));
         view_pull.setOverLayMode(true); //设置LoadingView是覆盖模式，还是拖拽模式
         view_pull.setOnRefreshCallback(new ISDPullToRefreshView.OnRefreshCallback()
         {
@@ -69,13 +68,16 @@ public class ButtonActivity extends SDBaseActivity
             @Override
             public void run()
             {
-                ViewGroup.LayoutParams params = btn.getLayoutParams();
-                params.height = btn.getHeight() + btn.getHeight() / 3;
-                btn.setLayoutParams(params);
-
                 view_pull.stopRefreshing();
             }
         }, delay);
+    }
+
+    private void changeBtnHeight()
+    {
+        ViewGroup.LayoutParams params = btn.getLayoutParams();
+        params.height = btn.getHeight() + btn.getHeight() / 3;
+        btn.setLayoutParams(params);
     }
 
 }

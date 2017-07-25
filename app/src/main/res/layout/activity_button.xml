@@ -10,8 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/yellow"
-        android:gravity="center"
-        android:padding="10dp">
+        android:gravity="center">
 
         <Button
             android:id="@+id/btn"
