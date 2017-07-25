@@ -880,6 +880,15 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     private int getTopLayoutLoadingView(boolean isHeader)
     {
         int top = 0;
+        if (isHeader)
+        {
+            // 初始值
+            top = getTopHeaderViewReset();
+        } else
+        {
+            // 初始值
+            top = getTopFooterViewReset();
+        }
 
         if (!mScroller.isFinished() || mTouchHelper.isNeedCosume())
         {
@@ -888,33 +897,18 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 if (getDirection() == Direction.FROM_HEADER)
                 {
                     top = mHeaderView.getTop();
-                } else
-                {
-                    top = getTopHeaderViewReset();
                 }
             } else
             {
                 if (getDirection() == Direction.FROM_FOOTER)
                 {
                     top = mFooterView.getTop();
-                } else
-                {
-                    top = getTopFooterViewReset();
                 }
             }
         } else
         {
             switch (mState)
             {
-                case RESET:
-                    if (isHeader)
-                    {
-                        top = getTopHeaderViewReset();
-                    } else
-                    {
-                        top = getTopFooterViewReset();
-                    }
-                    break;
                 case REFRESHING:
                     if (isHeader)
                     {
@@ -931,7 +925,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
     private int getTopLayoutRefreshView()
     {
-        // 初始值对齐当前view顶部
+        // 初始值
         int top = getTopAlignTop();
 
         if (mIsOverLayMode)
