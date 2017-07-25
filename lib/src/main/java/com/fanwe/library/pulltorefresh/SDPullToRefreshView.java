@@ -877,43 +877,49 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 getChildMeasureSpec(heightMeasureSpec, 0, params.height));
     }
 
-    private int getTopLayoutLoadingView(boolean isHeader)
+    private int getTopLayoutHeaderView()
     {
-        int top = 0;
-        if (isHeader)
-        {
-            // 初始值
-            top = getTopHeaderViewReset();
-        } else
-        {
-            // 初始值
-            top = getTopFooterViewReset();
-        }
+        // 初始值
+        int top = getTopHeaderViewReset();
 
         if (!mScroller.isFinished() || mTouchHelper.isNeedCosume())
         {
-            if (isHeader)
+            if (getDirection() == Direction.FROM_HEADER)
             {
-                if (getDirection() == Direction.FROM_HEADER)
-                {
-                    top = mHeaderView.getTop();
-                }
-            } else
-            {
-                if (getDirection() == Direction.FROM_FOOTER)
-                {
-                    top = mFooterView.getTop();
-                }
+                top = mHeaderView.getTop();
             }
         } else
         {
             switch (mState)
             {
                 case REFRESHING:
-                    if (isHeader)
+                    if (getDirection() == Direction.FROM_HEADER)
                     {
                         top = getTopAlignTop();
-                    } else
+                    }
+                    break;
+            }
+        }
+        return top;
+    }
+
+    private int getTopLayoutFooterView()
+    {
+        // 初始值
+        int top = getTopFooterViewReset();
+
+        if (!mScroller.isFinished() || mTouchHelper.isNeedCosume())
+        {
+            if (getDirection() == Direction.FROM_FOOTER)
+            {
+                top = mFooterView.getTop();
+            }
+        } else
+        {
+            switch (mState)
+            {
+                case REFRESHING:
+                    if (getDirection() == Direction.FROM_FOOTER)
                     {
                         top = getTopAlignBottom() - mFooterView.getMeasuredHeight();
                     }
@@ -968,7 +974,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         int bottom = 0;
 
         // HeaderView
-        top = getTopLayoutLoadingView(true);
+        top = getTopLayoutHeaderView();
         right = left + mHeaderView.getMeasuredWidth();
         bottom = top + mHeaderView.getMeasuredHeight();
         mHeaderView.layout(left, top, right, bottom);
@@ -993,7 +999,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
 
         // FooterView
-        top = getTopLayoutLoadingView(false);
+        top = getTopLayoutFooterView();
         if (bottom > top && bottom <= getTopAlignBottom())
         {
             top = bottom;
