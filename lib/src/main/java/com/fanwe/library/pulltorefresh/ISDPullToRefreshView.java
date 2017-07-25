@@ -11,9 +11,13 @@ import com.fanwe.library.pulltorefresh.loadingview.SDPullToRefreshLoadingView;
 public interface ISDPullToRefreshView
 {
     /**
-     * 默认的拖动消耗比例
+     * 默认的拖动距离消耗比例
      */
     float DEFAULT_COMSUME_SCROLL_PERCENT = 0.5f;
+    /**
+     * 默认的显示刷新结果的时长（毫秒）
+     */
+    int DEFAULT_SHOW_REFRESH_RESULT_DURATION = 600;
 
     /**
      * 设置刷新模式
@@ -58,11 +62,18 @@ public interface ISDPullToRefreshView
     boolean isOverLayMode();
 
     /**
-     * 设置拖动的时候要消耗的拖动距离比例，默认是0.5
+     * 设置拖动的时候要消耗的拖动距离比例，默认{@link #DEFAULT_COMSUME_SCROLL_PERCENT}
      *
      * @param comsumeScrollPercent [0-1]
      */
     void setComsumeScrollPercent(float comsumeScrollPercent);
+
+    /**
+     * 设置显示刷新结果的时长，默认{@link #DEFAULT_SHOW_REFRESH_RESULT_DURATION}
+     *
+     * @param showRefreshResultDuration
+     */
+    void setShowRefreshResultDuration(int showRefreshResultDuration);
 
     /**
      * 设置HeaderView处处于刷新状态

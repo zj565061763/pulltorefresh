@@ -54,10 +54,13 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     private boolean mIsOverLayMode = false;
     private Boolean mTempIsOverLayMode = null;
     /**
-     * 设置拖动的时候要消耗的拖动距离比例
+     * 拖动的时候要消耗的拖动距离比例
      */
     private float mComsumeScrollPercent = DEFAULT_COMSUME_SCROLL_PERCENT;
-
+    /**
+     * 显示刷新结果的时长
+     */
+    private int mShowRefreshResultDuration = DEFAULT_SHOW_REFRESH_RESULT_DURATION;
     private SDScroller mScroller;
     /**
      * 当Scroller滚动结束的时候是否需要重新layout
@@ -153,6 +156,16 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             comsumeScrollPercent = 1;
         }
         mComsumeScrollPercent = comsumeScrollPercent;
+    }
+
+    @Override
+    public void setShowRefreshResultDuration(int showRefreshResultDuration)
+    {
+        if (showRefreshResultDuration < 0)
+        {
+            showRefreshResultDuration = DEFAULT_SHOW_REFRESH_RESULT_DURATION;
+        }
+        mShowRefreshResultDuration = showRefreshResultDuration;
     }
 
     @Override
@@ -549,7 +562,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             removeCallbacks(mStopRefreshingRunnable);
             if (mState == State.REFRESH_SUCCESS || mState == State.REFRESH_FAILURE)
             {
-                postDelayed(mStopRefreshingRunnable, 1000);
+                postDelayed(mStopRefreshingRunnable, mShowRefreshResultDuration);
             }
 
             //通知view改变状态
