@@ -3,11 +3,10 @@ Scroller+ViewGroup实现的下拉刷新和上拉加载的库，提供拖动回�
 [更新日志](https://github.com/zj565061763/pulltorefresh/blob/master/CHANGELOG.md)
 
 ## Gradle
-`compile 'com.fanwe.android:pulltorefresh:1.0.12'`
+`compile 'com.fanwe.android:pulltorefresh:1.0.13'`
 
 ## 简单效果
-![](http://thumbsnap.com/i/fBCTn1t1.gif?0721)<br>
-![](http://thumbsnap.com/i/ZYFfADbW.gif?0707)<br>
+![](http://thumbsnap.com/i/8AyEAjrW.gif?0725)<br>
 支持覆盖的默认配置：<br>
 * strings
 ```xml
@@ -19,6 +18,12 @@ Scroller+ViewGroup实现的下拉刷新和上拉加载的库，提供拖动回�
 
 <string name="lib_ptr_state_refreshing_header">刷新中...</string>
 <string name="lib_ptr_state_refreshing_footer">加载中...</string>
+
+<string name="lib_ptr_state_refreshing_success_header">刷新成功</string>
+<string name="lib_ptr_state_refreshing_success_footer">加载成功</string>
+
+<string name="lib_ptr_state_refreshing_failure_header">刷新失败</string>
+<string name="lib_ptr_state_refreshing_failure_footer">加载失败</string>
 ```
 * colors
 ```xml
@@ -36,9 +41,9 @@ demo中实现了简单的自定义效果
 1. 自定义加载view中根据状态变化设置不同的图片
 ```java
 @Override
-public void onStateChanged(ISDPullToRefreshView.State state, SDPullToRefreshView view)
+public void onStateChanged(ISDPullToRefreshView.State newState, ISDPullToRefreshView.State oldState, SDPullToRefreshView view)
 {
-    switch (state)
+    switch (newState)
     {
         case RESET:
         case PULL_TO_REFRESH:
@@ -50,6 +55,12 @@ public void onStateChanged(ISDPullToRefreshView.State state, SDPullToRefreshView
         case REFRESHING:
             getImageView().setImageResource(R.drawable.ic_pull_refresh_refreshing);
             SDViewUtil.startAnimationDrawable(getImageView().getDrawable());
+            break;
+        case REFRESH_FINISH:
+            if (oldState == ISDPullToRefreshView.State.REFRESHING)
+            {
+                getImageView().setImageResource(R.drawable.ic_pull_refresh_normal);
+            }
             break;
     }
 }
@@ -78,14 +89,17 @@ child可以是RecyclerView,ListView,ScrollView等...
 ## 常用方法
 ```java
 view_pull.setDebug(true); //设置调试模式，会打印log
-view_pull.setMode(ISDPullToRefreshView.Mode.BOTH); //刷新模式，BOTH，PULL_FROM_HEADER，PULL_FROM_FOOTER，DISABLE
+view_pull.setMode(ISDPullToRefreshView.Mode.BOTH); //刷新模式，详细模式见源码
 view_pull.setOverLayMode(false); //设置LoadingView是覆盖模式，还是拖拽模式，默认拖拽模式
 view_pull.startRefreshingFromHeader(); //触发下拉刷新，此方法只受DISABLE模式限制，不受其他模式限制
 view_pull.startRefreshingFromFooter(); //触发上拉加载，此方法只受DISABLE模式限制，不受其他模式限制
 view_pull.stopRefreshing(); //停止刷新或者加载
-view_pull.setComsumeScrollPercent(0.5f); //设置拖动距离消耗比例[0-1]，让拖动具有阻尼感，默认0.5
+view_pull.stopRefreshingWithResult(true); //停止刷新，刷新结果成功
+view_pull.stopRefreshingWithResult(false); //停止刷新，刷新结果失败
+view_pull.setComsumeScrollPercent(0.5f); //设置拖动距离消耗比例[0-1]，让拖动具有阻尼感，默认0.5f
+view_pull.setDurationShowRefreshResult(600); //设置显示刷新结果的时长，默认600毫秒
 view_pull.getScrollDistance(); //获得滚动的距离
-view_pull.getDirection(); //获得滚动的方向，HEADER_TO_FOOTER，FOOTER_TO_HEADER
+view_pull.getDirection(); //获得滚动的方向，FROM_HEADER，FROM_FOOTER
 view_pull.setHeaderView(new CustomPullToRefreshLoadingView(this)); //自定义HeaderView
 view_pull.setFooterView(new CustomPullToRefreshLoadingView(this)); //自定义FooterView
 view_pull.setOnRefreshCallback(new ISDPullToRefreshView.OnRefreshCallback() //设置触发刷新回调
@@ -102,21 +116,24 @@ view_pull.setOnRefreshCallback(new ISDPullToRefreshView.OnRefreshCallback() //�
         //底部加载回调
     }
 });
-view_pull.setOnStateChangedCallback(new ISDPullToRefreshView.OnStateChangedCallback() //设置状态变化回调
+
+//设置状态变化回调
+view_pull.setOnStateChangedCallback(new ISDPullToRefreshView.OnStateChangedCallback()
 {
     @Override
-    public void onStateChanged(ISDPullToRefreshView.State state, SDPullToRefreshView view)
+    public void onStateChanged(ISDPullToRefreshView.State newState, ISDPullToRefreshView.State oldState, SDPullToRefreshView view)
     {
-        //RESET，PULL_TO_REFRESH，RELEASE_TO_REFRESH，REFRESHING
         //自定义的加载view继承库中的加载view基类后也可以收到此事件，可以根据状态展示不同的ui
     }
 });
-view_pull.setOnViewPositionChangedCallback(new ISDPullToRefreshView.OnViewPositionChangedCallback() //设置view位置变化回调
+
+//设置view位置变化回调
+view_pull.setOnViewPositionChangedCallback(new ISDPullToRefreshView.OnViewPositionChangedCallback() 
 {
     @Override
     public void onViewPositionChanged(SDPullToRefreshView view)
     {
-        //自定义的加载view继承库中的加载view基类后也可以收到此事件，可以根据状态和滚动距离自定义各种炫酷ui
+        //自定义的加载view继承库中的加载view基类后也可以收到此事件，可以根据状态和滚动距离自定义各种加载ui
     }
 });
 ```
@@ -125,9 +142,13 @@ view_pull.setOnViewPositionChangedCallback(new ISDPullToRefreshView.OnViewPositi
 public interface ISDPullToRefreshView
 {
     /**
-     * 默认的拖动消耗比例
+     * 默认的拖动距离消耗比例
      */
     float DEFAULT_COMSUME_SCROLL_PERCENT = 0.5f;
+    /**
+     * 默认的显示刷新结果的时长（毫秒）
+     */
+    int DEFAULT_DURATION_SHOW_REFRESH_RESULT = 600;
 
     /**
      * 设置刷新模式
@@ -172,11 +193,18 @@ public interface ISDPullToRefreshView
     boolean isOverLayMode();
 
     /**
-     * 设置拖动的时候要消耗的拖动距离比例，默认是0.5
+     * 设置拖动的时候要消耗的拖动距离比例，默认{@link #DEFAULT_COMSUME_SCROLL_PERCENT}
      *
      * @param comsumeScrollPercent [0-1]
      */
     void setComsumeScrollPercent(float comsumeScrollPercent);
+
+    /**
+     * 设置显示刷新结果的时长，默认{@link #DEFAULT_DURATION_SHOW_REFRESH_RESULT}
+     *
+     * @param durationShowRefreshResult
+     */
+    void setDurationShowRefreshResult(int durationShowRefreshResult);
 
     /**
      * 设置HeaderView处处于刷新状态
@@ -192,6 +220,13 @@ public interface ISDPullToRefreshView
      * 停止刷新
      */
     void stopRefreshing();
+
+    /**
+     * 停止刷新并展示刷新结果，当状态处于刷新中的时候此方法调用才有效
+     *
+     * @param success true-刷新成功，false-刷新失败
+     */
+    void stopRefreshingWithResult(boolean success);
 
     /**
      * 是否处于刷新中
@@ -258,10 +293,34 @@ public interface ISDPullToRefreshView
 
     enum State
     {
+        /**
+         * 重置
+         */
         RESET,
+        /**
+         * 下拉刷新
+         */
         PULL_TO_REFRESH,
+        /**
+         * 松开刷新
+         */
         RELEASE_TO_REFRESH,
+        /**
+         * 刷新中
+         */
         REFRESHING,
+        /**
+         * 刷新结果，成功
+         */
+        REFRESH_SUCCESS,
+        /**
+         * 刷新结果，失败
+         */
+        REFRESH_FAILURE,
+        /**
+         * 刷新完成
+         */
+        REFRESH_FINISH,
     }
 
     enum Direction
@@ -302,10 +361,11 @@ public interface ISDPullToRefreshView
         /**
          * 状态变化回调
          *
-         * @param state
+         * @param newState
+         * @param oldState
          * @param view
          */
-        void onStateChanged(State state, SDPullToRefreshView view);
+        void onStateChanged(State newState, State oldState, SDPullToRefreshView view);
     }
 
     interface OnRefreshCallback
