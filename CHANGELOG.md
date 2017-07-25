@@ -1,3 +1,8 @@
+## 1.0.13
+* 新增stopRefreshingWithResult(boolean success);方法，可以展示刷新成功和失败的结果
+* 新增setDurationShowRefreshResult(int durationShowRefreshResult);方法，可以设置显示刷新成功或者刷新失败的时长
+* 新增REFRESH_SUCCESS（刷新成功），REFRESH_FAILURE（刷新失败），REFRESH_FINISH（刷新完成）状态
+
 ## 1.0.12
 * 修复滚动中或者刷新中改变view的高度后造成的界面显示异常bug
 
