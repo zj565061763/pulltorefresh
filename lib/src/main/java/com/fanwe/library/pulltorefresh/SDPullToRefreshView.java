@@ -883,9 +883,12 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
         // RefreshView
         top = getTopAlignTop();
-        if (!isScrollFinished)
+        if (!mIsOverLayMode)
         {
-            top = mRefreshView.getTop();
+            if (!isScrollFinished)
+            {
+                top = mRefreshView.getTop();
+            }
         }
         right = left + mRefreshView.getMeasuredWidth();
         bottom = top + mRefreshView.getMeasuredHeight();
