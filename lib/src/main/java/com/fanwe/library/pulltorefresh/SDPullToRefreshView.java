@@ -203,7 +203,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     {
         if (mState != State.RESET)
         {
-            removeCallbacks(mStopRefreshingRunnable);
             setState(State.RESET);
             smoothScrollViewByState();
         }
