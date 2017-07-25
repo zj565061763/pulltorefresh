@@ -366,18 +366,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         {
             return false;
         }
-
-        int topReset = getTopScrollReset();
-        if (getDirection() == Direction.FROM_HEADER)
-        {
-            return mHeaderView.getTop() == topReset;
-        } else if (getDirection() == Direction.FROM_FOOTER)
-        {
-            return mFooterView.getTop() == topReset;
-        } else
-        {
-            return true;
-        }
+        return true;
     }
 
     private boolean canPull()
@@ -994,7 +983,8 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
         // FooterView
         top = getTopLayoutFooterView();
-        if (bottom > top && bottom <= getTopAlignBottom())
+        if (!mIsOverLayMode && bottom <= getTopAlignBottom()
+                && bottom > top)
         {
             top = bottom;
         }
