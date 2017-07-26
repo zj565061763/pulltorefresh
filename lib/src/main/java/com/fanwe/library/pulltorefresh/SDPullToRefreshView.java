@@ -520,21 +520,21 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         int distance = Math.abs(getScrollDistance());
         if (getDirection() == Direction.FROM_HEADER)
         {
-            if (distance < mHeaderView.getRefreshHeight())
-            {
-                setState(State.PULL_TO_REFRESH);
-            } else if (distance >= mHeaderView.getRefreshHeight())
+            if (mHeaderView.canRefresh(distance))
             {
                 setState(State.RELEASE_TO_REFRESH);
+            } else
+            {
+                setState(State.PULL_TO_REFRESH);
             }
         } else
         {
-            if (distance < mFooterView.getRefreshHeight())
-            {
-                setState(State.PULL_TO_REFRESH);
-            } else if (distance >= mFooterView.getRefreshHeight())
+            if (mFooterView.canRefresh(distance))
             {
                 setState(State.RELEASE_TO_REFRESH);
+            } else
+            {
+                setState(State.PULL_TO_REFRESH);
             }
         }
     }

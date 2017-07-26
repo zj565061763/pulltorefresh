@@ -270,11 +270,19 @@ public interface ISDPullToRefreshView
     interface IPullToRefreshLoadingView extends OnStateChangedCallback, OnViewPositionChangedCallback
     {
         /**
-         * 返回触发刷新条件的高度
+         * 返回view处于刷新中的时候需要显示的高度
          *
          * @return
          */
         int getRefreshHeight();
+
+        /**
+         * 返回是否可以触发刷新
+         *
+         * @param scrollDistance 已经滚动的距离
+         * @return
+         */
+        boolean canRefresh(int scrollDistance);
 
         /**
          * 返回加载view类型

@@ -59,6 +59,12 @@ public abstract class SDPullToRefreshLoadingView extends FrameLayout implements 
     }
 
     @Override
+    public boolean canRefresh(int scrollDistance)
+    {
+        return scrollDistance >= getHeight();
+    }
+
+    @Override
     public int getRefreshHeight()
     {
         return getHeight();
