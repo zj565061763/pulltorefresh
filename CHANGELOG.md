@@ -1,3 +1,6 @@
+## 1.0.14
+* 修复SDPullToRefreshView外层套有ScrollView的时候不能拖动
+
 ## 1.0.13
 * 新增stopRefreshingWithResult(boolean success);方法，可以展示刷新成功和失败的结果
 * 新增setDurationShowRefreshResult(int durationShowRefreshResult);方法，可以设置显示刷新成功或者刷新失败的时长
