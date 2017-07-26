@@ -9,6 +9,7 @@ import com.fanwe.library.activity.SDBaseActivity;
 import com.fanwe.library.pulltorefresh.ISDPullToRefreshView;
 import com.fanwe.library.pulltorefresh.SDPullToRefreshView;
 import com.sd.demo.pulltorefresh.R;
+import com.sd.demo.pulltorefresh.loadingview.google.GoogleLoadingView;
 
 public class ButtonActivity extends SDBaseActivity
 {
@@ -63,6 +64,7 @@ public class ButtonActivity extends SDBaseActivity
         });
 
         view_pull.setDebug(true);
+        view_pull.setHeaderView(new GoogleLoadingView(this));
         view_pull.setOnRefreshCallback(new ISDPullToRefreshView.OnRefreshCallback()
         {
             @Override

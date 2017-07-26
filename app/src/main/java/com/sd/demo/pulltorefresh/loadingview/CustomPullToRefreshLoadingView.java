@@ -1,4 +1,4 @@
-package com.sd.demo.pulltorefresh.view;
+package com.sd.demo.pulltorefresh.loadingview;
 
 import android.content.Context;
 import android.support.annotation.AttrRes;
