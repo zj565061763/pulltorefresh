@@ -11,6 +11,7 @@ import android.view.Gravity;
 import com.fanwe.library.pulltorefresh.ISDPullToRefreshView;
 import com.fanwe.library.pulltorefresh.SDPullToRefreshView;
 import com.fanwe.library.pulltorefresh.loadingview.SDPullToRefreshLoadingView;
+import com.fanwe.library.utils.LogUtil;
 
 /**
  * Created by Administrator on 2017/7/26.
@@ -83,15 +84,20 @@ public class GoogleLoadingView extends SDPullToRefreshLoadingView
     {
         super.onViewPositionChanged(view);
 
+        LogUtil.i("onViewPositionChanged--------------------");
+
         float scrollDistance = Math.abs(view.getScrollDistance());
-        float percent = scrollDistance / (float) getRefreshHeight();
-        float dragPercent = Math.min(1f, percent);
-
+        float dragPercent = Math.min(1f, scrollDistance / (float) getRefreshHeight());
+        LogUtil.i("dragPercent:" + dragPercent);
         float adjustedPercent = (float) Math.max(dragPercent - .4, 0) * 5 / 3;
-
         float strokeStart = adjustedPercent * .8f;
-        mProgress.setStartEndTrim(0f, Math.min(MAX_PROGRESS_ANGLE, strokeStart));
-        mProgress.setArrowScale(Math.min(1f, adjustedPercent));
+        LogUtil.i("strokeStart:" + strokeStart);
+        float startAngle = 0f;
+        float endAngle = Math.min(MAX_PROGRESS_ANGLE, strokeStart);
+        mProgress.setStartEndTrim(startAngle, endAngle);
+
+        float arrowScale = Math.min(1f, adjustedPercent);
+        mProgress.setArrowScale(arrowScale);
 
         float rotation = (-0.25f + .4f * adjustedPercent) * .5f;
         mProgress.setProgressRotation(rotation);
@@ -109,16 +115,13 @@ public class GoogleLoadingView extends SDPullToRefreshLoadingView
                 mProgress.showArrow(true);
                 break;
             case RELEASE_TO_REFRESH:
-
                 break;
             case REFRESHING:
                 mProgress.start();
                 break;
             case REFRESH_SUCCESS:
-
                 break;
             case REFRESH_FAILURE:
-
                 break;
             case REFRESH_FINISH:
                 mProgress.stop();
