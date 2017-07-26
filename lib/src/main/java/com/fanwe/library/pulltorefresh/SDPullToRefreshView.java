@@ -931,7 +931,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                     case REFRESHING:
                     case REFRESH_SUCCESS:
                     case REFRESH_FAILURE:
-                        top = getTopAlignTop();
+                        top += mHeaderView.getRefreshHeight();
                         break;
                 }
             }
@@ -956,7 +956,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                     case REFRESHING:
                     case REFRESH_SUCCESS:
                     case REFRESH_FAILURE:
-                        top = getTopAlignBottom() - mFooterView.getMeasuredHeight();
+                        top -= mFooterView.getRefreshHeight();
                         break;
                 }
             }
@@ -985,10 +985,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                     case REFRESH_FAILURE:
                         if (getDirection() == Direction.FROM_HEADER)
                         {
-                            top += mHeaderView.getMeasuredHeight();
+                            top += mHeaderView.getRefreshHeight();
                         } else if (getDirection() == Direction.FROM_FOOTER)
                         {
-                            top -= mFooterView.getMeasuredHeight();
+                            top -= mFooterView.getRefreshHeight();
                         }
                         break;
                 }
