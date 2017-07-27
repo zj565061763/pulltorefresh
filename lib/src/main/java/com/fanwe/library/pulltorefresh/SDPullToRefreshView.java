@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 
 import com.fanwe.library.pulltorefresh.loadingview.SDPullToRefreshLoadingView;
@@ -49,6 +50,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     private State mState = State.RESET;
     private Direction mDirection = Direction.NONE;
     private Direction mLastDirection = Direction.NONE;
+    private int mTouchSlop;
     /**
      * HeaderView和FooterView是否是覆盖的模式
      */
@@ -77,6 +79,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
     private void initInternal()
     {
+        mTouchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
         initScroller();
     }
 
@@ -394,7 +397,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
     private boolean checkMoveParams()
     {
-        return mTouchHelper.getDegreeY() < 30;
+        return Math.abs(mTouchHelper.getDistanceMoveY()) > mTouchSlop && mTouchHelper.getDegreeY() < 30;
     }
 
     private boolean isViewReset()
