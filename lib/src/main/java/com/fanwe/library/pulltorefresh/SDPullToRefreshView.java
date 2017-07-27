@@ -1,6 +1,7 @@
 package com.fanwe.library.pulltorefresh;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -910,6 +911,19 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             }
             height += (getPaddingTop() + getPaddingBottom());
         }
+
+        if (Build.VERSION.SDK_INT >= 16)
+        {
+            if (height < getMinimumHeight())
+            {
+                height = getMinimumHeight();
+            }
+            if (width < getMinimumWidth())
+            {
+                width = getMinimumWidth();
+            }
+        }
+
 
         setMeasuredDimension(width, height);
     }
