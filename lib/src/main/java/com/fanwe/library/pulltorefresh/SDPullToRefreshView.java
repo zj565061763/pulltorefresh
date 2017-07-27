@@ -71,6 +71,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     private OnRefreshCallback mOnRefreshCallback;
     private OnStateChangedCallback mOnStateChangedCallback;
     private OnViewPositionChangedCallback mOnViewPositionChangedCallback;
+    private IPullCondition mPullCondition;
 
     private boolean mIsDebug;
 
@@ -122,6 +123,12 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     public void setOnViewPositionChangedCallback(OnViewPositionChangedCallback onViewPositionChangedCallback)
     {
         mOnViewPositionChangedCallback = onViewPositionChangedCallback;
+    }
+
+    @Override
+    public void setPullCondition(IPullCondition pullCondition)
+    {
+        mPullCondition = pullCondition;
     }
 
     @Override
@@ -412,14 +419,16 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     {
         return mTouchHelper.isMoveDown()
                 && (mMode == Mode.BOTH || mMode == Mode.PULL_FROM_HEADER)
-                && SDTouchHelper.isScrollToTop(mRefreshView);
+                && SDTouchHelper.isScrollToTop(mRefreshView)
+                && (mPullCondition != null ? mPullCondition.canPullFromHeader() : true);
     }
 
     private boolean canPullFromFooter()
     {
         return mTouchHelper.isMoveUp()
                 && (mMode == Mode.BOTH || mMode == Mode.PULL_FROM_FOOTER)
-                && SDTouchHelper.isScrollToBottom(mRefreshView);
+                && SDTouchHelper.isScrollToBottom(mRefreshView)
+                && (mPullCondition != null ? mPullCondition.canPullFromFooter() : true);
     }
 
     @Override

@@ -48,6 +48,13 @@ public interface ISDPullToRefreshView
     void setOnViewPositionChangedCallback(OnViewPositionChangedCallback onViewPositionChangedCallback);
 
     /**
+     * 设置可以触发拖动的条件，设置后当view内部满足拖动，并且此对象也满足条件后才可以触发拖动
+     *
+     * @param pullCondition
+     */
+    void setPullCondition(IPullCondition pullCondition);
+
+    /**
      * 设置HeaderView和FooterView是否是覆盖的模式（默认false）
      *
      * @param overLayMode
@@ -262,6 +269,23 @@ public interface ISDPullToRefreshView
          * @param view
          */
         void onViewPositionChanged(SDPullToRefreshView view);
+    }
+
+    interface IPullCondition
+    {
+        /**
+         * 当View内部可以从Header处拖动条件成立并且这个方法返回true的时候触发拖动
+         *
+         * @return
+         */
+        boolean canPullFromHeader();
+
+        /**
+         * 当View内部可以从Footer处拖动条件成立并且这个方法返回true的时候触发拖动
+         *
+         * @return
+         */
+        boolean canPullFromFooter();
     }
 
     /**
