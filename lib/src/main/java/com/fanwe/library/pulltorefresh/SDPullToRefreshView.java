@@ -455,7 +455,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
                 mTouchHelper.setNeedCosume(false);
                 mTouchHelper.setNeedIntercept(false);
-                mTouchHelper.requestDisallowInterceptTouchEvent(this, false);
+                SDTouchHelper.requestDisallowInterceptTouchEvent(this, false);
                 break;
         }
 
