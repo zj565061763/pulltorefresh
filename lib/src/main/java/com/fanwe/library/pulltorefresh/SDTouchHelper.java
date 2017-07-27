@@ -63,11 +63,23 @@ class SDTouchHelper
                 mDistanceDownX = mMoveX - mDownX;
                 mDistanceDownY = mMoveY - mDownY;
 
-                final float angleX = Math.abs(mDistanceMoveY) / Math.abs(mDistanceMoveX);
-                mDegreeX = Math.toDegrees(Math.atan(angleX));
+                if (mDistanceMoveX != 0)
+                {
+                    final float angleX = Math.abs(mDistanceMoveY) / Math.abs(mDistanceMoveX);
+                    mDegreeX = Math.toDegrees(Math.atan(angleX));
+                } else
+                {
+                    mDegreeX = 0;
+                }
 
-                final float angleY = Math.abs(mDistanceMoveX) / Math.abs(mDistanceMoveY);
-                mDegreeY = Math.toDegrees(Math.atan(angleY));
+                if (mDistanceMoveY != 0)
+                {
+                    final float angleY = Math.abs(mDistanceMoveX) / Math.abs(mDistanceMoveY);
+                    mDegreeY = Math.toDegrees(Math.atan(angleY));
+                } else
+                {
+                    mDegreeY = 0;
+                }
 
                 mLastMoveX = mMoveX;
                 mLastMoveY = mMoveY;
