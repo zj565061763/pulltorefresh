@@ -385,7 +385,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                     SDTouchHelper.requestDisallowInterceptTouchEvent(this, true);
                     if (mIsDebug)
                     {
-                        Log.e(TAG, "onInterceptTouchEvent Intercept success when isMoveDown:" + mTouchHelper.isMoveDown());
+                        Log.e(TAG, "onInterceptTouchEvent Intercept success when isMoveDown:" + mTouchHelper.isMoveDown(true));
                     }
                 }
                 break;
@@ -418,7 +418,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
     private boolean canPullFromHeader()
     {
-        return mTouchHelper.isMoveDown()
+        return mTouchHelper.isMoveDown(true)
                 && (mMode == Mode.BOTH || mMode == Mode.PULL_FROM_HEADER)
                 && SDTouchHelper.isScrollToTop(mRefreshView)
                 && (mPullCondition != null ? mPullCondition.canPullFromHeader() : true);
@@ -426,7 +426,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
     private boolean canPullFromFooter()
     {
-        return mTouchHelper.isMoveUp()
+        return mTouchHelper.isMoveUp(true)
                 && (mMode == Mode.BOTH || mMode == Mode.PULL_FROM_FOOTER)
                 && SDTouchHelper.isScrollToBottom(mRefreshView)
                 && (mPullCondition != null ? mPullCondition.canPullFromFooter() : true);
@@ -512,15 +512,15 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     private void processMoveEvent()
     {
         //设置方向
-        if (mTouchHelper.isMoveDown())
+        if (mTouchHelper.isMoveDown(true))
         {
             setDirection(Direction.FROM_HEADER);
-        } else if (mTouchHelper.isMoveUp())
+        } else if (mTouchHelper.isMoveUp(true))
         {
             setDirection(Direction.FROM_FOOTER);
         }
 
-        int distanceY = getComsumedDistance(mTouchHelper.getDistanceMoveY());
+        int distanceY = getComsumedDistance(mTouchHelper.getDistanceY(false));
         boolean canMove = checkMoveRange(distanceY);
 
         if (canMove)

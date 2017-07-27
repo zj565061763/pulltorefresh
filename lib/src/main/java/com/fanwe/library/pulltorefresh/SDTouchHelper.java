@@ -146,128 +146,66 @@ class SDTouchHelper
         return mIsNeedCosume;
     }
 
-    /**
-     * 最后一次ACTION_DOWN的x坐标
-     *
-     * @return
-     */
     public float getDownX()
     {
         return mDownX;
     }
 
-    /**
-     * 最后一次ACTION_DOWN的y坐标
-     *
-     * @return
-     */
     public float getDownY()
     {
         return mDownY;
     }
 
-    /**
-     * 最后一次ACTION_MOVE的x坐标
-     *
-     * @return
-     */
     public float getMoveX()
     {
         return mMoveX;
     }
 
-    /**
-     * 最后一次ACTION_MOVE的y坐标
-     *
-     * @return
-     */
     public float getMoveY()
     {
         return mMoveY;
     }
 
-    /**
-     * 最后两次ACTION_MOVE的x距离<br>
-     * 大于0：往右移动<br>
-     * 小于0：往左移动<br>
-     *
-     * @return
-     */
-    public float getDistanceMoveX()
+    public float getDistanceX(boolean baseDown)
     {
-        return mDistanceMoveX;
+        if (baseDown)
+        {
+            return mDistanceDownX;
+        } else
+        {
+            return mDistanceMoveX;
+        }
     }
 
-    /**
-     * 最后两次ACTION_MOVE的y距离<br>
-     * 大于0：往下移动<br>
-     * 小于0：往上移动<br>
-     *
-     * @return
-     */
-    public float getDistanceMoveY()
+    public float getDistanceY(boolean baseDown)
     {
-        return mDistanceMoveY;
+        if (baseDown)
+        {
+            return mDistanceDownY;
+        } else
+        {
+            return mDistanceMoveY;
+        }
     }
 
-    /**
-     * 当前ACTION_MOVE的x和ACTION_DOWN的x的距离
-     *
-     * @return
-     */
-    public float getDistanceDownX()
+    public boolean isMoveLeft(boolean baseDown)
     {
-        return mDistanceDownX;
+        return getDistanceX(baseDown) < 0;
     }
 
-    /**
-     * 当前ACTION_MOVE的y和ACTION_DOWN的y的距离
-     *
-     * @return
-     */
-    public float getDistanceDownY()
+    public boolean isMoveRight(boolean baseDown)
     {
-        return mDistanceDownY;
+        return getDistanceX(baseDown) > 0;
     }
 
-    /**
-     * 最后两次ACTION_MOVE方向向左
-     *
-     * @return
-     */
-    public boolean isMoveLeft()
+    public boolean isMoveUp(boolean baseDown)
     {
-        return getDistanceMoveX() < 0;
+        return getDistanceY(baseDown) < 0;
     }
 
-    /**
-     * 最后两次ACTION_MOVE方向向左
-     *
-     * @return
-     */
-    public boolean isMoveRight()
+    public boolean isMoveDown(boolean baseDown)
     {
-        return getDistanceMoveX() > 0;
-    }
-
-    /**
-     * 最后两次ACTION_MOVE方向向上
-     *
-     * @return
-     */
-    public boolean isMoveUp()
-    {
-        return getDistanceMoveY() < 0;
-    }
-
-    /**
-     * 最后两次ACTION_MOVE方向向下
-     *
-     * @return
-     */
-    public boolean isMoveDown()
-    {
-        return getDistanceMoveY() > 0;
+        return getDistanceY(baseDown) > 0;
     }
 
     /**
