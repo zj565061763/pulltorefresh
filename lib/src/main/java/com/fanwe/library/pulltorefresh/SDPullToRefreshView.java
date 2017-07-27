@@ -86,6 +86,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     public void setDebug(boolean debug)
     {
         mIsDebug = debug;
+        mTouchHelper.setDebug(debug);
     }
 
     private void initScroller()

@@ -2,6 +2,7 @@ package com.fanwe.library.pulltorefresh;
 
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewParent;
@@ -11,6 +12,10 @@ import android.view.ViewParent;
  */
 class SDTouchHelper
 {
+    private static final String TAG = "SDTouchHelper";
+
+    private boolean mDebug;
+
     /**
      * onInterceptTouchEvent方法是否需要拦截事件
      */
@@ -28,14 +33,19 @@ class SDTouchHelper
     private float mLastMoveX;
     private float mLastMoveY;
 
-    private float mDistanceMoveX;
-    private float mDistanceMoveY;
-
     private float mDistanceDownX;
     private float mDistanceDownY;
 
+    private float mDistanceMoveX;
+    private float mDistanceMoveY;
+
     private double mDegreeX;
     private double mDegreeY;
+
+    public void setDebug(boolean debug)
+    {
+        mDebug = debug;
+    }
 
     /**
      * 处理触摸事件
@@ -57,11 +67,11 @@ class SDTouchHelper
                 mMoveX = ev.getRawX();
                 mMoveY = ev.getRawY();
 
-                mDistanceMoveX = mMoveX - mLastMoveX;
-                mDistanceMoveY = mMoveY - mLastMoveY;
-
                 mDistanceDownX = mMoveX - mDownX;
                 mDistanceDownY = mMoveY - mDownY;
+
+                mDistanceMoveX = mMoveX - mLastMoveX;
+                mDistanceMoveY = mMoveY - mLastMoveY;
 
                 if (mDistanceDownX != 0)
                 {
@@ -88,6 +98,11 @@ class SDTouchHelper
                 break;
             default:
                 break;
+        }
+
+        if (mDebug)
+        {
+            Log.i(TAG, "event " + ev.getAction() + ":" + toString());
         }
     }
 
@@ -354,8 +369,14 @@ class SDTouchHelper
     public String toString()
     {
         StringBuilder sb = new StringBuilder("\r\n");
-        sb.append("mDistanceMoveX:").append(mDistanceMoveX).append("\r\n")
-                .append("mDistanceMoveY:").append(mDistanceMoveY).append("\r\n")
+        sb.append("mDownX:").append(mDownX).append("\r\n")
+                .append("mDownY:").append(mDownY).append("\r\n")
+                .append("mMoveX:").append(mMoveX).append("\r\n")
+                .append("mMoveY:").append(mMoveY).append("\r\n").append("\r\n")
+                .append("mDistanceDownX:").append(mDistanceDownX).append("\r\n")
+                .append("mDistanceDownY:").append(mDistanceDownY).append("\r\n")
+                .append("mDistanceMoveX:").append(mDistanceMoveX).append("\r\n")
+                .append("mDistanceMoveY:").append(mDistanceMoveY).append("\r\n").append("\r\n")
                 .append("mDegreeX:").append(mDegreeX).append("\r\n")
                 .append("mDegreeY:").append(mDegreeY).append("\r\n");
         return sb.toString();
