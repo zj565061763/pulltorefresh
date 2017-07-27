@@ -1,3 +1,6 @@
+## 1.0.17
+* 修复计算拖动角度的时候由于除数是0导致的计算角度为NaN而无法拖动的情况
+
 ## 1.0.16
 * 新增IPullCondition接口，可以从外部限制拖动可以触发的条件
 * 新增IPullCondition接口的实现类SimpleViewPullCondition
