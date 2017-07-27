@@ -174,6 +174,13 @@ public interface ISDPullToRefreshView
     void setOnViewPositionChangedCallback(OnViewPositionChangedCallback onViewPositionChangedCallback);
 
     /**
+     * 设置可以触发拖动的条件，设置后当view内部满足拖动，并且此对象也满足条件后才可以触发拖动
+     *
+     * @param pullCondition
+     */
+    void setPullCondition(IPullCondition pullCondition);
+
+    /**
      * 设置HeaderView和FooterView是否是覆盖的模式（默认false）
      *
      * @param overLayMode
@@ -390,17 +397,42 @@ public interface ISDPullToRefreshView
         void onViewPositionChanged(SDPullToRefreshView view);
     }
 
+    interface IPullCondition
+    {
+        /**
+         * 当View内部可以从Header处拖动条件成立并且这个方法返回true的时候触发拖动
+         *
+         * @return
+         */
+        boolean canPullFromHeader();
+
+        /**
+         * 当View内部可以从Footer处拖动条件成立并且这个方法返回true的时候触发拖动
+         *
+         * @return
+         */
+        boolean canPullFromFooter();
+    }
+
     /**
      * 加载view基类接口
      */
     interface IPullToRefreshLoadingView extends OnStateChangedCallback, OnViewPositionChangedCallback
     {
         /**
-         * 返回触发刷新条件的高度
+         * 返回view处于刷新中的时候需要显示的高度（默认view的测量高度）
          *
          * @return
          */
         int getRefreshHeight();
+
+        /**
+         * 返回是否可以触发刷新（默认大于等于view的测量高度的时候触发刷新）
+         *
+         * @param scrollDistance 已经滚动的距离
+         * @return
+         */
+        boolean canRefresh(int scrollDistance);
 
         /**
          * 返回加载view类型
