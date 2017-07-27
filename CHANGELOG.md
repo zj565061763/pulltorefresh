@@ -1,3 +1,7 @@
+## 1.0.18
+* 重构onTouchEvent逻辑
+* 新增setCheckDragDegree(boolean checkDragDegree);方法，用于设置是否判断拖动角度，默认判断拖动方向与y轴的夹角必须小于40度
+
 ## 1.0.17
 * 修复计算拖动角度的时候由于除数是0导致的计算角度为NaN而无法拖动的情况
 
