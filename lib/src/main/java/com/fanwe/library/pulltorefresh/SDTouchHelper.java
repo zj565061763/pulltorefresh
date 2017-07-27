@@ -63,18 +63,18 @@ class SDTouchHelper
                 mDistanceDownX = mMoveX - mDownX;
                 mDistanceDownY = mMoveY - mDownY;
 
-                if (mDistanceMoveX != 0)
+                if (mDistanceDownX != 0)
                 {
-                    final float angleX = Math.abs(mDistanceMoveY) / Math.abs(mDistanceMoveX);
+                    final float angleX = Math.abs(mDistanceDownY) / Math.abs(mDistanceDownX);
                     mDegreeX = Math.toDegrees(Math.atan(angleX));
                 } else
                 {
                     mDegreeX = 0;
                 }
 
-                if (mDistanceMoveY != 0)
+                if (mDistanceDownY != 0)
                 {
-                    final float angleY = Math.abs(mDistanceMoveX) / Math.abs(mDistanceMoveY);
+                    final float angleY = Math.abs(mDistanceDownX) / Math.abs(mDistanceDownY);
                     mDegreeY = Math.toDegrees(Math.atan(angleY));
                 } else
                 {
@@ -256,7 +256,7 @@ class SDTouchHelper
     }
 
     /**
-     * 最后两次ACTION_MOVE相对x方向的移动夹角
+     * 当前ACTION_MOVE的和ACTION_DOWN的x方向夹角
      *
      * @return [0-90]度
      */
@@ -266,7 +266,7 @@ class SDTouchHelper
     }
 
     /**
-     * 最后两次ACTION_MOVE相对y方向的移动夹角
+     * 当前ACTION_MOVE的和ACTION_DOWN的y方向夹角
      *
      * @return [0-90]度
      */
