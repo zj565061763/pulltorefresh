@@ -1,3 +1,6 @@
+## 1.0.15
+* SDPullToRefreshView支持设置最小宽度和最小高度
+
 ## 1.0.14
 * 修复SDPullToRefreshView外层套有ScrollView的时候不能拖动
 
