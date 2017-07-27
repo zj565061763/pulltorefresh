@@ -1,4 +1,4 @@
-package com.fanwe.library.pulltorefresh.condition;
+package com.fanwe.library.pulltorefresh.pullcondition;
 
 import android.support.v4.view.ViewCompat;
 import android.view.View;
