@@ -49,6 +49,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     private State mState = State.RESET;
     private Direction mDirection = Direction.NONE;
     private Direction mLastDirection = Direction.NONE;
+    private boolean mCheckDragDegree = true;
     /**
      * HeaderView和FooterView是否是覆盖的模式
      */
@@ -172,6 +173,12 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             durationShowRefreshResult = DEFAULT_DURATION_SHOW_REFRESH_RESULT;
         }
         mDurationShowRefreshResult = durationShowRefreshResult;
+    }
+
+    @Override
+    public void setCheckDragDegree(boolean checkDragDegree)
+    {
+        mCheckDragDegree = checkDragDegree;
     }
 
     @Override
@@ -395,7 +402,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
     private boolean checkMoveParams()
     {
-        return mTouchHelper.getDegreeY() < 30;
+        return (mCheckDragDegree ? mTouchHelper.getDegreeY() < 40 : true);
     }
 
     private boolean isViewReset()
