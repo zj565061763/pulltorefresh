@@ -1,3 +1,7 @@
+## 1.0.16
+* 新增IPullCondition接口，可以从外部限制拖动可以触发的条件
+* 新增IPullCondition接口的实现类SimpleViewPullCondition
+
 ## 1.0.15
 * SDPullToRefreshView支持设置最小宽度和最小高度
 
