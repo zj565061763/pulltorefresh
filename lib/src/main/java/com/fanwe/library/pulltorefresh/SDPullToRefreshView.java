@@ -444,6 +444,12 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         switch (event.getAction())
         {
             case MotionEvent.ACTION_MOVE:
+                if (mTouchHelper.isNeedIntercept())
+                {
+                    // 已经满足拖动条件，直接处理拖动逻辑
+                    mTouchHelper.setNeedCosume(true);
+                }
+
                 if (mTouchHelper.isNeedCosume())
                 {
                     processMoveEvent();
@@ -452,6 +458,8 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                     if (canPull())
                     {
                         mTouchHelper.setNeedCosume(true);
+                        mTouchHelper.setNeedIntercept(true);
+                        SDTouchHelper.requestDisallowInterceptTouchEvent(this, true);
                     } else
                     {
                         mTouchHelper.setNeedIntercept(false);
