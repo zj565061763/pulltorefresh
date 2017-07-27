@@ -3,7 +3,7 @@ Scroller+ViewGroup实现的下拉刷新和上拉加载的库，提供拖动回�
 [更新日志](https://github.com/zj565061763/pulltorefresh/blob/master/CHANGELOG.md)
 
 ## Gradle
-`compile 'com.fanwe.android:pulltorefresh:1.0.17.2'`
+`compile 'com.fanwe.android:pulltorefresh:1.0.18'`
 
 ## 简单效果
 ![](http://thumbsnap.com/i/8AyEAjrW.gif?0725)<br>
@@ -207,6 +207,13 @@ public interface ISDPullToRefreshView
      * @param durationShowRefreshResult
      */
     void setDurationShowRefreshResult(int durationShowRefreshResult);
+
+    /**
+     * 设置是否判断拖动角度，默认判断拖动方向与y轴的夹角必须小于40度
+     *
+     * @param checkDragDegree true-判断拖动角度，false-不判断
+     */
+    void setCheckDragDegree(boolean checkDragDegree);
 
     /**
      * 设置HeaderView处处于刷新状态
