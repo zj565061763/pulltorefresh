@@ -885,45 +885,91 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         setFooterView(new SimpleTextLoadingView(getContext()));
     }
 
+    private int getMinWidth()
+    {
+        if (Build.VERSION.SDK_INT >= 16)
+        {
+            return getMinimumWidth();
+        } else
+        {
+            return 0;
+        }
+    }
+
+    private int getMinHeight()
+    {
+        if (Build.VERSION.SDK_INT >= 16)
+        {
+            return getMinimumHeight();
+        } else
+        {
+            return 0;
+        }
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
     {
-        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        final int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int width = MeasureSpec.getSize(widthMeasureSpec);
-        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         int height = MeasureSpec.getSize(heightMeasureSpec);
 
-        int widthMeasureSpecLoadingView = MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY);
+        boolean needReMeasure = false;
+        int widthMeasureSpecLoadingView = widthMeasureSpec;
+        if (widthMode != MeasureSpec.EXACTLY)
+        {
+            widthMeasureSpecLoadingView = MeasureSpec.makeMeasureSpec(width, MeasureSpec.UNSPECIFIED);
+            needReMeasure = true;
+        }
         int heightMeasureSpecLoadingView = MeasureSpec.makeMeasureSpec(height, MeasureSpec.UNSPECIFIED);
-
         measureLoadingView(mHeaderView, widthMeasureSpecLoadingView, heightMeasureSpecLoadingView);
         measureLoadingView(mFooterView, widthMeasureSpecLoadingView, heightMeasureSpecLoadingView);
 
         measureChild(mRefreshView, widthMeasureSpec, heightMeasureSpec);
 
+        if (widthMode != MeasureSpec.EXACTLY)
+        {
+            int maxWidth = Math.max(mHeaderView.getMeasuredWidth(), mFooterView.getMeasuredWidth());
+            maxWidth = Math.max(maxWidth, mRefreshView.getMeasuredWidth());
+            maxWidth += (getPaddingLeft() + getPaddingRight());
+
+            maxWidth = Math.max(maxWidth, getMinWidth());
+            if (widthMode == MeasureSpec.UNSPECIFIED)
+            {
+                width = maxWidth;
+            } else if (widthMode == MeasureSpec.AT_MOST)
+            {
+                width = Math.min(maxWidth, width);
+            }
+        }
+
         if (heightMode != MeasureSpec.EXACTLY)
         {
-            height = mRefreshView.getMeasuredHeight();
-            if (height == 0)
+            int maxHeight = mRefreshView.getMeasuredHeight();
+            if (maxHeight == 0)
             {
                 //如果刷新view的高度为0，则给当前view一个默认高度，否则会出现代码触发刷新的时候HeaderView或者FooterView看不见
-                height = Math.max(mHeaderView.getMeasuredHeight(), mFooterView.getMeasuredHeight());
+                maxHeight = Math.max(mHeaderView.getMeasuredHeight(), mFooterView.getMeasuredHeight());
             }
-            height += (getPaddingTop() + getPaddingBottom());
+            maxHeight += (getPaddingTop() + getPaddingBottom());
+
+            maxHeight = Math.max(maxHeight, getMinHeight());
+            if (heightMode == MeasureSpec.UNSPECIFIED)
+            {
+                height = maxHeight;
+            } else if (heightMode == MeasureSpec.AT_MOST)
+            {
+                height = Math.min(maxHeight, height);
+            }
         }
 
-        if (Build.VERSION.SDK_INT >= 16)
+        if (needReMeasure)
         {
-            if (height < getMinimumHeight())
-            {
-                height = getMinimumHeight();
-            }
-            if (width < getMinimumWidth())
-            {
-                width = getMinimumWidth();
-            }
+            widthMeasureSpecLoadingView = MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY);
+            measureLoadingView(mHeaderView, widthMeasureSpecLoadingView, heightMeasureSpecLoadingView);
+            measureLoadingView(mFooterView, widthMeasureSpecLoadingView, heightMeasureSpecLoadingView);
         }
-
 
         setMeasuredDimension(width, height);
     }
