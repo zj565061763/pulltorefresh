@@ -439,7 +439,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     {
         if (mMode == Mode.DISABLE || isRefreshing())
         {
-            return super.onTouchEvent(event);
+            return false;
         }
 
         mTouchHelper.processTouchEvent(event);
@@ -471,7 +471,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 break;
         }
 
-        return super.onTouchEvent(event) || mTouchHelper.isNeedCosume() || event.getAction() == MotionEvent.ACTION_DOWN;
+        return mTouchHelper.isNeedCosume() || event.getAction() == MotionEvent.ACTION_DOWN;
     }
 
     private void onActionUp()
