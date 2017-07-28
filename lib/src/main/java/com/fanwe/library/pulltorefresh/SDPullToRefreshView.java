@@ -535,12 +535,12 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             setDirection(Direction.FROM_FOOTER);
         }
 
-        int distanceY = getComsumedDistance(mTouchHelper.getDistanceY(false));
-        boolean canMove = checkMoveRange(distanceY);
+        int dy = getComsumedDistance(mTouchHelper.getDistanceY(false));
+        boolean canMove = checkMoveRange(dy);
 
         if (canMove)
         {
-            moveViews(distanceY);
+            moveViews(dy);
             updateStateByMoveDistance();
         }
     }
@@ -845,13 +845,13 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     /**
      * 移动view
      *
-     * @param distance 要移动的距离
+     * @param dy 要移动的距离
      */
-    private void moveViews(float distance)
+    private void moveViews(int dy)
     {
         if (getDirection() == Direction.FROM_HEADER)
         {
-            ViewCompat.offsetTopAndBottom(mHeaderView, (int) distance);
+            ViewCompat.offsetTopAndBottom(mHeaderView, dy);
             if (mIsOverLayMode)
             {
                 //覆盖模式
@@ -861,12 +861,12 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 }
             } else
             {
-                ViewCompat.offsetTopAndBottom(mRefreshView, (int) distance);
+                ViewCompat.offsetTopAndBottom(mRefreshView, dy);
             }
             mHeaderView.onViewPositionChanged(this);
         } else
         {
-            ViewCompat.offsetTopAndBottom(mFooterView, (int) distance);
+            ViewCompat.offsetTopAndBottom(mFooterView, dy);
             if (mIsOverLayMode)
             {
                 //覆盖模式
@@ -876,7 +876,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 }
             } else
             {
-                ViewCompat.offsetTopAndBottom(mRefreshView, (int) distance);
+                ViewCompat.offsetTopAndBottom(mRefreshView, dy);
             }
             mFooterView.onViewPositionChanged(this);
         }
