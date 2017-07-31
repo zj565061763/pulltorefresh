@@ -54,7 +54,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
      * HeaderView和FooterView是否是覆盖的模式
      */
     private boolean mIsOverLayMode = false;
-    private Boolean mTempIsOverLayMode = null;
     /**
      * 拖动的时候要消耗的拖动距离比例
      */
@@ -139,9 +138,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         if (mScroller.isFinished() && mState == State.RESET)
         {
             mIsOverLayMode = overLayMode;
-        } else
-        {
-            mTempIsOverLayMode = overLayMode;
         }
     }
 
@@ -343,16 +339,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                                 Log.i(TAG, "requestLayout when state reset and scroller finished");
                             }
                             requestLayout();
-                        }
-                        if (mTempIsOverLayMode != null)
-                        {
-                            mIsOverLayMode = mTempIsOverLayMode;
-                            mTempIsOverLayMode = null;
-
-                            if (mIsDebug)
-                            {
-                                Log.i(TAG, "tempIsOverLayMode is not null update isOverLayMode:" + mIsOverLayMode);
-                            }
                         }
                         break;
                 }
