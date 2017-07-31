@@ -64,7 +64,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
      */
     private int mDurationShowRefreshResult = DEFAULT_DURATION_SHOW_REFRESH_RESULT;
     private SDScroller mScroller;
-    private boolean mIsScrollerStartSuccess = false;
+    private boolean mIsScrollerStarted = false;
 
     private boolean mHasOnLayout = false;
     private Runnable mUpdatePositionRunnable;
@@ -325,10 +325,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             ViewCompat.postInvalidateOnAnimation(this);
         } else
         {
-            if (mIsScrollerStartSuccess)
+            if (mIsScrollerStarted)
             {
-                final boolean isScrollerStartSuccess = mIsScrollerStartSuccess;
-                mIsScrollerStartSuccess = false;
+                final boolean isScrollerStarted = mIsScrollerStarted;
+                mIsScrollerStarted = false;
                 switch (mState)
                 {
                     case PULL_TO_REFRESH:
@@ -336,7 +336,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                         setState(State.RESET);
                         break;
                     case RESET:
-                        if (isScrollerStartSuccess)
+                        if (isScrollerStarted)
                         {
                             if (mIsDebug)
                             {
@@ -764,7 +764,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
                 if (mScroller.startScrollToY(startY, endY, -1))
                 {
-                    mIsScrollerStartSuccess = true;
+                    mIsScrollerStarted = true;
                     if (mIsDebug)
                     {
                         Log.i(TAG, "smoothScrollViewByState:" + mState + " startScrollToY:" + startY + "," + endY);
@@ -786,7 +786,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
                 if (mScroller.startScrollToY(startY, endY, -1))
                 {
-                    mIsScrollerStartSuccess = true;
+                    mIsScrollerStarted = true;
                     if (mIsDebug)
                     {
                         Log.i(TAG, "smoothScrollViewByState:" + mState + " startScrollToY:" + startY + "," + endY);
