@@ -323,23 +323,12 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         {
             if (mIsScrollerStarted)
             {
-                final boolean isScrollerStarted = mIsScrollerStarted;
                 mIsScrollerStarted = false;
                 switch (mState)
                 {
                     case PULL_TO_REFRESH:
                     case REFRESH_FINISH:
                         setState(State.RESET);
-                        break;
-                    case RESET:
-                        if (isScrollerStarted)
-                        {
-                            if (mIsDebug)
-                            {
-                                Log.i(TAG, "requestLayout when state reset and scroller finished");
-                            }
-                            requestLayout();
-                        }
                         break;
                 }
             }
