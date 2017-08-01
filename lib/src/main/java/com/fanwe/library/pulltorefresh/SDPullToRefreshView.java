@@ -317,7 +317,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     {
         if (mScroller.computeScrollOffset())
         {
-            moveViews(mScroller.getMoveY());
+            moveViews(mScroller.getDistanceMoveY());
             ViewCompat.postInvalidateOnAnimation(this);
         } else
         {
@@ -377,7 +377,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
     private boolean checkMoveParams()
     {
-        return (mCheckDragDegree ? mTouchHelper.getDegreeY() < 40 : true);
+        return (mCheckDragDegree ? mTouchHelper.getDegreeY(true) < 40 : true);
     }
 
     private boolean isViewReset()

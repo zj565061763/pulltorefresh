@@ -8,7 +8,10 @@ import android.view.View;
 import android.view.ViewParent;
 
 /**
- * 触摸事件处理帮助类
+ * 触摸事件处理帮助类<br>
+ * 关于baseDown的解释：<br>
+ * true：最后一次ACTION_MOVE和最后一次ACTION_DOWN的逻辑关系<br>
+ * false：最后一次ACTION_MOVE和最后第二次ACTION_MOVE的逻辑关系<br>
  */
 class SDTouchHelper
 {
@@ -38,9 +41,6 @@ class SDTouchHelper
 
     private float mDistanceMoveX;
     private float mDistanceMoveY;
-
-    private double mDegreeX;
-    private double mDegreeY;
 
     public void setDebug(boolean debug)
     {
@@ -73,24 +73,6 @@ class SDTouchHelper
                 mDistanceMoveX = mMoveX - mLastMoveX;
                 mDistanceMoveY = mMoveY - mLastMoveY;
 
-                if (mDistanceDownX != 0)
-                {
-                    final float angleX = Math.abs(mDistanceDownY) / Math.abs(mDistanceDownX);
-                    mDegreeX = Math.toDegrees(Math.atan(angleX));
-                } else
-                {
-                    mDegreeX = 0;
-                }
-
-                if (mDistanceDownY != 0)
-                {
-                    final float angleY = Math.abs(mDistanceDownX) / Math.abs(mDistanceDownY);
-                    mDegreeY = Math.toDegrees(Math.atan(angleY));
-                } else
-                {
-                    mDegreeY = 0;
-                }
-
                 mLastMoveX = mMoveX;
                 mLastMoveY = mMoveY;
                 break;
@@ -102,7 +84,13 @@ class SDTouchHelper
 
         if (mDebug)
         {
-            Log.i(TAG, "event " + ev.getAction() + ":" + toString());
+            StringBuilder sb = getDebugInfo()
+                    .append("DegreeX down:").append(getDegreeX(true)).append("\r\n")
+                    .append("DegreeY down:").append(getDegreeY(true)).append("\r\n")
+                    .append("DegreeX move:").append(getDegreeX(false)).append("\r\n")
+                    .append("DegreeY move:").append(getDegreeY(false)).append("\r\n");
+
+            Log.i(TAG, "event " + ev.getAction() + ":" + sb.toString());
         }
     }
 
@@ -146,26 +134,52 @@ class SDTouchHelper
         return mIsNeedCosume;
     }
 
+    /**
+     * 最后一次ACTION_DOWN的x坐标
+     *
+     * @return
+     */
     public float getDownX()
     {
         return mDownX;
     }
 
+    /**
+     * 最后一次ACTION_DOWN的y坐标
+     *
+     * @return
+     */
     public float getDownY()
     {
         return mDownY;
     }
 
+    /**
+     * 最后一次ACTION_MOVE的x坐标
+     *
+     * @return
+     */
     public float getMoveX()
     {
         return mMoveX;
     }
 
+    /**
+     * 最后一次ACTION_MOVE的y坐标
+     *
+     * @return
+     */
     public float getMoveY()
     {
         return mMoveY;
     }
 
+    /**
+     * 返回x坐标之间的距离<br>
+     *
+     * @param baseDown
+     * @return
+     */
     public float getDistanceX(boolean baseDown)
     {
         if (baseDown)
@@ -177,6 +191,12 @@ class SDTouchHelper
         }
     }
 
+    /**
+     * 返回y坐标之间的距离<br>
+     *
+     * @param baseDown
+     * @return
+     */
     public float getDistanceY(boolean baseDown)
     {
         if (baseDown)
@@ -188,44 +208,150 @@ class SDTouchHelper
         }
     }
 
+    /**
+     * 手指是否向左移动
+     *
+     * @param baseDown
+     * @return
+     */
     public boolean isMoveLeft(boolean baseDown)
     {
         return getDistanceX(baseDown) < 0;
     }
 
+    /**
+     * 手指是否向右移动
+     *
+     * @param baseDown
+     * @return
+     */
     public boolean isMoveRight(boolean baseDown)
     {
         return getDistanceX(baseDown) > 0;
     }
 
+    /**
+     * 手指是否向上移动
+     *
+     * @param baseDown
+     * @return
+     */
     public boolean isMoveUp(boolean baseDown)
     {
         return getDistanceY(baseDown) < 0;
     }
 
+    /**
+     * 手指是否向下移动
+     *
+     * @param baseDown
+     * @return
+     */
     public boolean isMoveDown(boolean baseDown)
     {
         return getDistanceY(baseDown) > 0;
     }
 
     /**
-     * 当前ACTION_MOVE的和ACTION_DOWN的x方向夹角
+     * 获得x方向的手指移动夹角
      *
      * @return [0-90]度
      */
-    public double getDegreeX()
+    public double getDegreeX(boolean baseDown)
     {
-        return mDegreeX;
+        double result = 0;
+
+        float distanceX = getDistanceX(baseDown);
+        if (distanceX != 0)
+        {
+            float angle = Math.abs(getDistanceY(baseDown)) / Math.abs(distanceX);
+            result = Math.toDegrees(Math.atan(angle));
+        }
+
+        return result;
     }
 
     /**
-     * 当前ACTION_MOVE的和ACTION_DOWN的y方向夹角
+     * 获得y方向的手指移动夹角
      *
      * @return [0-90]度
      */
-    public double getDegreeY()
+    public double getDegreeY(boolean baseDown)
     {
-        return mDegreeY;
+        double result = 0;
+
+        float distanceY = getDistanceY(baseDown);
+        if (distanceY != 0)
+        {
+            float angle = Math.abs(getDistanceX(baseDown)) / Math.abs(distanceY);
+            result = Math.toDegrees(Math.atan(angle));
+        }
+
+        return result;
+    }
+
+    /**
+     * 根据条件返回合法的x方向移动距离
+     *
+     * @param view    要处理的view
+     * @param minLeft view的最小left
+     * @param maxLeft view的最大left
+     * @param dx      x方向将要移动的距离
+     * @return
+     */
+    public int getLegalDistanceX(View view, int minLeft, int maxLeft, int dx)
+    {
+        int future = view.getLeft() + dx;
+        if (isMoveLeft(false))
+        {
+            //如果向左拖动
+            if (future < minLeft)
+            {
+                int comsume = minLeft - future;
+                dx += comsume;
+            }
+        } else if (isMoveRight(false))
+        {
+            //如果向右拖动
+            if (future > maxLeft)
+            {
+                int comsume = future - maxLeft;
+                dx -= comsume;
+            }
+        }
+        return dx;
+    }
+
+    /**
+     * 根据条件返回合法的y方向移动距离
+     *
+     * @param view   要处理的view
+     * @param minTop view的最小top
+     * @param maxTop view的最大top
+     * @param dy     y方向将要移动的距离
+     * @return
+     */
+    public int getLegalDistanceY(View view, int minTop, int maxTop, int dy)
+    {
+        int future = view.getTop() + dy;
+        if (isMoveUp(false))
+        {
+            //如果向上拖动
+            if (future < minTop)
+            {
+                int comsume = minTop - future;
+                dy += comsume;
+            }
+        } else if (isMoveDown(false))
+        {
+            //如果向下拖动
+            if (future > maxTop)
+            {
+                int comsume = future - maxTop;
+                dy -= comsume;
+            }
+        }
+        return dy;
     }
 
     //----------static method start----------
@@ -303,20 +429,17 @@ class SDTouchHelper
 
     //----------static method end----------
 
-    @Override
-    public String toString()
+    public StringBuilder getDebugInfo()
     {
         StringBuilder sb = new StringBuilder("\r\n");
-        sb.append("mDownX:").append(mDownX).append("\r\n")
-                .append("mDownY:").append(mDownY).append("\r\n")
-                .append("mMoveX:").append(mMoveX).append("\r\n")
-                .append("mMoveY:").append(mMoveY).append("\r\n").append("\r\n")
-                .append("mDistanceDownX:").append(mDistanceDownX).append("\r\n")
-                .append("mDistanceDownY:").append(mDistanceDownY).append("\r\n")
-                .append("mDistanceMoveX:").append(mDistanceMoveX).append("\r\n")
-                .append("mDistanceMoveY:").append(mDistanceMoveY).append("\r\n").append("\r\n")
-                .append("mDegreeX:").append(mDegreeX).append("\r\n")
-                .append("mDegreeY:").append(mDegreeY).append("\r\n");
-        return sb.toString();
+        sb.append("DownX:").append(mDownX).append("\r\n")
+                .append("DownY:").append(mDownY).append("\r\n")
+                .append("MoveX:").append(mMoveX).append("\r\n")
+                .append("MoveY:").append(mMoveY).append("\r\n").append("\r\n")
+                .append("DistanceDownX:").append(mDistanceDownX).append("\r\n")
+                .append("DistanceDownY:").append(mDistanceDownY).append("\r\n")
+                .append("DistanceMoveX:").append(mDistanceMoveX).append("\r\n")
+                .append("DistanceMoveY:").append(mDistanceMoveY).append("\r\n").append("\r\n");
+        return sb;
     }
 }
