@@ -471,31 +471,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         smoothScrollViewByState();
     }
 
-    private boolean checkMoveRange(int distanceY)
-    {
-        boolean canMove = false;
-
-        int topReset = getTopScrollReset();
-        int topFuture = 0;
-
-        if (getDirection() == Direction.FROM_HEADER)
-        {
-            topFuture = mHeaderView.getTop() + distanceY;
-            if (topFuture >= topReset)
-            {
-                canMove = true;
-            }
-        } else
-        {
-            topFuture = mFooterView.getTop() + distanceY;
-            if (topFuture <= topReset)
-            {
-                canMove = true;
-            }
-        }
-        return canMove;
-    }
-
     /**
      * 处理触摸移动事件
      */
@@ -511,9 +486,15 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
 
         int dy = getComsumedDistance(mTouchHelper.getDistanceY(false));
-        boolean canMove = checkMoveRange(dy);
+        if (getDirection() == Direction.FROM_HEADER)
+        {
+            dy = mTouchHelper.getLegalDistanceY(mHeaderView, getTopHeaderViewReset(), Integer.MAX_VALUE, dy);
+        } else
+        {
+            dy = mTouchHelper.getLegalDistanceY(mFooterView, Integer.MIN_VALUE, getTopFooterViewReset(), dy);
+        }
 
-        if (canMove)
+        if (dy != 0)
         {
             moveViews(dy);
             updateStateByMoveDistance();
