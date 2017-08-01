@@ -1,3 +1,6 @@
+## 1.0.19
+* 重构拖动距离限制逻辑，根据手指移动的距离和可移动的范围，计算出合理的移动距离让view移动
+
 ## 1.0.18
 * 重构onTouchEvent逻辑
 * 新增setCheckDragDegree(boolean checkDragDegree);方法，用于设置是否判断拖动角度，默认判断拖动方向与y轴的夹角必须小于40度
