@@ -1,3 +1,6 @@
+## 1.0.20
+* 新增onCreateHeaderView()和onCreateFooterView()方法用于继承的时候重写返回默认的HeaderView或者FooterView
+
 ## 1.0.19
 * 重构拖动距离限制逻辑，根据手指移动的距离和可移动的范围，计算出合理的移动距离让view移动
 
