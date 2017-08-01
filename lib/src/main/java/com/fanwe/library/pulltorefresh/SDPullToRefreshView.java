@@ -508,6 +508,11 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
      */
     private void moveViews(int dy)
     {
+        if (dy == 0)
+        {
+            return;
+        }
+
         if (getDirection() == Direction.FROM_HEADER)
         {
             ViewCompat.offsetTopAndBottom(mHeaderView, dy);
