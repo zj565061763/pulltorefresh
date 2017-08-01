@@ -253,10 +253,11 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     @Override
     public void setHeaderView(SDPullToRefreshLoadingView headerView)
     {
-        if (headerView == null)
+        if (headerView == null || headerView == mHeaderView)
         {
             return;
         }
+
         if (mHeaderView != null)
         {
             removeView(mHeaderView);
@@ -274,10 +275,11 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     @Override
     public void setFooterView(SDPullToRefreshLoadingView footerView)
     {
-        if (footerView == null)
+        if (footerView == null || footerView == mFooterView)
         {
             return;
         }
+
         if (mFooterView != null)
         {
             removeView(mFooterView);
