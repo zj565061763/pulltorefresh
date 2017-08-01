@@ -502,6 +502,51 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     }
 
     /**
+     * 移动view
+     *
+     * @param dy 要移动的距离
+     */
+    private void moveViews(int dy)
+    {
+        if (getDirection() == Direction.FROM_HEADER)
+        {
+            ViewCompat.offsetTopAndBottom(mHeaderView, dy);
+            if (mIsOverLayMode)
+            {
+                //覆盖模式
+                if (ViewCompat.getZ(mHeaderView) <= ViewCompat.getZ(mRefreshView))
+                {
+                    ViewCompat.setZ(mHeaderView, ViewCompat.getZ(mRefreshView) + 1);
+                }
+            } else
+            {
+                ViewCompat.offsetTopAndBottom(mRefreshView, dy);
+            }
+            mHeaderView.onViewPositionChanged(this);
+        } else
+        {
+            ViewCompat.offsetTopAndBottom(mFooterView, dy);
+            if (mIsOverLayMode)
+            {
+                //覆盖模式
+                if (ViewCompat.getZ(mFooterView) <= ViewCompat.getZ(mRefreshView))
+                {
+                    ViewCompat.setZ(mFooterView, ViewCompat.getZ(mRefreshView) + 1);
+                }
+            } else
+            {
+                ViewCompat.offsetTopAndBottom(mRefreshView, dy);
+            }
+            mFooterView.onViewPositionChanged(this);
+        }
+
+        if (mOnViewPositionChangedCallback != null)
+        {
+            mOnViewPositionChangedCallback.onViewPositionChanged(this);
+        }
+    }
+
+    /**
      * 更新当前状态
      */
     private void updateStateByMoveDistance()
@@ -796,51 +841,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     {
         distance -= distance * getComsumeScrollPercent();
         return (int) distance;
-    }
-
-    /**
-     * 移动view
-     *
-     * @param dy 要移动的距离
-     */
-    private void moveViews(int dy)
-    {
-        if (getDirection() == Direction.FROM_HEADER)
-        {
-            ViewCompat.offsetTopAndBottom(mHeaderView, dy);
-            if (mIsOverLayMode)
-            {
-                //覆盖模式
-                if (ViewCompat.getZ(mHeaderView) <= ViewCompat.getZ(mRefreshView))
-                {
-                    ViewCompat.setZ(mHeaderView, ViewCompat.getZ(mRefreshView) + 1);
-                }
-            } else
-            {
-                ViewCompat.offsetTopAndBottom(mRefreshView, dy);
-            }
-            mHeaderView.onViewPositionChanged(this);
-        } else
-        {
-            ViewCompat.offsetTopAndBottom(mFooterView, dy);
-            if (mIsOverLayMode)
-            {
-                //覆盖模式
-                if (ViewCompat.getZ(mFooterView) <= ViewCompat.getZ(mRefreshView))
-                {
-                    ViewCompat.setZ(mFooterView, ViewCompat.getZ(mRefreshView) + 1);
-                }
-            } else
-            {
-                ViewCompat.offsetTopAndBottom(mRefreshView, dy);
-            }
-            mFooterView.onViewPositionChanged(this);
-        }
-
-        if (mOnViewPositionChangedCallback != null)
-        {
-            mOnViewPositionChangedCallback.onViewPositionChanged(this);
-        }
     }
 
     @Override
