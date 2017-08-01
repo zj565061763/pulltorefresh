@@ -864,13 +864,32 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
 
         mRefreshView = getChildAt(0);
-        addLoadingView();
+
+        // HeaderView
+        SDPullToRefreshLoadingView headerView = onCreateHeaderView();
+        if (headerView == null)
+        {
+            headerView = new SimpleTextLoadingView(getContext());
+        }
+        setHeaderView(headerView);
+
+        // FooterView
+        SDPullToRefreshLoadingView footerView = onCreateFooterView();
+        if (footerView == null)
+        {
+            footerView = new SimpleTextLoadingView(getContext());
+        }
+        setFooterView(footerView);
     }
 
-    private void addLoadingView()
+    protected SDPullToRefreshLoadingView onCreateHeaderView()
     {
-        setHeaderView(new SimpleTextLoadingView(getContext()));
-        setFooterView(new SimpleTextLoadingView(getContext()));
+        return new SimpleTextLoadingView(getContext());
+    }
+
+    protected SDPullToRefreshLoadingView onCreateFooterView()
+    {
+        return new SimpleTextLoadingView(getContext());
     }
 
     private int getMinWidth()
