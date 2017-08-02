@@ -145,7 +145,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             @Override
             public int clampViewPositionHorizontal(View child, int left, int dx)
             {
-                return child.getTop();
+                return child.getLeft();
             }
 
             @Override
@@ -171,6 +171,8 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 {
                     updateStateByMoveDistance();
                 }
+
+                moveViews(dy);
             }
         });
     }
@@ -500,7 +502,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             case MotionEvent.ACTION_MOVE:
                 if (mTouchHelper.isNeedCosume())
                 {
-                    processMoveEvent();
+                    processMoveEvent(event);
                 } else
                 {
                     if (mTouchHelper.isNeedIntercept() || canPull())
@@ -535,7 +537,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     /**
      * 处理触摸移动事件
      */
-    private void processMoveEvent()
+    private void processMoveEvent(MotionEvent event)
     {
         //设置方向
         if (mTouchHelper.isMoveDownFrom(SDTouchHelper.EVENT_DOWN))
@@ -546,20 +548,24 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             setDirection(Direction.FROM_FOOTER);
         }
 
-        int dy = getComsumedDistance(mTouchHelper.getDeltaYFrom(SDTouchHelper.EVENT_LAST));
         if (getDirection() == Direction.FROM_HEADER)
         {
-            dy = mTouchHelper.getLegalDeltaY(mHeaderView, getTopHeaderViewReset(), Integer.MAX_VALUE, dy);
-        } else
+            // 捕获HeaderView
+            if (mViewDragHelper.getCapturedView() != mHeaderView)
+            {
+                mViewDragHelper.captureChildView(mHeaderView, SDTouchHelper.getPointerId(event));
+            }
+        } else if (getDirection() == Direction.FROM_FOOTER)
         {
-            dy = mTouchHelper.getLegalDeltaY(mFooterView, Integer.MIN_VALUE, getTopFooterViewReset(), dy);
+            // 捕获FooterView
+            if (mViewDragHelper.getCapturedView() != mFooterView)
+            {
+                mViewDragHelper.captureChildView(mFooterView, SDTouchHelper.getPointerId(event));
+            }
         }
 
-        if (dy != 0)
-        {
-            moveViews(dy);
-            updateStateByMoveDistance();
-        }
+        // 处理view的拖动逻辑
+        mViewDragHelper.processTouchEvent(event);
     }
 
     /**
@@ -569,14 +575,8 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
      */
     private void moveViews(int dy)
     {
-        if (dy == 0)
-        {
-            return;
-        }
-
         if (getDirection() == Direction.FROM_HEADER)
         {
-            ViewCompat.offsetTopAndBottom(mHeaderView, dy);
             if (mIsOverLayMode)
             {
                 //覆盖模式
@@ -591,7 +591,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             mHeaderView.onViewPositionChanged(this);
         } else
         {
-            ViewCompat.offsetTopAndBottom(mFooterView, dy);
             if (mIsOverLayMode)
             {
                 //覆盖模式
