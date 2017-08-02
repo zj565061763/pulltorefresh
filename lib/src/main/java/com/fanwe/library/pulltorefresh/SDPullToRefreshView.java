@@ -118,8 +118,8 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 if (mState == State.RELEASE_TO_REFRESH)
                 {
                     setState(State.REFRESHING);
-                    smoothScrollViewByState();
                 }
+                smoothScrollViewByState();
             }
 
             @Override
