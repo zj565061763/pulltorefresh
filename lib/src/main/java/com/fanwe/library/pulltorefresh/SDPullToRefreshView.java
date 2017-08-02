@@ -698,6 +698,29 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
             if (mState == State.RESET)
             {
+                boolean needRequestLayout = false;
+                if (getDirection() == Direction.FROM_HEADER)
+                {
+                    if (mHeaderView.getTop() != getTopHeaderViewReset())
+                    {
+                        needRequestLayout = true;
+                    }
+                } else if (getDirection() == Direction.FROM_FOOTER)
+                {
+                    if (mFooterView.getTop() != getTopFooterViewReset())
+                    {
+                        needRequestLayout = true;
+                    }
+                }
+                if (needRequestLayout)
+                {
+                    if (mIsDebug)
+                    {
+                        Log.i(TAG, "requestLayout when reset");
+                    }
+                    requestLayout();
+                }
+
                 setDirection(Direction.NONE);
             }
         }
