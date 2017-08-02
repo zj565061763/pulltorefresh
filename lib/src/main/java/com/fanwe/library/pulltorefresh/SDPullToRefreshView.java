@@ -416,10 +416,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
         if (mTouchHelper.isNeedIntercept())
         {
-            if (mIsDebug)
-            {
-                Log.e(TAG, "onInterceptTouchEvent Intercept success because isNeedIntercept is true with action----------" + ev.getAction());
-            }
             return true;
         }
 
@@ -438,10 +434,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 {
                     mTouchHelper.setNeedIntercept(true);
                     SDTouchHelper.requestDisallowInterceptTouchEvent(this, true);
-                    if (mIsDebug)
-                    {
-                        Log.e(TAG, "onInterceptTouchEvent Intercept success when isMoveDown:" + mTouchHelper.isMoveDownFrom(SDTouchHelper.EVENT_LAST));
-                    }
                 }
                 break;
         }
