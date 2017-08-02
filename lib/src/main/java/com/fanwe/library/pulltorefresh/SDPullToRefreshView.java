@@ -126,10 +126,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             public void onViewDragStateChanged(int state)
             {
                 super.onViewDragStateChanged(state);
-                if (mIsDebug)
-                {
-                    Log.i(TAG, "ViewDragHelper onViewDragStateChanged:" + state);
-                }
                 if (state == ViewDragHelper.STATE_IDLE)
                 {
                     switch (mState)
