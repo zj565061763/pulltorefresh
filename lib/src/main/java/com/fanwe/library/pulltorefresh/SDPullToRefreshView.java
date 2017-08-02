@@ -429,6 +429,9 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             case MotionEvent.ACTION_DOWN:
                 mTouchHelper.setNeedIntercept(false);
                 SDTouchHelper.requestDisallowInterceptTouchEvent(this, false);
+
+                // 如果ViewDragHelper未收到过ACTION_DOWN事件，则不会处理后续的拖动逻辑
+                mViewDragHelper.processTouchEvent(ev);
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (canPull())
