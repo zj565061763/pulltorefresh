@@ -1115,7 +1115,14 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     {
         if (mIsDebug)
         {
-            Log.i(TAG, "onLayout " + mState + " totalHeight:----------" + getHeight());
+            int state = mViewDragHelper.getViewDragState();
+            if (state == ViewDragHelper.STATE_IDLE)
+            {
+                Log.i(TAG, "onLayout " + state + " totalHeight:----------" + getHeight());
+            } else
+            {
+                Log.e(TAG, "onLayout " + state + " totalHeight:----------" + getHeight());
+            }
         }
 
         int left = getPaddingLeft();
