@@ -85,7 +85,7 @@ public class ButtonActivity extends SDBaseActivity
         btn_overlay.setText(view_pull.isOverLayMode() ? "覆盖模式" : "拖拽模式");
     }
 
-    private void changeViewHeight(View view, int changeHeight)
+    public static void changeViewHeight(View view, int changeHeight)
     {
         ViewGroup.LayoutParams params = view.getLayoutParams();
         params.height = view.getHeight() + changeHeight;
