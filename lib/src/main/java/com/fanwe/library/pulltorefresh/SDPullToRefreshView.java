@@ -77,6 +77,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
     private void initInternal()
     {
+        addLoadingViews();
         initViewDragHelper();
     }
 
@@ -342,10 +343,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             return;
         }
 
-        if (mHeaderView != null)
-        {
-            removeView(mHeaderView);
-        }
+        removeView(mHeaderView);
         mHeaderView = headerView;
         addView(mHeaderView);
     }
@@ -364,12 +362,36 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             return;
         }
 
-        if (mFooterView != null)
-        {
-            removeView(mFooterView);
-        }
+        removeView(mFooterView);
         mFooterView = footerView;
         addView(mFooterView);
+    }
+
+    @Override
+    public void setRefreshView(View refreshView)
+    {
+        if (refreshView == null || refreshView == mRefreshView)
+        {
+            return;
+        }
+
+        ViewGroup refreshParent = (ViewGroup) refreshView.getParent();
+        ViewGroup.LayoutParams refreshParams = refreshView.getLayoutParams();
+        int refreshIndex = -1;
+        if (refreshParent != null)
+        {
+            refreshIndex = refreshParent.indexOfChild(refreshView);
+            refreshParent.removeView(refreshView);
+        }
+
+        removeView(mRefreshView);
+        mRefreshView = refreshView;
+        addView(mRefreshView);
+
+        if (refreshParent != null && getParent() == null)
+        {
+            refreshParent.addView(this, refreshIndex, refreshParams);
+        }
     }
 
     @Override
@@ -897,16 +919,21 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     {
         super.onFinishInflate();
 
-        if (getChildCount() <= 0)
+        final int childCount = getChildCount();
+        if (childCount < 3)
         {
             throw new IllegalArgumentException("you must add one child to SDPullToRefreshView in your xml file");
-        } else if (getChildCount() > 1)
+        }
+        if (childCount > 3)
         {
             throw new IllegalArgumentException("you can only add one child to SDPullToRefreshView in your xml file");
         }
 
-        mRefreshView = getChildAt(0);
+        mRefreshView = getChildAt(2);
+    }
 
+    private void addLoadingViews()
+    {
         // HeaderView
         SDPullToRefreshLoadingView headerView = onCreateHeaderView();
         if (headerView == null)
@@ -931,7 +958,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
      */
     protected SDPullToRefreshLoadingView onCreateHeaderView()
     {
-        return new SimpleTextLoadingView(getContext());
+        return null;
     }
 
     /**
@@ -941,7 +968,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
      */
     protected SDPullToRefreshLoadingView onCreateFooterView()
     {
-        return new SimpleTextLoadingView(getContext());
+        return null;
     }
 
     private int getMinWidth()
