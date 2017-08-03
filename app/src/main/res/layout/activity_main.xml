@@ -29,4 +29,10 @@
         android:layout_height="50dp"
         android:text="ScrollView_Activity"/>
 
+    <Button
+        android:id="@+id/btn_dynamic_add"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Dynamic_add_Activity"/>
+
 </LinearLayout>
