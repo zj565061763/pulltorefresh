@@ -1,5 +1,6 @@
 package com.sd.demo.pulltorefresh.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import com.fanwe.library.activity.SDBaseActivity;
@@ -22,6 +23,7 @@ public class DynamicAddActivity extends SDBaseActivity
         setContentView(R.layout.activity_dynamic_add);
 
         mPullToRefreshView = new AppPullToRefreshView(this);
+        mPullToRefreshView.setBackgroundColor(Color.RED);
         mPullToRefreshView.setRefreshView(findViewById(R.id.btn_dynamic_add));
         mPullToRefreshView.setOnRefreshCallback(new ISDPullToRefreshView.OnRefreshCallback()
         {
