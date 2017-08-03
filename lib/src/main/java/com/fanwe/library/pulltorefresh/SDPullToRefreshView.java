@@ -729,11 +729,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
     };
 
-    private float getComsumeScrollPercent()
-    {
-        return mComsumeScrollPercent;
-    }
-
     /**
      * 根据当前状态滚动view到对应的位置
      */
@@ -893,7 +888,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
      */
     private int getComsumedDistance(float distance)
     {
-        distance -= distance * getComsumeScrollPercent();
+        distance -= distance * mComsumeScrollPercent;
         return (int) distance;
     }
 
