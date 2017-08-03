@@ -148,14 +148,15 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             public int clampViewPositionVertical(View child, int top, int dy)
             {
                 int result = child.getTop();
+                int topConsume = top - getComsumedDistance(dy);
+
                 if (child == mHeaderView)
                 {
-                    result = Math.max(getTopHeaderViewReset(), top);
+                    result = Math.max(getTopHeaderViewReset(), topConsume);
                 } else if (child == mFooterView)
                 {
-                    result = Math.min(getTopFooterViewReset(), top);
+                    result = Math.min(getTopFooterViewReset(), topConsume);
                 }
-
                 return result;
             }
 
@@ -974,6 +975,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     {
         final int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int width = MeasureSpec.getSize(widthMeasureSpec);
+
         final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         int height = MeasureSpec.getSize(heightMeasureSpec);
 
