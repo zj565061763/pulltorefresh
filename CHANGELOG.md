@@ -1,3 +1,6 @@
+## 1.0.23
+* 新增void setRefreshView(View refreshView);方法，可以在代码中动态包裹xml布局中需要支持下拉刷新的view，而不需要在xml布局中事先定义好下拉刷新view
+
 ## 1.0.22
 * 内部改为ViewDragHelper实现
 
