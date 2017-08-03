@@ -22,7 +22,7 @@ public class DynamicAddActivity extends SDBaseActivity
         setContentView(R.layout.activity_dynamic_add);
 
         mPullToRefreshView = new AppPullToRefreshView(this);
-        mPullToRefreshView.setRefreshView(findViewById(R.id.btn));
+        mPullToRefreshView.setRefreshView(findViewById(R.id.btn_dynamic_add));
         mPullToRefreshView.setOnRefreshCallback(new ISDPullToRefreshView.OnRefreshCallback()
         {
             @Override
