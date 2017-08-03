@@ -823,6 +823,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                     {
                         Log.i(TAG, "smoothScrollViewByState:" + mState + " startScrollToY:" + endY);
                     }
+                    invalidate();
                 }
                 break;
             case RELEASE_TO_REFRESH:
@@ -843,10 +844,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                     {
                         Log.i(TAG, "smoothScrollViewByState:" + mState + " startScrollToY:" + endY);
                     }
+                    invalidate();
                 }
                 break;
         }
-        invalidate();
     }
 
     /**
