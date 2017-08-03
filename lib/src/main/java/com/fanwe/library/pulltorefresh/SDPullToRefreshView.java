@@ -147,9 +147,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             @Override
             public int clampViewPositionVertical(View child, int top, int dy)
             {
-                int result = child.getTop();
-                int topConsume = top - getComsumedDistance(dy);
+                final int dyConsume = getComsumedDistance(dy);
+                final int topConsume = top - dyConsume;
 
+                int result = child.getTop();
                 if (child == mHeaderView)
                 {
                     result = Math.max(getTopHeaderViewReset(), topConsume);
