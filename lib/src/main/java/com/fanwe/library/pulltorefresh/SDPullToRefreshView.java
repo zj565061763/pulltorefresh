@@ -390,7 +390,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
         if (refreshParent != null && getParent() == null)
         {
-            refreshParent.addView(this, refreshIndex, refreshParams);
+            refreshParent.addView(this, refreshIndex, new ViewGroup.LayoutParams(refreshParams));
         }
     }
 
