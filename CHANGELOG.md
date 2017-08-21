@@ -1,3 +1,6 @@
+## 1.0.25
+* 重构SDTouchHelper
+
 ## 1.0.24
 * 修复setRefreshView(View refreshView)的时候LayoutParams设置错误的问题
 
