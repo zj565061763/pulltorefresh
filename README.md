@@ -3,7 +3,7 @@
 [更新日志](https://github.com/zj565061763/pulltorefresh/blob/master/CHANGELOG.md)
 
 ## Gradle
-`compile 'com.fanwe.android:pulltorefresh:1.0.24'`
+`compile 'com.fanwe.android:pulltorefresh:1.0.25'`
 
 ## 简单效果
 ![](http://thumbsnap.com/i/8AyEAjrW.gif?0725)<br>
