@@ -489,7 +489,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
     private boolean canPullFromHeader()
     {
-        return mTouchHelper.isMoveDownFrom(SDTouchHelper.EVENT_DOWN)
+        return mTouchHelper.isMoveBottomFrom(SDTouchHelper.EVENT_DOWN)
                 && (mMode == Mode.BOTH || mMode == Mode.PULL_FROM_HEADER)
                 && SDTouchHelper.isScrollToTop(mRefreshView)
                 && (mPullCondition != null ? mPullCondition.canPullFromHeader() : true);
@@ -497,7 +497,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
     private boolean canPullFromFooter()
     {
-        return mTouchHelper.isMoveUpFrom(SDTouchHelper.EVENT_DOWN)
+        return mTouchHelper.isMoveTopFrom(SDTouchHelper.EVENT_DOWN)
                 && (mMode == Mode.BOTH || mMode == Mode.PULL_FROM_FOOTER)
                 && SDTouchHelper.isScrollToBottom(mRefreshView)
                 && (mPullCondition != null ? mPullCondition.canPullFromFooter() : true);
@@ -555,10 +555,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     private void processMoveEvent(MotionEvent event)
     {
         //设置方向
-        if (mTouchHelper.isMoveDownFrom(SDTouchHelper.EVENT_DOWN))
+        if (mTouchHelper.isMoveBottomFrom(SDTouchHelper.EVENT_DOWN))
         {
             setDirection(Direction.FROM_HEADER);
-        } else if (mTouchHelper.isMoveUpFrom(SDTouchHelper.EVENT_DOWN))
+        } else if (mTouchHelper.isMoveTopFrom(SDTouchHelper.EVENT_DOWN))
         {
             setDirection(Direction.FROM_FOOTER);
         }
@@ -568,14 +568,14 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             // 捕获HeaderView
             if (mViewDragHelper.getCapturedView() != mHeaderView)
             {
-                mViewDragHelper.captureChildView(mHeaderView, SDTouchHelper.getPointerId(event));
+                mViewDragHelper.captureChildView(mHeaderView, event.getPointerId(event.getActionIndex()));
             }
         } else if (getDirection() == Direction.FROM_FOOTER)
         {
             // 捕获FooterView
             if (mViewDragHelper.getCapturedView() != mFooterView)
             {
-                mViewDragHelper.captureChildView(mFooterView, SDTouchHelper.getPointerId(event));
+                mViewDragHelper.captureChildView(mFooterView, event.getPointerId(event.getActionIndex()));
             }
         }
 
