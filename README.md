@@ -1,4 +1,4 @@
-# pulltorefresh
+# About
 基于ViewDragHelper实现的下拉刷新和上拉加载的库，提供拖动回调监听，获取滚动距离后方便扩展各种加载效果<br>
 [更新日志](https://github.com/zj565061763/pulltorefresh/blob/master/CHANGELOG.md)
 
