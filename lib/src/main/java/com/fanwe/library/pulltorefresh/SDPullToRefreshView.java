@@ -410,6 +410,12 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         if (mViewDragHelper.continueSettling(true))
         {
             ViewCompat.postInvalidateOnAnimation(this);
+        } else
+        {
+            if (mIsDebug)
+            {
+                Log.i(TAG, "computeScroll finish:" + mState);
+            }
         }
     }
 

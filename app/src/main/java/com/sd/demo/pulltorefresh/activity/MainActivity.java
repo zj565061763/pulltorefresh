@@ -52,15 +52,5 @@ public class MainActivity extends SDBaseActivity
                 startActivity(new Intent(MainActivity.this, ScrollViewActivity.class));
             }
         });
-
-        findViewById(R.id.btn_dynamic_add).setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                startActivity(new Intent(MainActivity.this, DynamicAddActivity.class));
-            }
-        });
-
     }
 }

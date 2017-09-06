@@ -21,7 +21,6 @@
         <activity android:name=".activity.ListViewActivity"/>
         <activity android:name=".activity.ScrollViewActivity"/>
         <activity android:name=".activity.ButtonActivity"/>
-        <activity android:name=".activity.DynamicAddActivity"/>
 
     </application>
 
