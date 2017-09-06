@@ -76,6 +76,8 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     private int mDurationShowRefreshResult = DEFAULT_DURATION_SHOW_REFRESH_RESULT;
     private ViewDragHelper mViewDragHelper;
 
+    private boolean mSmoothScrollViewStarted;
+
     private boolean mHasOnLayout = false;
     private Runnable mUpdatePositionRunnable;
 
@@ -142,6 +144,9 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 {
                     switch (mState)
                     {
+                        case REFRESHING:
+                            notifyRefreshCallback();
+                            break;
                         case PULL_TO_REFRESH:
                         case REFRESH_FINISH:
                             setState(State.RESET);
@@ -693,7 +698,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         //通知刷新回调
         if (mState == State.REFRESHING)
         {
-            notifyRefreshCallback();
+            if (!mSmoothScrollViewStarted)
+            {
+                notifyRefreshCallback();
+            }
         }
 
         if (mState == State.RESET)
@@ -823,6 +831,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         int endY = 0;
         View view = null;
 
+        mSmoothScrollViewStarted = false;
         switch (mState)
         {
             case RESET:
@@ -844,6 +853,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                     {
                         Log.i(TAG, "smoothScrollViewByState:" + mState + " startScrollToY:" + endY);
                     }
+                    mSmoothScrollViewStarted = true;
                     invalidate();
                 }
                 break;
@@ -865,6 +875,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                     {
                         Log.i(TAG, "smoothScrollViewByState:" + mState + " startScrollToY:" + endY);
                     }
+                    mSmoothScrollViewStarted = true;
                     invalidate();
                 }
                 break;
