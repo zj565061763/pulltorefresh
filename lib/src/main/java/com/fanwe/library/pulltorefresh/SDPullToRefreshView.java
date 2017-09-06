@@ -650,55 +650,57 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
      */
     private void setState(State state)
     {
-        if (mState != state)
+        if (mState == state)
         {
-            final State oldState = mState;
-            mState = state;
+            return;
+        }
 
-            if (mIsDebug)
-            {
-                if (mState == State.RESET)
-                {
-                    Log.e(TAG, "setState:" + mState);
-                } else
-                {
-                    Log.i(TAG, "setState:" + mState);
-                }
-            }
+        final State oldState = mState;
+        mState = state;
 
-            removeCallbacks(mStopRefreshingRunnable);
-            if (mState == State.REFRESH_SUCCESS || mState == State.REFRESH_FAILURE)
-            {
-                postDelayed(mStopRefreshingRunnable, mDurationShowRefreshResult);
-            }
-
-            //通知view改变状态
-            if (getDirection() == Direction.FROM_HEADER)
-            {
-                mHeaderView.onStateChanged(mState, oldState, this);
-            } else
-            {
-                mFooterView.onStateChanged(mState, oldState, this);
-            }
-
-            //通知状态变化回调
-            if (mOnStateChangedCallback != null)
-            {
-                mOnStateChangedCallback.onStateChanged(mState, oldState, this);
-            }
-
-            //通知刷新回调
-            if (mState == State.REFRESHING)
-            {
-                notifyRefreshCallback();
-            }
-
+        if (mIsDebug)
+        {
             if (mState == State.RESET)
             {
-                requestLayoutIfNeed();
-
-                setDirection(Direction.NONE);
+                Log.e(TAG, "setState:" + mState);
+            } else
+            {
+                Log.i(TAG, "setState:" + mState);
             }
+        }
+
+        removeCallbacks(mStopRefreshingRunnable);
+        if (mState == State.REFRESH_SUCCESS || mState == State.REFRESH_FAILURE)
+        {
+            postDelayed(mStopRefreshingRunnable, mDurationShowRefreshResult);
+        }
+
+        //通知view改变状态
+        if (getDirection() == Direction.FROM_HEADER)
+        {
+            mHeaderView.onStateChanged(mState, oldState, this);
+        } else
+        {
+            mFooterView.onStateChanged(mState, oldState, this);
+        }
+
+        //通知状态变化回调
+        if (mOnStateChangedCallback != null)
+        {
+            mOnStateChangedCallback.onStateChanged(mState, oldState, this);
+        }
+
+        //通知刷新回调
+        if (mState == State.REFRESHING)
+        {
+            notifyRefreshCallback();
+        }
+
+        if (mState == State.RESET)
+        {
+            requestLayoutIfNeed();
+
+            setDirection(Direction.NONE);
         }
     }
 
