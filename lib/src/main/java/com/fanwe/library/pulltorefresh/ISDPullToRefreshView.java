@@ -94,13 +94,6 @@ public interface ISDPullToRefreshView
     void setDurationShowRefreshResult(int durationShowRefreshResult);
 
     /**
-     * 拖动到满足刷新条件并松开手指的时候，是否等view滚动到刷新位置再触发刷新回调，默认true
-     *
-     * @param notifyRefreshWhenScrollFinish true-是否等view滚动到刷新位置再触发刷新回调，false-松开手指立即触发刷新回调
-     */
-    void setNotifyRefreshWhenScrollFinish(boolean notifyRefreshWhenScrollFinish);
-
-    /**
      * 设置是否判断拖动角度，默认判断拖动方向与y轴的夹角必须小于40度
      *
      * @param checkDragDegree true-判断拖动角度，false-不判断
