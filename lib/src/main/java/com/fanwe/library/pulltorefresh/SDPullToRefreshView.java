@@ -74,6 +74,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
      * 显示刷新结果的时长
      */
     private int mDurationShowRefreshResult = DEFAULT_DURATION_SHOW_REFRESH_RESULT;
+    /**
+     * 当拖动到满足刷新条件并松开手指的时候，是否等view滚动到刷新位置再触发刷新回调
+     */
+    private boolean mNotifyRefreshWhenScrollFinish = true;
     private ViewDragHelper mViewDragHelper;
 
     private boolean mSmoothScrollViewStarted;
@@ -145,7 +149,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                     switch (mState)
                     {
                         case REFRESHING:
-                            notifyRefreshCallback();
+                            if (mNotifyRefreshWhenScrollFinish)
+                            {
+                                notifyRefreshCallback();
+                            }
                             break;
                         case PULL_TO_REFRESH:
                         case REFRESH_FINISH:
@@ -270,6 +277,12 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             durationShowRefreshResult = DEFAULT_DURATION_SHOW_REFRESH_RESULT;
         }
         mDurationShowRefreshResult = durationShowRefreshResult;
+    }
+
+    @Override
+    public void setNotifyRefreshWhenScrollFinish(boolean notifyRefreshWhenScrollFinish)
+    {
+        mNotifyRefreshWhenScrollFinish = notifyRefreshWhenScrollFinish;
     }
 
     @Override
@@ -698,7 +711,13 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         //通知刷新回调
         if (mState == State.REFRESHING)
         {
-            if (!mSmoothScrollViewStarted)
+            if (mNotifyRefreshWhenScrollFinish)
+            {
+                if (!mSmoothScrollViewStarted)
+                {
+                    notifyRefreshCallback();
+                }
+            } else
             {
                 notifyRefreshCallback();
             }

@@ -30,14 +30,6 @@ public class ListViewActivity extends SDBaseActivity
 
         view_pull.setDebug(true);
         view_pull.setFooterView(new CustomPullToRefreshLoadingView(this)); //自定义FooterView
-        view_pull.setOnStateChangedCallback(new ISDPullToRefreshView.OnStateChangedCallback()
-        {
-            @Override
-            public void onStateChanged(ISDPullToRefreshView.State newState, ISDPullToRefreshView.State oldState, SDPullToRefreshView view)
-            {
-                LogUtil.i("onStateChanged:" + newState);
-            }
-        });
         view_pull.setOnRefreshCallback(new ISDPullToRefreshView.OnRefreshCallback()
         {
             @Override
