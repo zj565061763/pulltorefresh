@@ -165,13 +165,6 @@ public interface ISDPullToRefreshView
     void setFooterView(SDPullToRefreshLoadingView footerView);
 
     /**
-     * 设置RefreshView
-     *
-     * @param refreshView
-     */
-    void setRefreshView(View refreshView);
-
-    /**
      * 返回要支持刷新的view
      *
      * @return
