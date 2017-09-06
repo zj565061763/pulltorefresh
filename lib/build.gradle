@@ -8,8 +8,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 17083101
-        versionName "1.0.26"
+        versionCode 17090601
+        versionName "1.0.27"
     }
     buildTypes {
         release {
@@ -25,15 +25,15 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:support-v4:25.2.0'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    provided 'com.android.support:support-v4:25.2.0'
 }
 
 publish {
     userOrg = 'zj565061763'
     groupId = 'com.fanwe.android'
     artifactId = 'pulltorefresh'
-    publishVersion = '1.0.26'
+    publishVersion = '1.0.27'
     desc = 'android pull to refresh library'
     website = 'https://github.com/zj565061763/pulltorefresh'
 }
