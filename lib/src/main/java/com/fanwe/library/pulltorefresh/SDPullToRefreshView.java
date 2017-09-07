@@ -77,7 +77,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
     private ViewDragHelper mViewDragHelper;
 
-    private boolean mSmoothScrollViewStarted;
     private boolean mHasOnLayout = false;
     private Runnable mUpdatePositionRunnable;
 
@@ -695,15 +694,6 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             mOnStateChangedCallback.onStateChanged(mState, oldState, this);
         }
 
-        //通知刷新回调
-        if (mState == State.REFRESHING)
-        {
-            if (!mSmoothScrollViewStarted)
-            {
-                notifyRefreshCallback();
-            }
-        }
-
         if (mState == State.RESET)
         {
             requestLayoutIfNeed();
@@ -831,7 +821,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         int endY = 0;
         View view = null;
 
-        mSmoothScrollViewStarted = false;
+        boolean smoothScrollViewStarted = false;
         switch (mState)
         {
             case RESET:
@@ -853,7 +843,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                     {
                         Log.i(TAG, "smoothScrollViewByState:" + mState + " startScrollToY:" + endY);
                     }
-                    mSmoothScrollViewStarted = true;
+                    smoothScrollViewStarted = true;
                     invalidate();
                 }
                 break;
@@ -875,10 +865,23 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                     {
                         Log.i(TAG, "smoothScrollViewByState:" + mState + " startScrollToY:" + endY);
                     }
-                    mSmoothScrollViewStarted = true;
+                    smoothScrollViewStarted = true;
                     invalidate();
                 }
                 break;
+        }
+
+        //通知刷新回调
+        if (mState == State.REFRESHING)
+        {
+            if (smoothScrollViewStarted)
+            {
+                //如果滚动触发成功，则滚动结束会通知刷新回调
+            } else
+            {
+                //如果滚动未触发成功，则立即通知刷新回调
+                notifyRefreshCallback();
+            }
         }
     }
 
