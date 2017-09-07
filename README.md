@@ -2,7 +2,7 @@
 基于ViewDragHelper实现的下拉刷新和上拉加载的库，提供拖动回调监听，获取滚动距离后方便扩展各种加载效果<br>
 
 ## Gradle
-`compile 'com.fanwe.android:pulltorefresh:1.0.27'`
+`compile 'com.fanwe.android:pulltorefresh:1.0.28'`
 
 ## 简单效果
 ![](http://thumbsnap.com/i/8AyEAjrW.gif?0725)<br>
