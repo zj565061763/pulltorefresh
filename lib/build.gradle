@@ -1,7 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
-apply plugin: 'com.github.dcendents.android-maven'
-group='com.github.zj565061763'
 
 android {
     compileSdkVersion 25
@@ -10,7 +8,7 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 20170906
+        versionCode 20170907
         versionName "1.0.28"
     }
     buildTypes {
