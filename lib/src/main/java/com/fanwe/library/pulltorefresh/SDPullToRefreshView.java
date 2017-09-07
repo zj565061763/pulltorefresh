@@ -23,7 +23,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,7 +84,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     private OnViewPositionChangedCallback mOnViewPositionChangedCallback;
     private IPullCondition mPullCondition;
 
-    private boolean mIsDebug;
+    private final LogUtils mLogUtils = new LogUtils(SDPullToRefreshView.class);
 
     private void initInternal()
     {
@@ -93,9 +92,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         initViewDragHelper();
     }
 
-    public void setDebug(boolean debug)
+    public void setDebug(boolean debug, String tag)
     {
-        mIsDebug = debug;
+        mLogUtils.setDebug(debug);
+        mLogUtils.setTag(tag);
         mTouchHelper.setDebug(debug);
     }
 
@@ -113,20 +113,14 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             public void onViewCaptured(View capturedChild, int activePointerId)
             {
                 super.onViewCaptured(capturedChild, activePointerId);
-                if (mIsDebug)
-                {
-                    Log.i(TAG, "ViewDragHelper onViewCaptured----------");
-                }
+                mLogUtils.i("ViewDragHelper onViewCaptured----------");
             }
 
             @Override
             public void onViewReleased(View releasedChild, float xvel, float yvel)
             {
                 super.onViewReleased(releasedChild, xvel, yvel);
-                if (mIsDebug)
-                {
-                    Log.i(TAG, "ViewDragHelper onViewReleased");
-                }
+                mLogUtils.i("ViewDragHelper onViewReleased");
 
                 if (mState == State.RELEASE_TO_REFRESH)
                 {
@@ -413,7 +407,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     {
         if (mViewDragHelper.continueSettling(true))
         {
-            if (mIsDebug)
+            if (mLogUtils.isDebug())
             {
                 int top = 0;
                 if (getDirection() == Direction.FROM_HEADER)
@@ -423,16 +417,13 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 {
                     top = mFooterView.getTop();
                 }
-
-                Log.i(TAG, "computeScroll:" + top + "," + mState);
+                mLogUtils.i("computeScroll:" + top + " " + mState);
             }
+
             ViewCompat.postInvalidateOnAnimation(this);
         } else
         {
-            if (mIsDebug)
-            {
-                Log.i(TAG, "computeScroll finish:" + mState);
-            }
+            mLogUtils.i("computeScroll finish:" + mState);
         }
     }
 
@@ -675,14 +666,14 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         final State oldState = mState;
         mState = state;
 
-        if (mIsDebug)
+        if (mLogUtils.isDebug())
         {
             if (mState == State.RESET)
             {
-                Log.e(TAG, "setState:" + mState);
+                mLogUtils.e("setState:" + mState);
             } else
             {
-                Log.i(TAG, "setState:" + mState);
+                mLogUtils.i("setState:" + mState);
             }
         }
 
@@ -717,10 +708,8 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
     private void notifyRefreshCallback()
     {
-        if (mIsDebug)
-        {
-            Log.i(TAG, "notifyRefreshCallback");
-        }
+        mLogUtils.i("notifyRefreshCallback");
+
         if (mOnRefreshCallback != null)
         {
             if (getDirection() == Direction.FROM_HEADER)
@@ -751,10 +740,8 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
         if (needRequestLayout)
         {
-            if (mIsDebug)
-            {
-                Log.i(TAG, "requestLayout when reset");
-            }
+            mLogUtils.i("requestLayout when reset");
+
             requestLayout();
         }
     }
@@ -856,10 +843,8 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
                 if (mViewDragHelper.smoothSlideViewTo(view, view.getLeft(), endY))
                 {
-                    if (mIsDebug)
-                    {
-                        Log.i(TAG, "smoothScrollViewByState:" + mState + " startScrollToY:" + view.getTop() + "," + endY);
-                    }
+                    mLogUtils.i("smoothScrollViewByState:" + view.getTop() + "," + endY + " " + mState);
+
                     smoothScrollViewStarted = true;
                     invalidate();
                 }
@@ -878,10 +863,8 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
                 if (mViewDragHelper.smoothSlideViewTo(view, view.getLeft(), endY))
                 {
-                    if (mIsDebug)
-                    {
-                        Log.i(TAG, "smoothScrollViewByState:" + mState + " startScrollToY:" + view.getTop() + "," + endY);
-                    }
+                    mLogUtils.i("smoothScrollViewByState:" + view.getTop() + "," + endY + " " + mState);
+
                     smoothScrollViewStarted = true;
                     invalidate();
                 }
@@ -920,18 +903,13 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 mDirection = direction;
                 mLastDirection = direction;
 
-                if (mIsDebug)
-                {
-                    Log.i(TAG, "setDirection:" + mDirection);
-                }
+                mLogUtils.i("setDirection:" + mDirection);
             }
         } else
         {
             mDirection = Direction.NONE;
-            if (mIsDebug)
-            {
-                Log.i(TAG, "setDirection:" + mDirection);
-            }
+
+            mLogUtils.i("setDirection:" + mDirection);
         }
     }
 
@@ -1187,15 +1165,15 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b)
     {
-        if (mIsDebug)
+        if (mLogUtils.isDebug())
         {
             int state = mViewDragHelper.getViewDragState();
             if (state == ViewDragHelper.STATE_IDLE)
             {
-                Log.i(TAG, "onLayout " + state + " totalHeight:----------" + getHeight());
+                mLogUtils.i("onLayout " + state + " totalHeight:----------" + getHeight());
             } else
             {
-                Log.e(TAG, "onLayout " + state + " totalHeight:----------" + getHeight());
+                mLogUtils.e("onLayout " + state + " totalHeight:----------" + getHeight());
             }
         }
 
@@ -1209,10 +1187,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         right = left + mHeaderView.getMeasuredWidth();
         bottom = top + mHeaderView.getMeasuredHeight();
         mHeaderView.layout(left, top, right, bottom);
-        if (mIsDebug)
-        {
-            Log.i(TAG, "HeaderView:" + top + "," + bottom);
-        }
+        mLogUtils.i("HeaderView:" + top + "," + bottom);
 
         // RefreshView
         top = getTopLayoutRefreshView();
@@ -1224,10 +1199,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         right = left + mRefreshView.getMeasuredWidth();
         bottom = top + mRefreshView.getMeasuredHeight();
         mRefreshView.layout(left, top, right, bottom);
-        if (mIsDebug)
-        {
-            Log.i(TAG, "RefreshView:" + top + "," + bottom);
-        }
+        mLogUtils.i("RefreshView:" + top + "," + bottom);
 
         // FooterView
         top = getTopLayoutFooterView();
@@ -1239,10 +1211,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         right = left + mFooterView.getMeasuredWidth();
         bottom = top + mFooterView.getMeasuredHeight();
         mFooterView.layout(left, top, right, bottom);
-        if (mIsDebug)
-        {
-            Log.i(TAG, "FooterView:" + top + "," + bottom);
-        }
+        mLogUtils.i("FooterView:" + top + "," + bottom);
 
         mHasOnLayout = true;
         runUpdatePositionRunnableIfNeed();

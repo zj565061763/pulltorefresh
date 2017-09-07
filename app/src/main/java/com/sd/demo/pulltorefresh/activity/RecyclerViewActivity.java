@@ -11,8 +11,8 @@ import com.fanwe.library.pulltorefresh.ISDPullToRefreshView;
 import com.fanwe.library.pulltorefresh.SDPullToRefreshView;
 import com.fanwe.library.view.SDRecyclerView;
 import com.sd.demo.pulltorefresh.R;
-import com.sd.demo.pulltorefresh.model.DataModel;
 import com.sd.demo.pulltorefresh.loadingview.CustomPullToRefreshLoadingView;
+import com.sd.demo.pulltorefresh.model.DataModel;
 
 public class RecyclerViewActivity extends SDBaseActivity
 {
@@ -27,7 +27,7 @@ public class RecyclerViewActivity extends SDBaseActivity
         mRecyclerView = (SDRecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setAdapter(mAdapter);
 
-        view_pull.setDebug(true);
+        view_pull.setDebug(true, null);
         view_pull.setHeaderView(new CustomPullToRefreshLoadingView(this)); //自定义HeaderView
         view_pull.setOnRefreshCallback(new ISDPullToRefreshView.OnRefreshCallback()
         {
