@@ -92,11 +92,15 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         initViewDragHelper();
     }
 
-    public void setDebug(boolean debug, String tag)
+    public void setDebug(boolean debug)
     {
         mLogUtils.setDebug(debug);
-        mLogUtils.setTag(tag);
         mTouchHelper.setDebug(debug);
+    }
+
+    public void setDebugTag(String debugTag)
+    {
+        mLogUtils.setDebugTag(debugTag);
     }
 
     private void initViewDragHelper()

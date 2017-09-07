@@ -27,7 +27,7 @@ public class RecyclerViewActivity extends SDBaseActivity
         mRecyclerView = (SDRecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setAdapter(mAdapter);
 
-        view_pull.setDebug(true, null);
+        view_pull.setDebug(true);
         view_pull.setHeaderView(new CustomPullToRefreshLoadingView(this)); //自定义HeaderView
         view_pull.setOnRefreshCallback(new ISDPullToRefreshView.OnRefreshCallback()
         {

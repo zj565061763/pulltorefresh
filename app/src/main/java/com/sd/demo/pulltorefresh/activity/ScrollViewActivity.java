@@ -23,7 +23,7 @@ public class ScrollViewActivity extends SDBaseActivity
         view_pull = (SDPullToRefreshView) findViewById(R.id.view_pull);
         btn = (Button) findViewById(R.id.btn);
 
-        view_pull.setDebug(true, null);
+        view_pull.setDebug(true);
         view_pull.setOnStateChangedCallback(new ISDPullToRefreshView.OnStateChangedCallback()
         {
             @Override

@@ -11,7 +11,7 @@ public class LogUtils
     private String mDefaultTag;
 
     private boolean mIsDebug;
-    private String mTag;
+    private String mDebugTag;
 
     public LogUtils(Class clazz)
     {
@@ -37,16 +37,16 @@ public class LogUtils
         mIsDebug = debug;
     }
 
-    public void setTag(String tag)
+    public void setDebugTag(String debugTag)
     {
-        mTag = tag;
+        mDebugTag = debugTag;
     }
 
-    private String getTag()
+    private String getDebugTag()
     {
-        if (!TextUtils.isEmpty(mTag))
+        if (!TextUtils.isEmpty(mDebugTag))
         {
-            return mTag;
+            return mDebugTag;
         }
         if (!TextUtils.isEmpty(mDefaultTag))
         {
@@ -59,7 +59,7 @@ public class LogUtils
     {
         if (mIsDebug)
         {
-            Log.i(getTag(), msg);
+            Log.i(getDebugTag(), msg);
         }
     }
 
@@ -67,7 +67,7 @@ public class LogUtils
     {
         if (mIsDebug)
         {
-            Log.e(getTag(), msg);
+            Log.e(getDebugTag(), msg);
         }
     }
 }

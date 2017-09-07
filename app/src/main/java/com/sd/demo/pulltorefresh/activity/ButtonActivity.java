@@ -63,7 +63,7 @@ public class ButtonActivity extends SDBaseActivity
             }
         });
 
-        view_pull.setDebug(true, null);
+        view_pull.setDebug(true);
         view_pull.setHeaderView(new GoogleLoadingView(this));
         view_pull.setOnRefreshCallback(new ISDPullToRefreshView.OnRefreshCallback()
         {
