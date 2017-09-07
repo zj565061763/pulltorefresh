@@ -415,7 +415,16 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         {
             if (mIsDebug)
             {
-                Log.i(TAG, "computeScroll:" + mState);
+                int top = 0;
+                if (getDirection() == Direction.FROM_HEADER)
+                {
+                    top = mHeaderView.getTop();
+                } else
+                {
+                    top = mFooterView.getTop();
+                }
+
+                Log.i(TAG, "computeScroll:" + top + "," + mState);
             }
             ViewCompat.postInvalidateOnAnimation(this);
         } else
