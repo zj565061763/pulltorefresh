@@ -413,6 +413,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     {
         if (mViewDragHelper.continueSettling(true))
         {
+            if (mIsDebug)
+            {
+                Log.i(TAG, "computeScroll:" + mState);
+            }
             ViewCompat.postInvalidateOnAnimation(this);
         } else
         {
@@ -704,6 +708,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
     private void notifyRefreshCallback()
     {
+        if (mIsDebug)
+        {
+            Log.i(TAG, "notifyRefreshCallback");
+        }
         if (mOnRefreshCallback != null)
         {
             if (getDirection() == Direction.FROM_HEADER)
@@ -841,7 +849,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 {
                     if (mIsDebug)
                     {
-                        Log.i(TAG, "smoothScrollViewByState:" + mState + " startScrollToY:" + endY);
+                        Log.i(TAG, "smoothScrollViewByState:" + mState + " startScrollToY:" + view.getTop() + "," + endY);
                     }
                     smoothScrollViewStarted = true;
                     invalidate();
@@ -863,7 +871,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 {
                     if (mIsDebug)
                     {
-                        Log.i(TAG, "smoothScrollViewByState:" + mState + " startScrollToY:" + endY);
+                        Log.i(TAG, "smoothScrollViewByState:" + mState + " startScrollToY:" + view.getTop() + "," + endY);
                     }
                     smoothScrollViewStarted = true;
                     invalidate();

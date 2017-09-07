@@ -10,7 +10,6 @@ import com.fanwe.library.activity.SDBaseActivity;
 import com.fanwe.library.adapter.SDSimpleAdapter;
 import com.fanwe.library.pulltorefresh.ISDPullToRefreshView;
 import com.fanwe.library.pulltorefresh.SDPullToRefreshView;
-import com.fanwe.library.utils.LogUtil;
 import com.sd.demo.pulltorefresh.R;
 import com.sd.demo.pulltorefresh.loadingview.CustomPullToRefreshLoadingView;
 import com.sd.demo.pulltorefresh.model.DataModel;
@@ -36,7 +35,6 @@ public class ListViewActivity extends SDBaseActivity
             public void onRefreshingFromHeader(final SDPullToRefreshView view)
             {
                 //头部刷新回调
-                LogUtil.i("onRefreshingFromHeader");
                 view.postDelayed(new Runnable()
                 {
                     @Override
@@ -52,7 +50,6 @@ public class ListViewActivity extends SDBaseActivity
             public void onRefreshingFromFooter(final SDPullToRefreshView view)
             {
                 //底部加载回调
-                LogUtil.i("onRefreshingFromFooter");
                 view.postDelayed(new Runnable()
                 {
                     @Override
