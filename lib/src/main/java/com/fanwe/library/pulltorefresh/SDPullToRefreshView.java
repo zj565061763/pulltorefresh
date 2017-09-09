@@ -22,6 +22,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -954,7 +955,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         if (headerView == null)
         {
             String headerClassName = getResources().getString(R.string.lib_ptr_header_class);
-            headerView = SDPullToRefreshLoadingView.getInstanceByClassName(headerClassName, getContext());
+            if (!TextUtils.isEmpty(headerClassName))
+            {
+                headerView = SDPullToRefreshLoadingView.getInstanceByClassName(headerClassName, getContext());
+            }
         }
         if (headerView == null)
         {
@@ -967,7 +971,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         if (footerView == null)
         {
             String footerClassName = getResources().getString(R.string.lib_ptr_footer_class);
-            footerView = SDPullToRefreshLoadingView.getInstanceByClassName(footerClassName, getContext());
+            if (footerClassName != null)
+            {
+                footerView = SDPullToRefreshLoadingView.getInstanceByClassName(footerClassName, getContext());
+            }
         }
         if (footerView == null)
         {
