@@ -35,19 +35,19 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     public SDPullToRefreshView(@NonNull Context context)
     {
         super(context);
-        initInternal();
+        initInternal(null);
     }
 
     public SDPullToRefreshView(@NonNull Context context, @Nullable AttributeSet attrs)
     {
         super(context, attrs);
-        initInternal();
+        initInternal(attrs);
     }
 
     public SDPullToRefreshView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
-        initInternal();
+        initInternal(attrs);
     }
 
     private static final String TAG = "SDPullToRefreshView";
@@ -86,7 +86,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
     private final LogUtils mLogUtils = new LogUtils(SDPullToRefreshView.class);
 
-    private void initInternal()
+    private void initInternal(AttributeSet attrs)
     {
         addLoadingViews();
         initViewDragHelper();
@@ -953,12 +953,22 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         SDPullToRefreshLoadingView headerView = onCreateHeaderView();
         if (headerView == null)
         {
+            String headerClassName = getResources().getString(R.string.lib_ptr_header_class);
+            headerView = SDPullToRefreshLoadingView.getInstanceByClassName(headerClassName, getContext());
+        }
+        if (headerView == null)
+        {
             headerView = new SimpleTextLoadingView(getContext());
         }
         setHeaderView(headerView);
 
         // FooterView
         SDPullToRefreshLoadingView footerView = onCreateFooterView();
+        if (footerView == null)
+        {
+            String footerClassName = getResources().getString(R.string.lib_ptr_footer_class);
+            footerView = SDPullToRefreshLoadingView.getInstanceByClassName(footerClassName, getContext());
+        }
         if (footerView == null)
         {
             footerView = new SimpleTextLoadingView(getContext());

@@ -6,7 +6,7 @@ import android.util.Log;
 /**
  * Created by zhengjun on 2017/9/7.
  */
-public class LogUtils
+class LogUtils
 {
     private String mDefaultTag;
 

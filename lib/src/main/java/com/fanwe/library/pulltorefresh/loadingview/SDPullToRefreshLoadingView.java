@@ -19,11 +19,14 @@ import android.content.Context;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
 import com.fanwe.library.pulltorefresh.ISDPullToRefreshView;
 import com.fanwe.library.pulltorefresh.SDPullToRefreshView;
+
+import java.lang.reflect.Constructor;
 
 public abstract class SDPullToRefreshLoadingView extends FrameLayout implements ISDPullToRefreshView.IPullToRefreshLoadingView
 {
@@ -79,5 +82,24 @@ public abstract class SDPullToRefreshLoadingView extends FrameLayout implements 
     public int getRefreshHeight()
     {
         return getMeasuredHeight();
+    }
+
+    public static SDPullToRefreshLoadingView getInstanceByClassName(String className, Context context)
+    {
+        if (TextUtils.isEmpty(className) || context == null)
+        {
+            return null;
+        }
+
+        try
+        {
+            Class clazz = Class.forName(className);
+            Constructor constructor = clazz.getConstructor(Context.class);
+            return (SDPullToRefreshLoadingView) constructor.newInstance(context);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
