@@ -1,8 +1,8 @@
 # About
-基于ViewDragHelper实现的下拉刷新和上拉加载的库，提供拖动回调监听，获取滚动距离后方便扩展各种加载效果<br>
+基于ViewDragHelper实现的下拉刷新和上拉加载的库，支持xml中配置全局默认的HeaderView和FooterView，提供拖动回调监听，获取滚动距离后方便扩展各种加载效果<br>
 
 ## Gradle
-`compile 'com.fanwe.android:pulltorefresh:1.0.30'`
+`compile 'com.fanwe.android:pulltorefresh:1.0.31'`
 
 ## 简单效果
 ![](http://thumbsnap.com/i/8AyEAjrW.gif?0725)<br>
@@ -23,6 +23,12 @@
 
 <string name="lib_ptr_state_refreshing_failure_header">刷新失败</string>
 <string name="lib_ptr_state_refreshing_failure_footer">加载失败</string>
+
+<!-- 指定全局HeaderView类的class -->
+<string name="lib_ptr_header_class"></string>
+
+<!-- 指定全局FooterView类的class -->
+<string name="lib_ptr_footer_class"></string>
 ```
 * colors
 ```xml
