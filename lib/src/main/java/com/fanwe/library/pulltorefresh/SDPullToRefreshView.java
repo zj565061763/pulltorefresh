@@ -1003,7 +1003,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         return null;
     }
 
-    private int getMinWidth()
+    private int getMinWidthInternal()
     {
         if (Build.VERSION.SDK_INT >= 16)
         {
@@ -1014,7 +1014,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
     }
 
-    private int getMinHeight()
+    private int getMinHeightInternal()
     {
         if (Build.VERSION.SDK_INT >= 16)
         {
@@ -1053,7 +1053,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             maxWidth = Math.max(maxWidth, mRefreshView.getMeasuredWidth());
             maxWidth += (getPaddingLeft() + getPaddingRight());
 
-            maxWidth = Math.max(maxWidth, getMinWidth());
+            maxWidth = Math.max(maxWidth, getMinWidthInternal());
             if (widthMode == MeasureSpec.UNSPECIFIED)
             {
                 width = maxWidth;
@@ -1073,7 +1073,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
             }
             maxHeight += (getPaddingTop() + getPaddingBottom());
 
-            maxHeight = Math.max(maxHeight, getMinHeight());
+            maxHeight = Math.max(maxHeight, getMinHeightInternal());
             if (heightMode == MeasureSpec.UNSPECIFIED)
             {
                 height = maxHeight;
