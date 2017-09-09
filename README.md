@@ -24,10 +24,10 @@
 <string name="lib_ptr_state_refreshing_failure_header">刷新失败</string>
 <string name="lib_ptr_state_refreshing_failure_footer">加载失败</string>
 
-<!-- 指定全局HeaderView类的class -->
+<!-- 指定全局HeaderView类的全名 -->
 <string name="lib_ptr_header_class"></string>
 
-<!-- 指定全局FooterView类的class -->
+<!-- 指定全局FooterView类的全名 -->
 <string name="lib_ptr_footer_class"></string>
 ```
 * colors
