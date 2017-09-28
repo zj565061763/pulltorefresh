@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
 apply plugin: 'com.github.dcendents.android-maven'
+
+group = 'com.github.zj565061763'
 
 android {
     compileSdkVersion 25
@@ -9,8 +10,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 20170909
-        versionName "1.0.31"
+        versionCode 20170928
+        versionName "1.0.32"
     }
     buildTypes {
         release {
@@ -28,21 +29,4 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     provided 'com.android.support:support-v4:25.2.0'
-}
-
-publish {
-    userOrg = 'zj565061763'
-    groupId = 'com.fanwe.android'
-    artifactId = 'pulltorefresh'
-    publishVersion = '1.0.31'
-    desc = 'android pull to refresh library'
-    website = 'https://github.com/zj565061763/pulltorefresh'
-}
-
-tasks.withType(Javadoc) {
-    options {
-        encoding "UTF-8"
-        charSet 'UTF-8'
-        failOnError false
-    }
 }
