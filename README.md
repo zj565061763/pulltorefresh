@@ -11,7 +11,7 @@ allprojects {
 }
 
 dependencies {
-        compile 'com.github.zj565061763:pulltorefresh:1.0.32'
+        compile 'com.github.zj565061763:pulltorefresh:1.0.33'
 }
 
 ```
