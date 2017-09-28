@@ -88,14 +88,14 @@ view_pull.setFooterView(new CustomPullToRefreshLoadingView(this)); //自定义Fo
 在xml中只能给SDPullToRefreshView添加一个child<br>
 child可以是RecyclerView,ListView,ScrollView等...
 ```xml
-<com.fanwe.library.pulltorefresh.SDPullToRefreshView
+<com.fanwe.lib.pulltorefresh.SDPullToRefreshView
     android:id="@+id/view_pull"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <!--RecyclerView,ListView,ScrollView...-->
 
-</com.fanwe.library.pulltorefresh.SDPullToRefreshView>
+</com.fanwe.lib.pulltorefresh.SDPullToRefreshView>
 ```
 
 ## 常用方法
