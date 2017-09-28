@@ -5,8 +5,8 @@ import android.util.Log;
 import android.widget.Button;
 
 import com.fanwe.library.activity.SDBaseActivity;
-import com.fanwe.library.pulltorefresh.ISDPullToRefreshView;
-import com.fanwe.library.pulltorefresh.SDPullToRefreshView;
+import com.fanwe.lib.pulltorefresh.ISDPullToRefreshView;
+import com.fanwe.lib.pulltorefresh.SDPullToRefreshView;
 import com.sd.demo.pulltorefresh.R;
 
 public class ScrollViewActivity extends SDBaseActivity

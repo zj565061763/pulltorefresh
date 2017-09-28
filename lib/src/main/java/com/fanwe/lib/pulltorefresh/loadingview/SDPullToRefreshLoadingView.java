@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fanwe.library.pulltorefresh.loadingview;
+package com.fanwe.lib.pulltorefresh.loadingview;
 
 import android.content.Context;
 import android.support.annotation.AttrRes;
@@ -23,8 +23,8 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
-import com.fanwe.library.pulltorefresh.ISDPullToRefreshView;
-import com.fanwe.library.pulltorefresh.SDPullToRefreshView;
+import com.fanwe.lib.pulltorefresh.ISDPullToRefreshView;
+import com.fanwe.lib.pulltorefresh.SDPullToRefreshView;
 
 import java.lang.reflect.Constructor;
 

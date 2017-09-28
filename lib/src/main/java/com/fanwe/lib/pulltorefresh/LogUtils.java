@@ -1,4 +1,4 @@
-package com.fanwe.library.pulltorefresh;
+package com.fanwe.lib.pulltorefresh;
 
 import android.text.TextUtils;
 import android.util.Log;

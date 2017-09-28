@@ -8,9 +8,9 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 
-import com.fanwe.library.pulltorefresh.ISDPullToRefreshView;
-import com.fanwe.library.pulltorefresh.SDPullToRefreshView;
-import com.fanwe.library.pulltorefresh.loadingview.SDPullToRefreshLoadingView;
+import com.fanwe.lib.pulltorefresh.ISDPullToRefreshView;
+import com.fanwe.lib.pulltorefresh.SDPullToRefreshView;
+import com.fanwe.lib.pulltorefresh.loadingview.SDPullToRefreshLoadingView;
 import com.fanwe.library.utils.LogUtil;
 
 /**

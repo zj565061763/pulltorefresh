@@ -8,8 +8,8 @@ import android.widget.TextView;
 
 import com.fanwe.library.activity.SDBaseActivity;
 import com.fanwe.library.adapter.SDSimpleAdapter;
-import com.fanwe.library.pulltorefresh.ISDPullToRefreshView;
-import com.fanwe.library.pulltorefresh.SDPullToRefreshView;
+import com.fanwe.lib.pulltorefresh.ISDPullToRefreshView;
+import com.fanwe.lib.pulltorefresh.SDPullToRefreshView;
 import com.sd.demo.pulltorefresh.R;
 import com.sd.demo.pulltorefresh.loadingview.CustomPullToRefreshLoadingView;
 import com.sd.demo.pulltorefresh.model.DataModel;

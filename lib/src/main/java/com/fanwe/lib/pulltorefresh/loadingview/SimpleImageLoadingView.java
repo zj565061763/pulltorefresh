@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fanwe.library.pulltorefresh.loadingview;
+package com.fanwe.lib.pulltorefresh.loadingview;
 
 import android.content.Context;
 import android.support.annotation.AttrRes;
@@ -23,7 +23,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 
-import com.fanwe.library.pulltorefresh.R;
+import com.fanwe.lib.pulltorefresh.R;
 
 public abstract class SimpleImageLoadingView extends SDPullToRefreshLoadingView
 {

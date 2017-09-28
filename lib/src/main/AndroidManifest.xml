@@ -1,5 +1,5 @@
 <manifest
-    package="com.fanwe.library.pulltorefresh"
+    package="com.fanwe.lib.pulltorefresh"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application

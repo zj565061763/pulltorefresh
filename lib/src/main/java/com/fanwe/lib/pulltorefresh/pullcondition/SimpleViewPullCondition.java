@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fanwe.library.pulltorefresh.pullcondition;
+package com.fanwe.lib.pulltorefresh.pullcondition;
 
 import android.support.v4.view.ViewCompat;
 import android.view.View;
 
-import com.fanwe.library.pulltorefresh.ISDPullToRefreshView;
+import com.fanwe.lib.pulltorefresh.ISDPullToRefreshView;
 
 import java.lang.ref.WeakReference;
 

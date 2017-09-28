@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.fanwe.library.pulltorefresh.SDPullToRefreshView
+    <com.fanwe.lib.pulltorefresh.SDPullToRefreshView
         android:id="@+id/view_pull"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,6 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-    </com.fanwe.library.pulltorefresh.SDPullToRefreshView>
+    </com.fanwe.lib.pulltorefresh.SDPullToRefreshView>
 
 </LinearLayout>
