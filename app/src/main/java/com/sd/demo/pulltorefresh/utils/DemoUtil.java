@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AbsListView;
 
-import com.fanwe.lib.pulltorefresh.SDPullToRefreshView;
+import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
 
 /**
  * Created by Administrator on 2017/7/3.
@@ -19,7 +19,7 @@ public class DemoUtil
      *
      * @param view
      */
-    public static void handleAutoRefreshingFromFooter(final SDPullToRefreshView view)
+    public static void handleAutoRefreshingFromFooter(final FPullToRefreshView view)
     {
         View refreshView = view.getRefreshView();
         if (refreshView instanceof AbsListView)

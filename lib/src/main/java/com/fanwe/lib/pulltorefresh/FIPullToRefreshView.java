@@ -17,9 +17,9 @@ package com.fanwe.lib.pulltorefresh;
 
 import android.view.View;
 
-import com.fanwe.lib.pulltorefresh.loadingview.SDPullToRefreshLoadingView;
+import com.fanwe.lib.pulltorefresh.loadingview.FPullToRefreshLoadingView;
 
-public interface ISDPullToRefreshView
+public interface FIPullToRefreshView
 {
     /**
      * 默认的拖动距离消耗比例
@@ -141,28 +141,28 @@ public interface ISDPullToRefreshView
      *
      * @return
      */
-    SDPullToRefreshLoadingView getHeaderView();
+    FPullToRefreshLoadingView getHeaderView();
 
     /**
      * 设置HeaderView
      *
      * @param headerView
      */
-    void setHeaderView(SDPullToRefreshLoadingView headerView);
+    void setHeaderView(FPullToRefreshLoadingView headerView);
 
     /**
      * 返回FooterView
      *
      * @return
      */
-    SDPullToRefreshLoadingView getFooterView();
+    FPullToRefreshLoadingView getFooterView();
 
     /**
      * 设置FooterView
      *
      * @param footerView
      */
-    void setFooterView(SDPullToRefreshLoadingView footerView);
+    void setFooterView(FPullToRefreshLoadingView footerView);
 
     /**
      * 返回要支持刷新的view
@@ -259,7 +259,7 @@ public interface ISDPullToRefreshView
          * @param oldState
          * @param view
          */
-        void onStateChanged(State newState, State oldState, SDPullToRefreshView view);
+        void onStateChanged(State newState, State oldState, FPullToRefreshView view);
     }
 
     interface OnRefreshCallback
@@ -269,14 +269,14 @@ public interface ISDPullToRefreshView
          *
          * @param view
          */
-        void onRefreshingFromHeader(SDPullToRefreshView view);
+        void onRefreshingFromHeader(FPullToRefreshView view);
 
         /**
          * 上拉触发刷新回调
          *
          * @param view
          */
-        void onRefreshingFromFooter(SDPullToRefreshView view);
+        void onRefreshingFromFooter(FPullToRefreshView view);
     }
 
     interface OnViewPositionChangedCallback
@@ -286,7 +286,7 @@ public interface ISDPullToRefreshView
          *
          * @param view
          */
-        void onViewPositionChanged(SDPullToRefreshView view);
+        void onViewPositionChanged(FPullToRefreshView view);
     }
 
     interface IPullCondition
@@ -304,35 +304,5 @@ public interface ISDPullToRefreshView
          * @return
          */
         boolean canPullFromFooter();
-    }
-
-    /**
-     * 加载view基类接口
-     */
-    interface IPullToRefreshLoadingView extends OnStateChangedCallback, OnViewPositionChangedCallback
-    {
-        /**
-         * 返回view处于刷新中的时候需要显示的高度（默认view的测量高度）
-         *
-         * @return
-         */
-        int getRefreshHeight();
-
-        /**
-         * 返回是否可以触发刷新（默认大于等于view的测量高度的时候触发刷新）
-         *
-         * @param scrollDistance 已经滚动的距离
-         * @return
-         */
-        boolean canRefresh(int scrollDistance);
-
-        /**
-         * 返回加载view类型
-         *
-         * @return
-         */
-        LoadingViewType getLoadingViewType();
-
-        SDPullToRefreshView getPullToRefreshView();
     }
 }

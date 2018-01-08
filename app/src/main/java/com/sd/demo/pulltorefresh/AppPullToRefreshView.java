@@ -6,15 +6,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 
-import com.fanwe.lib.pulltorefresh.SDPullToRefreshView;
-import com.fanwe.lib.pulltorefresh.loadingview.SDPullToRefreshLoadingView;
+import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
+import com.fanwe.lib.pulltorefresh.loadingview.FPullToRefreshLoadingView;
 import com.sd.demo.pulltorefresh.loadingview.CustomPullToRefreshLoadingView;
 
 /**
  * Created by Administrator on 2017/8/3.
  */
 
-public class AppPullToRefreshView extends SDPullToRefreshView
+public class AppPullToRefreshView extends FPullToRefreshView
 {
     public AppPullToRefreshView(@NonNull Context context)
     {
@@ -32,13 +32,13 @@ public class AppPullToRefreshView extends SDPullToRefreshView
     }
 
     @Override
-    protected SDPullToRefreshLoadingView onCreateHeaderView()
+    protected FPullToRefreshLoadingView onCreateHeaderView()
     {
         return new CustomPullToRefreshLoadingView(getContext());
     }
 
     @Override
-    protected SDPullToRefreshLoadingView onCreateFooterView()
+    protected FPullToRefreshLoadingView onCreateFooterView()
     {
         return new CustomPullToRefreshLoadingView(getContext());
     }

@@ -6,34 +6,34 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.fanwe.lib.pulltorefresh.FIPullToRefreshView;
 import com.fanwe.library.activity.SDBaseActivity;
 import com.fanwe.library.adapter.SDSimpleAdapter;
-import com.fanwe.lib.pulltorefresh.ISDPullToRefreshView;
-import com.fanwe.lib.pulltorefresh.SDPullToRefreshView;
+import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
 import com.sd.demo.pulltorefresh.R;
 import com.sd.demo.pulltorefresh.loadingview.CustomPullToRefreshLoadingView;
 import com.sd.demo.pulltorefresh.model.DataModel;
 
 public class ListViewActivity extends SDBaseActivity
 {
-    private SDPullToRefreshView view_pull;
+    private FPullToRefreshView view_pull;
     private ListView mListView;
 
     @Override
     protected void init(Bundle savedInstanceState)
     {
         setContentView(R.layout.activity_listview);
-        view_pull = (SDPullToRefreshView) findViewById(R.id.view_pull);
+        view_pull = (FPullToRefreshView) findViewById(R.id.view_pull);
         mListView = (ListView) findViewById(R.id.listView);
         mListView.setAdapter(mAdapter);
 
         view_pull.setDebug(true);
         view_pull.setDebugTag(getClass().getSimpleName());
         view_pull.setFooterView(new CustomPullToRefreshLoadingView(this)); //自定义FooterView
-        view_pull.setOnRefreshCallback(new ISDPullToRefreshView.OnRefreshCallback()
+        view_pull.setOnRefreshCallback(new FIPullToRefreshView.OnRefreshCallback()
         {
             @Override
-            public void onRefreshingFromHeader(final SDPullToRefreshView view)
+            public void onRefreshingFromHeader(final FPullToRefreshView view)
             {
                 //头部刷新回调
                 view.postDelayed(new Runnable()
@@ -48,7 +48,7 @@ public class ListViewActivity extends SDBaseActivity
             }
 
             @Override
-            public void onRefreshingFromFooter(final SDPullToRefreshView view)
+            public void onRefreshingFromFooter(final FPullToRefreshView view)
             {
                 //底部加载回调
                 view.postDelayed(new Runnable()

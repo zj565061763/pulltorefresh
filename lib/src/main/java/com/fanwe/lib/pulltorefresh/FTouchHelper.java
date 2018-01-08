@@ -23,9 +23,9 @@ import android.view.ViewParent;
 /**
  * 触摸事件处理帮助类<br>
  */
-class SDTouchHelper
+class FTouchHelper
 {
-    private static final String TAG = "SDTouchHelper";
+    private static final String TAG = "FTouchHelper";
 
     private boolean mIsDebug;
 

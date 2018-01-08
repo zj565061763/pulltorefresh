@@ -23,37 +23,41 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
-import com.fanwe.lib.pulltorefresh.ISDPullToRefreshView;
-import com.fanwe.lib.pulltorefresh.SDPullToRefreshView;
+import com.fanwe.lib.pulltorefresh.FIPullToRefreshLoadingView;
+import com.fanwe.lib.pulltorefresh.FIPullToRefreshView;
+import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
 
 import java.lang.reflect.Constructor;
 
-public abstract class SDPullToRefreshLoadingView extends FrameLayout implements ISDPullToRefreshView.IPullToRefreshLoadingView
+public abstract class FPullToRefreshLoadingView extends FrameLayout implements
+        FIPullToRefreshLoadingView,
+        FIPullToRefreshView.OnStateChangedCallback,
+        FIPullToRefreshView.OnViewPositionChangedCallback
 {
-    public SDPullToRefreshLoadingView(@NonNull Context context)
+    public FPullToRefreshLoadingView(@NonNull Context context)
     {
         super(context);
     }
 
-    public SDPullToRefreshLoadingView(@NonNull Context context, @Nullable AttributeSet attrs)
+    public FPullToRefreshLoadingView(@NonNull Context context, @Nullable AttributeSet attrs)
     {
         super(context, attrs);
     }
 
-    public SDPullToRefreshLoadingView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr)
+    public FPullToRefreshLoadingView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
     }
 
     @Override
-    public final ISDPullToRefreshView.LoadingViewType getLoadingViewType()
+    public final FIPullToRefreshView.LoadingViewType getLoadingViewType()
     {
         if (getPullToRefreshView().getHeaderView() == this)
         {
-            return ISDPullToRefreshView.LoadingViewType.HEADER;
+            return FIPullToRefreshView.LoadingViewType.HEADER;
         } else if (getPullToRefreshView().getFooterView() == this)
         {
-            return ISDPullToRefreshView.LoadingViewType.FOOTER;
+            return FIPullToRefreshView.LoadingViewType.FOOTER;
         } else
         {
             return null;
@@ -61,13 +65,13 @@ public abstract class SDPullToRefreshLoadingView extends FrameLayout implements 
     }
 
     @Override
-    public final SDPullToRefreshView getPullToRefreshView()
+    public final FPullToRefreshView getPullToRefreshView()
     {
-        return (SDPullToRefreshView) getParent();
+        return (FPullToRefreshView) getParent();
     }
 
     @Override
-    public void onViewPositionChanged(SDPullToRefreshView view)
+    public void onViewPositionChanged(FPullToRefreshView view)
     {
 
     }
@@ -84,7 +88,7 @@ public abstract class SDPullToRefreshLoadingView extends FrameLayout implements 
         return getMeasuredHeight();
     }
 
-    public static SDPullToRefreshLoadingView getInstanceByClassName(String className, Context context)
+    public static FPullToRefreshLoadingView getInstanceByClassName(String className, Context context)
     {
         if (TextUtils.isEmpty(className) || context == null)
         {
@@ -95,7 +99,7 @@ public abstract class SDPullToRefreshLoadingView extends FrameLayout implements 
         {
             Class clazz = Class.forName(className);
             Constructor constructor = clazz.getConstructor(Context.class);
-            return (SDPullToRefreshLoadingView) constructor.newInstance(context);
+            return (FPullToRefreshLoadingView) constructor.newInstance(context);
         } catch (Exception e)
         {
             e.printStackTrace();

@@ -8,16 +8,16 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 
-import com.fanwe.lib.pulltorefresh.ISDPullToRefreshView;
-import com.fanwe.lib.pulltorefresh.SDPullToRefreshView;
-import com.fanwe.lib.pulltorefresh.loadingview.SDPullToRefreshLoadingView;
+import com.fanwe.lib.pulltorefresh.FIPullToRefreshView;
+import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
+import com.fanwe.lib.pulltorefresh.loadingview.FPullToRefreshLoadingView;
 import com.fanwe.library.utils.LogUtil;
 
 /**
  * Created by Administrator on 2017/7/26.
  */
 
-public class GoogleLoadingView extends SDPullToRefreshLoadingView
+public class GoogleLoadingView extends FPullToRefreshLoadingView
 {
     public GoogleLoadingView(@NonNull Context context)
     {
@@ -80,7 +80,7 @@ public class GoogleLoadingView extends SDPullToRefreshLoadingView
     }
 
     @Override
-    public void onViewPositionChanged(SDPullToRefreshView view)
+    public void onViewPositionChanged(FPullToRefreshView view)
     {
         super.onViewPositionChanged(view);
 
@@ -104,7 +104,7 @@ public class GoogleLoadingView extends SDPullToRefreshLoadingView
     }
 
     @Override
-    public void onStateChanged(ISDPullToRefreshView.State newState, ISDPullToRefreshView.State oldState, SDPullToRefreshView view)
+    public void onStateChanged(FIPullToRefreshView.State newState, FIPullToRefreshView.State oldState, FPullToRefreshView view)
     {
         switch (newState)
         {

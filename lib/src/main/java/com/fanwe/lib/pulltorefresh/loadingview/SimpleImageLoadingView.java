@@ -25,7 +25,7 @@ import android.widget.ImageView;
 
 import com.fanwe.lib.pulltorefresh.R;
 
-public abstract class SimpleImageLoadingView extends SDPullToRefreshLoadingView
+public abstract class SimpleImageLoadingView extends FPullToRefreshLoadingView
 {
     public SimpleImageLoadingView(@NonNull Context context)
     {

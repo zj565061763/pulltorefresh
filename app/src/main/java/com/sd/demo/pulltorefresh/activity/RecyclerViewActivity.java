@@ -4,11 +4,11 @@ import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.fanwe.lib.pulltorefresh.FIPullToRefreshView;
 import com.fanwe.library.activity.SDBaseActivity;
 import com.fanwe.library.adapter.SDSimpleRecyclerAdapter;
 import com.fanwe.library.adapter.viewholder.SDRecyclerViewHolder;
-import com.fanwe.lib.pulltorefresh.ISDPullToRefreshView;
-import com.fanwe.lib.pulltorefresh.SDPullToRefreshView;
+import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
 import com.fanwe.library.view.SDRecyclerView;
 import com.sd.demo.pulltorefresh.R;
 import com.sd.demo.pulltorefresh.loadingview.CustomPullToRefreshLoadingView;
@@ -16,23 +16,23 @@ import com.sd.demo.pulltorefresh.model.DataModel;
 
 public class RecyclerViewActivity extends SDBaseActivity
 {
-    private SDPullToRefreshView view_pull;
+    private FPullToRefreshView view_pull;
     private SDRecyclerView mRecyclerView;
 
     @Override
     protected void init(Bundle savedInstanceState)
     {
         setContentView(R.layout.activity_recyclerview);
-        view_pull = (SDPullToRefreshView) findViewById(R.id.view_pull);
+        view_pull = (FPullToRefreshView) findViewById(R.id.view_pull);
         mRecyclerView = (SDRecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setAdapter(mAdapter);
 
         view_pull.setDebug(true);
         view_pull.setHeaderView(new CustomPullToRefreshLoadingView(this)); //自定义HeaderView
-        view_pull.setOnRefreshCallback(new ISDPullToRefreshView.OnRefreshCallback()
+        view_pull.setOnRefreshCallback(new FIPullToRefreshView.OnRefreshCallback()
         {
             @Override
-            public void onRefreshingFromHeader(final SDPullToRefreshView view)
+            public void onRefreshingFromHeader(final FPullToRefreshView view)
             {
                 //头部刷新回调
                 view.postDelayed(new Runnable()
@@ -47,7 +47,7 @@ public class RecyclerViewActivity extends SDBaseActivity
             }
 
             @Override
-            public void onRefreshingFromFooter(final SDPullToRefreshView view)
+            public void onRefreshingFromFooter(final FPullToRefreshView view)
             {
                 //底部加载回调
                 view.postDelayed(new Runnable()

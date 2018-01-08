@@ -5,22 +5,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.fanwe.lib.pulltorefresh.FIPullToRefreshView;
 import com.fanwe.library.activity.SDBaseActivity;
-import com.fanwe.lib.pulltorefresh.ISDPullToRefreshView;
-import com.fanwe.lib.pulltorefresh.SDPullToRefreshView;
+import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
 import com.sd.demo.pulltorefresh.R;
 import com.sd.demo.pulltorefresh.loadingview.google.GoogleLoadingView;
 
 public class ButtonActivity extends SDBaseActivity
 {
-    private SDPullToRefreshView view_pull;
+    private FPullToRefreshView view_pull;
     private Button btn_overlay, btn_stop, btn_stop_success, btn_stop_failure;
 
     @Override
     protected void init(Bundle savedInstanceState)
     {
         setContentView(R.layout.activity_button);
-        view_pull = (SDPullToRefreshView) findViewById(R.id.view_pull);
+        view_pull = (FPullToRefreshView) findViewById(R.id.view_pull);
         btn_overlay = (Button) findViewById(R.id.btn_overlay);
         btn_stop = (Button) findViewById(R.id.btn_stop);
         btn_stop_success = (Button) findViewById(R.id.btn_stop_success);
@@ -65,15 +65,15 @@ public class ButtonActivity extends SDBaseActivity
 
         view_pull.setDebug(true);
         view_pull.setHeaderView(new GoogleLoadingView(this));
-        view_pull.setOnRefreshCallback(new ISDPullToRefreshView.OnRefreshCallback()
+        view_pull.setOnRefreshCallback(new FIPullToRefreshView.OnRefreshCallback()
         {
             @Override
-            public void onRefreshingFromHeader(SDPullToRefreshView view)
+            public void onRefreshingFromHeader(FPullToRefreshView view)
             {
             }
 
             @Override
-            public void onRefreshingFromFooter(SDPullToRefreshView view)
+            public void onRefreshingFromFooter(FPullToRefreshView view)
             {
             }
         });

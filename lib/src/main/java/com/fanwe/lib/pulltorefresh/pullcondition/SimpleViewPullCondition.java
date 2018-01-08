@@ -18,11 +18,11 @@ package com.fanwe.lib.pulltorefresh.pullcondition;
 import android.support.v4.view.ViewCompat;
 import android.view.View;
 
-import com.fanwe.lib.pulltorefresh.ISDPullToRefreshView;
+import com.fanwe.lib.pulltorefresh.FIPullToRefreshView;
 
 import java.lang.ref.WeakReference;
 
-public class SimpleViewPullCondition implements ISDPullToRefreshView.IPullCondition
+public class SimpleViewPullCondition implements FIPullToRefreshView.IPullCondition
 {
     private WeakReference<View> mView;
 

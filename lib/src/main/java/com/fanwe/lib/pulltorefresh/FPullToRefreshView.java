@@ -28,24 +28,24 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.fanwe.lib.pulltorefresh.loadingview.SDPullToRefreshLoadingView;
+import com.fanwe.lib.pulltorefresh.loadingview.FPullToRefreshLoadingView;
 import com.fanwe.lib.pulltorefresh.loadingview.SimpleTextLoadingView;
 
-public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshView
+public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
 {
-    public SDPullToRefreshView(@NonNull Context context)
+    public FPullToRefreshView(@NonNull Context context)
     {
         super(context);
         initInternal(null);
     }
 
-    public SDPullToRefreshView(@NonNull Context context, @Nullable AttributeSet attrs)
+    public FPullToRefreshView(@NonNull Context context, @Nullable AttributeSet attrs)
     {
         super(context, attrs);
         initInternal(attrs);
     }
 
-    public SDPullToRefreshView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr)
+    public FPullToRefreshView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
         initInternal(attrs);
@@ -53,8 +53,8 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
     private static final String TAG = "SDPullToRefreshView";
 
-    private SDPullToRefreshLoadingView mHeaderView;
-    private SDPullToRefreshLoadingView mFooterView;
+    private FPullToRefreshLoadingView mHeaderView;
+    private FPullToRefreshLoadingView mFooterView;
     private View mRefreshView;
 
     private Mode mMode = Mode.BOTH;
@@ -85,7 +85,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     private OnViewPositionChangedCallback mOnViewPositionChangedCallback;
     private IPullCondition mPullCondition;
 
-    private final LogUtils mLogUtils = new LogUtils(SDPullToRefreshView.class);
+    private final LogUtils mLogUtils = new LogUtils(FPullToRefreshView.class);
 
     private void initInternal(AttributeSet attrs)
     {
@@ -196,7 +196,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         return new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
     }
 
-    //----------ISDPullToRefreshView implements start----------
+    //----------FIPullToRefreshView implements start----------
 
     @Override
     public void setMode(Mode mode)
@@ -344,13 +344,13 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     }
 
     @Override
-    public SDPullToRefreshLoadingView getHeaderView()
+    public FPullToRefreshLoadingView getHeaderView()
     {
         return mHeaderView;
     }
 
     @Override
-    public void setHeaderView(SDPullToRefreshLoadingView headerView)
+    public void setHeaderView(FPullToRefreshLoadingView headerView)
     {
         if (headerView == null || headerView == mHeaderView)
         {
@@ -363,13 +363,13 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     }
 
     @Override
-    public SDPullToRefreshLoadingView getFooterView()
+    public FPullToRefreshLoadingView getFooterView()
     {
         return mFooterView;
     }
 
     @Override
-    public void setFooterView(SDPullToRefreshLoadingView footerView)
+    public void setFooterView(FPullToRefreshLoadingView footerView)
     {
         if (footerView == null || footerView == mFooterView)
         {
@@ -405,7 +405,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
     }
 
-    //----------ISDPullToRefreshView implements end----------
+    //----------FIPullToRefreshView implements end----------
 
     @Override
     public void computeScroll()
@@ -432,7 +432,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         }
     }
 
-    private SDTouchHelper mTouchHelper = new SDTouchHelper();
+    private FTouchHelper mTouchHelper = new FTouchHelper();
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev)
@@ -451,7 +451,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         {
             case MotionEvent.ACTION_DOWN:
                 mTouchHelper.setNeedIntercept(false);
-                SDTouchHelper.requestDisallowInterceptTouchEvent(this, false);
+                FTouchHelper.requestDisallowInterceptTouchEvent(this, false);
 
                 // 如果ViewDragHelper未收到过ACTION_DOWN事件，则不会处理后续的拖动逻辑
                 mViewDragHelper.processTouchEvent(ev);
@@ -460,7 +460,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                 if (canPull())
                 {
                     mTouchHelper.setNeedIntercept(true);
-                    SDTouchHelper.requestDisallowInterceptTouchEvent(this, true);
+                    FTouchHelper.requestDisallowInterceptTouchEvent(this, true);
                 }
                 break;
         }
@@ -469,7 +469,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
     private boolean checkMoveParams()
     {
-        return (mCheckDragDegree ? mTouchHelper.getDegreeYFrom(SDTouchHelper.EVENT_DOWN) < 40 : true);
+        return (mCheckDragDegree ? mTouchHelper.getDegreeYFrom(FTouchHelper.EVENT_DOWN) < 40 : true);
     }
 
     private boolean isViewReset()
@@ -492,17 +492,17 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
     private boolean canPullFromHeader()
     {
-        return mTouchHelper.isMoveBottomFrom(SDTouchHelper.EVENT_DOWN)
+        return mTouchHelper.isMoveBottomFrom(FTouchHelper.EVENT_DOWN)
                 && (mMode == Mode.BOTH || mMode == Mode.PULL_FROM_HEADER)
-                && SDTouchHelper.isScrollToTop(mRefreshView)
+                && FTouchHelper.isScrollToTop(mRefreshView)
                 && (mPullCondition != null ? mPullCondition.canPullFromHeader() : true);
     }
 
     private boolean canPullFromFooter()
     {
-        return mTouchHelper.isMoveTopFrom(SDTouchHelper.EVENT_DOWN)
+        return mTouchHelper.isMoveTopFrom(FTouchHelper.EVENT_DOWN)
                 && (mMode == Mode.BOTH || mMode == Mode.PULL_FROM_FOOTER)
-                && SDTouchHelper.isScrollToBottom(mRefreshView)
+                && FTouchHelper.isScrollToBottom(mRefreshView)
                 && (mPullCondition != null ? mPullCondition.canPullFromFooter() : true);
     }
 
@@ -527,12 +527,12 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
                     {
                         mTouchHelper.setNeedCosume(true);
                         mTouchHelper.setNeedIntercept(true);
-                        SDTouchHelper.requestDisallowInterceptTouchEvent(this, true);
+                        FTouchHelper.requestDisallowInterceptTouchEvent(this, true);
                     } else
                     {
                         mTouchHelper.setNeedCosume(false);
                         mTouchHelper.setNeedIntercept(false);
-                        SDTouchHelper.requestDisallowInterceptTouchEvent(this, false);
+                        FTouchHelper.requestDisallowInterceptTouchEvent(this, false);
                     }
                 }
                 break;
@@ -542,7 +542,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
 
                 mTouchHelper.setNeedCosume(false);
                 mTouchHelper.setNeedIntercept(false);
-                SDTouchHelper.requestDisallowInterceptTouchEvent(this, false);
+                FTouchHelper.requestDisallowInterceptTouchEvent(this, false);
                 break;
             default:
                 mViewDragHelper.processTouchEvent(event);
@@ -558,10 +558,10 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     private void processMoveEvent(MotionEvent event)
     {
         //设置方向
-        if (mTouchHelper.isMoveBottomFrom(SDTouchHelper.EVENT_DOWN))
+        if (mTouchHelper.isMoveBottomFrom(FTouchHelper.EVENT_DOWN))
         {
             setDirection(Direction.FROM_HEADER);
-        } else if (mTouchHelper.isMoveTopFrom(SDTouchHelper.EVENT_DOWN))
+        } else if (mTouchHelper.isMoveTopFrom(FTouchHelper.EVENT_DOWN))
         {
             setDirection(Direction.FROM_FOOTER);
         }
@@ -951,13 +951,13 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
     private void addLoadingViews()
     {
         // HeaderView
-        SDPullToRefreshLoadingView headerView = onCreateHeaderView();
+        FPullToRefreshLoadingView headerView = onCreateHeaderView();
         if (headerView == null)
         {
             String headerClassName = getResources().getString(R.string.lib_ptr_header_class);
             if (!TextUtils.isEmpty(headerClassName))
             {
-                headerView = SDPullToRefreshLoadingView.getInstanceByClassName(headerClassName, getContext());
+                headerView = FPullToRefreshLoadingView.getInstanceByClassName(headerClassName, getContext());
             }
         }
         if (headerView == null)
@@ -967,13 +967,13 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
         setHeaderView(headerView);
 
         // FooterView
-        SDPullToRefreshLoadingView footerView = onCreateFooterView();
+        FPullToRefreshLoadingView footerView = onCreateFooterView();
         if (footerView == null)
         {
             String footerClassName = getResources().getString(R.string.lib_ptr_footer_class);
             if (footerClassName != null)
             {
-                footerView = SDPullToRefreshLoadingView.getInstanceByClassName(footerClassName, getContext());
+                footerView = FPullToRefreshLoadingView.getInstanceByClassName(footerClassName, getContext());
             }
         }
         if (footerView == null)
@@ -988,7 +988,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
      *
      * @return
      */
-    protected SDPullToRefreshLoadingView onCreateHeaderView()
+    protected FPullToRefreshLoadingView onCreateHeaderView()
     {
         return null;
     }
@@ -998,7 +998,7 @@ public class SDPullToRefreshView extends ViewGroup implements ISDPullToRefreshVi
      *
      * @return
      */
-    protected SDPullToRefreshLoadingView onCreateFooterView()
+    protected FPullToRefreshLoadingView onCreateFooterView()
     {
         return null;
     }
