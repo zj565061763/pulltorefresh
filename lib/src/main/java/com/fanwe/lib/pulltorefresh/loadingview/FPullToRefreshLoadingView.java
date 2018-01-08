@@ -23,7 +23,6 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
-import com.fanwe.lib.pulltorefresh.FIPullToRefreshLoadingView;
 import com.fanwe.lib.pulltorefresh.FIPullToRefreshView;
 import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
 

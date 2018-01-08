@@ -1,4 +1,7 @@
-package com.fanwe.lib.pulltorefresh;
+package com.fanwe.lib.pulltorefresh.loadingview;
+
+import com.fanwe.lib.pulltorefresh.FIPullToRefreshView;
+import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
 
 /**
  * 加载view
