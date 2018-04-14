@@ -1,8 +1,7 @@
 package com.sd.demo.pulltorefresh.model;
 
-import com.fanwe.library.common.SDSelectManager;
-import com.fanwe.library.listener.SDSimpleIterateCallback;
-import com.fanwe.library.utils.SDCollectionUtil;
+
+import com.fanwe.lib.selectmanager.FSelectManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.List;
  * Created by Administrator on 2017/4/14.
  */
 
-public class DataModel implements SDSelectManager.Selectable
+public class DataModel implements FSelectManager.Selectable
 {
 
     private String name;
@@ -32,17 +31,12 @@ public class DataModel implements SDSelectManager.Selectable
     public static List<DataModel> getListModel(int count)
     {
         final List<DataModel> listModel = new ArrayList<>();
-        SDCollectionUtil.foreach(count, new SDSimpleIterateCallback()
+        for (int i = 0; i < count; i++)
         {
-            @Override
-            public boolean next(int i)
-            {
-                DataModel model = new DataModel();
-                model.setName(String.valueOf(i));
-                listModel.add(model);
-                return false;
-            }
-        });
+            DataModel model = new DataModel();
+            model.setName(String.valueOf(i));
+            listModel.add(model);
+        }
         return listModel;
     }
 
