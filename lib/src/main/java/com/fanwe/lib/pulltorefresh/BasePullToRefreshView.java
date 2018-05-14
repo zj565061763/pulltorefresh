@@ -211,11 +211,13 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
     @Override
     public void stopRefreshing()
     {
-        if (mState != State.RESET && mState != State.REFRESH_FINISH)
+        if (mState == State.RESET || mState == State.REFRESH_FINISH)
         {
-            setState(State.REFRESH_FINISH);
-            scrollViewByState();
+            return;
         }
+
+        setState(State.REFRESH_FINISH);
+        scrollViewByState();
     }
 
     @Override
