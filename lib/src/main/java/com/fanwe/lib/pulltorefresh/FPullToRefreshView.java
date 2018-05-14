@@ -1100,6 +1100,11 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
                 getChildMeasureSpec(heightMeasureSpec, 0, params.height));
     }
 
+    private boolean isViewIdle()
+    {
+        return mViewDragHelper.getViewDragState() == ViewDragHelper.STATE_IDLE;
+    }
+
     private int getTopLayoutHeaderView()
     {
         // 初始值
@@ -1107,7 +1112,7 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
 
         if (getDirection() == Direction.FROM_HEADER)
         {
-            if (mViewDragHelper.getViewDragState() == ViewDragHelper.STATE_IDLE)
+            if (isViewIdle())
             {
                 switch (mState)
                 {
@@ -1132,7 +1137,7 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
 
         if (getDirection() == Direction.FROM_FOOTER)
         {
-            if (mViewDragHelper.getViewDragState() == ViewDragHelper.STATE_IDLE)
+            if (isViewIdle())
             {
                 switch (mState)
                 {
@@ -1159,7 +1164,7 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
         {
         } else
         {
-            if (mViewDragHelper.getViewDragState() == ViewDragHelper.STATE_IDLE)
+            if (isViewIdle())
             {
                 switch (mState)
                 {
