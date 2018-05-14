@@ -30,7 +30,7 @@ import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
 import java.lang.reflect.Constructor;
 
 public abstract class FPullToRefreshLoadingView extends FrameLayout implements
-        FIPullToRefreshLoadingView,
+        IPullToRefreshLoadingView,
         FIPullToRefreshView.OnStateChangedCallback,
         FIPullToRefreshView.OnViewPositionChangedCallback
 {
