@@ -82,7 +82,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
                 {
                     setState(State.REFRESHING);
                 }
-                scrollViewByState();
+                smoothScrollViewByState();
             }
 
             @Override

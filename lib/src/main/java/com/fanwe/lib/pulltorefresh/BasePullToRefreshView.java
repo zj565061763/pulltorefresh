@@ -68,9 +68,6 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
      */
     private int mDurationShowRefreshResult = DEFAULT_DURATION_SHOW_REFRESH_RESULT;
 
-    private boolean mHasOnLayout = false;
-    private Runnable mUpdatePositionRunnable;
-
     private OnRefreshCallback mOnRefreshCallback;
     private OnStateChangedCallback mOnStateChangedCallback;
     private OnViewPositionChangedCallback mOnViewPositionChangedCallback;
@@ -190,7 +187,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
         {
             setDirection(Direction.FROM_HEADER);
             setState(State.REFRESHING);
-            scrollViewByState();
+            smoothScrollViewByState();
         }
     }
 
@@ -206,7 +203,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
         {
             setDirection(Direction.FROM_FOOTER);
             setState(State.REFRESHING);
-            scrollViewByState();
+            smoothScrollViewByState();
         }
     }
 
@@ -219,7 +216,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
         }
 
         setState(State.FINISH);
-        scrollViewByState();
+        smoothScrollViewByState();
     }
 
     @Override
@@ -322,28 +319,6 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
     protected abstract boolean isViewIdle();
 
     protected abstract void smoothScrollViewByState();
-
-    /**
-     * 根据当前状态滚动view到对应的位置
-     */
-    protected final void scrollViewByState()
-    {
-        if (mHasOnLayout)
-        {
-            smoothScrollViewByState();
-        } else
-        {
-            mUpdatePositionRunnable = new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    smoothScrollViewByState();
-                    mUpdatePositionRunnable = null;
-                }
-            };
-        }
-    }
 
     /**
      * 移动view
@@ -888,17 +863,6 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
         {
             Log.i(getDebugTag(), "FooterView:" + top + "," + bottom);
         }
-
-        mHasOnLayout = true;
-        runUpdatePositionRunnableIfNeed();
-    }
-
-    private void runUpdatePositionRunnableIfNeed()
-    {
-        if (mHasOnLayout && mUpdatePositionRunnable != null)
-        {
-            post(mUpdatePositionRunnable);
-        }
     }
 
     @Override
@@ -906,7 +870,5 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
     {
         super.onDetachedFromWindow();
         removeCallbacks(mStopRefreshingRunnable);
-        mHasOnLayout = false;
-        mUpdatePositionRunnable = null;
     }
 }
