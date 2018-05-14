@@ -82,7 +82,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
                 {
                     setState(State.REFRESHING);
                 }
-                smoothScrollViewByState();
+                flingViewByState();
             }
 
             @Override
@@ -314,7 +314,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
     }
 
     @Override
-    protected void smoothScrollViewByState()
+    protected void flingViewByState()
     {
         int endY = 0;
         View view = null;

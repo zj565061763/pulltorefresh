@@ -187,7 +187,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
         {
             setDirection(Direction.FROM_HEADER);
             setState(State.REFRESHING);
-            smoothScrollViewByState();
+            flingViewByState();
         }
     }
 
@@ -203,7 +203,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
         {
             setDirection(Direction.FROM_FOOTER);
             setState(State.REFRESHING);
-            smoothScrollViewByState();
+            flingViewByState();
         }
     }
 
@@ -216,7 +216,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
         }
 
         setState(State.FINISH);
-        smoothScrollViewByState();
+        flingViewByState();
     }
 
     @Override
@@ -323,7 +323,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
      */
     protected abstract boolean isViewIdle();
 
-    protected abstract void smoothScrollViewByState();
+    protected abstract void flingViewByState();
 
     /**
      * 移动view
