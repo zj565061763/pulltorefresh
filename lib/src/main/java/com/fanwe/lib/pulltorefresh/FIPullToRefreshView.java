@@ -129,6 +129,8 @@ public interface FIPullToRefreshView
      */
     State getState();
 
+    Mode getMode();
+
     /**
      * 返回HeaderView
      *
@@ -252,7 +254,7 @@ public interface FIPullToRefreshView
          * @param oldState
          * @param view
          */
-        void onStateChanged(State newState, State oldState, FPullToRefreshView view);
+        void onStateChanged(State newState, State oldState, BasePullToRefreshView view);
     }
 
     interface OnRefreshCallback
@@ -262,14 +264,14 @@ public interface FIPullToRefreshView
          *
          * @param view
          */
-        void onRefreshingFromHeader(FPullToRefreshView view);
+        void onRefreshingFromHeader(BasePullToRefreshView view);
 
         /**
          * 上拉触发刷新回调
          *
          * @param view
          */
-        void onRefreshingFromFooter(FPullToRefreshView view);
+        void onRefreshingFromFooter(BasePullToRefreshView view);
     }
 
     interface OnViewPositionChangedCallback
@@ -279,7 +281,7 @@ public interface FIPullToRefreshView
          *
          * @param view
          */
-        void onViewPositionChanged(FPullToRefreshView view);
+        void onViewPositionChanged(BasePullToRefreshView view);
     }
 
     interface IPullCondition

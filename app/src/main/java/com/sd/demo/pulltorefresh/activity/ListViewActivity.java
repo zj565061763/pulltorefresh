@@ -7,6 +7,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.fanwe.lib.adapter.FSimpleAdapter;
+import com.fanwe.lib.pulltorefresh.BasePullToRefreshView;
 import com.fanwe.lib.pulltorefresh.FIPullToRefreshView;
 import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
 import com.fanwe.library.activity.SDBaseActivity;
@@ -32,7 +33,7 @@ public class ListViewActivity extends SDBaseActivity
         view_pull.setOnRefreshCallback(new FIPullToRefreshView.OnRefreshCallback()
         {
             @Override
-            public void onRefreshingFromHeader(final FPullToRefreshView view)
+            public void onRefreshingFromHeader(final BasePullToRefreshView view)
             {
                 //头部刷新回调
                 view.postDelayed(new Runnable()
@@ -47,7 +48,7 @@ public class ListViewActivity extends SDBaseActivity
             }
 
             @Override
-            public void onRefreshingFromFooter(final FPullToRefreshView view)
+            public void onRefreshingFromFooter(final BasePullToRefreshView view)
             {
                 //底部加载回调
                 view.postDelayed(new Runnable()

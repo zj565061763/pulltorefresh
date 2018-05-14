@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.fanwe.lib.pulltorefresh.BasePullToRefreshView;
 import com.fanwe.lib.pulltorefresh.FIPullToRefreshView;
 import com.fanwe.library.activity.SDBaseActivity;
 import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
@@ -68,12 +69,12 @@ public class ButtonActivity extends SDBaseActivity
         view_pull.setOnRefreshCallback(new FIPullToRefreshView.OnRefreshCallback()
         {
             @Override
-            public void onRefreshingFromHeader(FPullToRefreshView view)
+            public void onRefreshingFromHeader(BasePullToRefreshView view)
             {
             }
 
             @Override
-            public void onRefreshingFromFooter(FPullToRefreshView view)
+            public void onRefreshingFromFooter(BasePullToRefreshView view)
             {
             }
         });
