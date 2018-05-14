@@ -29,22 +29,22 @@ import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
 
 import java.lang.reflect.Constructor;
 
-public abstract class FPullToRefreshLoadingView extends FrameLayout implements
+public abstract class BasePullToRefreshLoadingView extends FrameLayout implements
         IPullToRefreshLoadingView,
         FIPullToRefreshView.OnStateChangedCallback,
         FIPullToRefreshView.OnViewPositionChangedCallback
 {
-    public FPullToRefreshLoadingView(@NonNull Context context)
+    public BasePullToRefreshLoadingView(@NonNull Context context)
     {
         super(context);
     }
 
-    public FPullToRefreshLoadingView(@NonNull Context context, @Nullable AttributeSet attrs)
+    public BasePullToRefreshLoadingView(@NonNull Context context, @Nullable AttributeSet attrs)
     {
         super(context, attrs);
     }
 
-    public FPullToRefreshLoadingView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr)
+    public BasePullToRefreshLoadingView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
     }
@@ -88,7 +88,7 @@ public abstract class FPullToRefreshLoadingView extends FrameLayout implements
         return getMeasuredHeight();
     }
 
-    public static FPullToRefreshLoadingView getInstanceByClassName(String className, Context context)
+    public static BasePullToRefreshLoadingView getInstanceByClassName(String className, Context context)
     {
         if (TextUtils.isEmpty(className) || context == null)
         {
@@ -99,7 +99,7 @@ public abstract class FPullToRefreshLoadingView extends FrameLayout implements
         {
             Class clazz = Class.forName(className);
             Constructor constructor = clazz.getConstructor(Context.class);
-            return (FPullToRefreshLoadingView) constructor.newInstance(context);
+            return (BasePullToRefreshLoadingView) constructor.newInstance(context);
         } catch (Exception e)
         {
             e.printStackTrace();

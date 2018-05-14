@@ -10,14 +10,14 @@ import android.view.Gravity;
 
 import com.fanwe.lib.pulltorefresh.BasePullToRefreshView;
 import com.fanwe.lib.pulltorefresh.FIPullToRefreshView;
-import com.fanwe.lib.pulltorefresh.loadingview.FPullToRefreshLoadingView;
+import com.fanwe.lib.pulltorefresh.loadingview.BasePullToRefreshLoadingView;
 import com.fanwe.library.utils.LogUtil;
 
 /**
  * Created by Administrator on 2017/7/26.
  */
 
-public class GoogleLoadingView extends FPullToRefreshLoadingView
+public class GoogleLoadingView extends BasePullToRefreshLoadingView
 {
     public GoogleLoadingView(@NonNull Context context)
     {

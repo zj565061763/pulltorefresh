@@ -27,7 +27,7 @@ import com.fanwe.lib.pulltorefresh.BasePullToRefreshView;
 import com.fanwe.lib.pulltorefresh.FIPullToRefreshView;
 import com.fanwe.lib.pulltorefresh.R;
 
-public class SimpleTextLoadingView extends FPullToRefreshLoadingView
+public class SimpleTextLoadingView extends BasePullToRefreshLoadingView
 {
     public SimpleTextLoadingView(@NonNull Context context)
     {

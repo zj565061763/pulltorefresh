@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 
 import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
-import com.fanwe.lib.pulltorefresh.loadingview.FPullToRefreshLoadingView;
+import com.fanwe.lib.pulltorefresh.loadingview.BasePullToRefreshLoadingView;
 import com.sd.demo.pulltorefresh.loadingview.CustomPullToRefreshLoadingView;
 
 /**
@@ -32,13 +32,13 @@ public class AppPullToRefreshView extends FPullToRefreshView
     }
 
     @Override
-    protected FPullToRefreshLoadingView onCreateHeaderView()
+    protected BasePullToRefreshLoadingView onCreateHeaderView()
     {
         return new CustomPullToRefreshLoadingView(getContext());
     }
 
     @Override
-    protected FPullToRefreshLoadingView onCreateFooterView()
+    protected BasePullToRefreshLoadingView onCreateFooterView()
     {
         return new CustomPullToRefreshLoadingView(getContext());
     }
