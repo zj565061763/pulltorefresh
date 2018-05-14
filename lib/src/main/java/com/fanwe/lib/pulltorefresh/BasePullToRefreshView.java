@@ -142,7 +142,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
     @Override
     public void setOverLayMode(boolean overLayMode)
     {
-        if (isViewReset())
+        if (isViewIdle() && mState == State.RESET)
         {
             mIsOverLayMode = overLayMode;
         }
@@ -314,8 +314,6 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
     }
 
     //----------FIPullToRefreshView implements end----------
-
-    protected abstract boolean isViewReset();
 
     protected abstract boolean isViewIdle();
 

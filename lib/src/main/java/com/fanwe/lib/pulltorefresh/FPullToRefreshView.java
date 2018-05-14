@@ -203,14 +203,12 @@ public class FPullToRefreshView extends BasePullToRefreshView
         return mTouchHelper.isTagIntercept();
     }
 
-    private boolean checkMoveParams()
-    {
-        return mTouchHelper.getDegreeYFrom(FTouchHelper.EVENT_DOWN) < 40;
-    }
-
     private boolean canPull()
     {
-        return checkMoveParams() && (canPullFromHeader() || canPullFromFooter()) && isViewReset();
+        return mTouchHelper.getDegreeYFrom(FTouchHelper.EVENT_DOWN) < 40
+                && (canPullFromHeader() || canPullFromFooter())
+                && getState() == State.RESET
+                && isViewIdle();
     }
 
     private boolean canPullFromHeader()
@@ -307,12 +305,6 @@ public class FPullToRefreshView extends BasePullToRefreshView
 
         // 处理view的拖动逻辑
         mViewDragHelper.processTouchEvent(event);
-    }
-
-    @Override
-    protected boolean isViewReset()
-    {
-        return getState() == State.RESET && mViewDragHelper.getViewDragState() == ViewDragHelper.STATE_IDLE;
     }
 
     @Override
