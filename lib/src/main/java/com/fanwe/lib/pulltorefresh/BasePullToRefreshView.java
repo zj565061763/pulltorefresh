@@ -185,6 +185,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
         {
             return;
         }
+
         if (mState == State.RESET)
         {
             setDirection(Direction.FROM_HEADER);
@@ -200,6 +201,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
         {
             return;
         }
+
         if (mState == State.RESET)
         {
             setDirection(Direction.FROM_FOOTER);
