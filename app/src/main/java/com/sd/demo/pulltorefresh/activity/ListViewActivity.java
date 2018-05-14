@@ -1,15 +1,15 @@
 package com.sd.demo.pulltorefresh.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.fanwe.lib.adapter.FSimpleAdapter;
-import com.fanwe.lib.pulltorefresh.BasePullToRefreshView;
-import com.fanwe.lib.pulltorefresh.PullToRefreshView;
 import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
+import com.fanwe.lib.pulltorefresh.PullToRefreshView;
 import com.fanwe.library.activity.SDBaseActivity;
 import com.sd.demo.pulltorefresh.R;
 import com.sd.demo.pulltorefresh.loadingview.CustomPullToRefreshLoadingView;
@@ -33,10 +33,10 @@ public class ListViewActivity extends SDBaseActivity
         view_pull.setOnRefreshCallback(new PullToRefreshView.OnRefreshCallback()
         {
             @Override
-            public void onRefreshingFromHeader(final BasePullToRefreshView view)
+            public void onRefreshingFromHeader(final PullToRefreshView view)
             {
                 //头部刷新回调
-                view.postDelayed(new Runnable()
+                new Handler().postDelayed(new Runnable()
                 {
                     @Override
                     public void run()
@@ -48,10 +48,10 @@ public class ListViewActivity extends SDBaseActivity
             }
 
             @Override
-            public void onRefreshingFromFooter(final BasePullToRefreshView view)
+            public void onRefreshingFromFooter(final PullToRefreshView view)
             {
                 //底部加载回调
-                view.postDelayed(new Runnable()
+                new Handler().postDelayed(new Runnable()
                 {
                     @Override
                     public void run()

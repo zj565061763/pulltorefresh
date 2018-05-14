@@ -1,12 +1,12 @@
 package com.sd.demo.pulltorefresh.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Button;
 
-import com.fanwe.lib.pulltorefresh.BasePullToRefreshView;
-import com.fanwe.lib.pulltorefresh.PullToRefreshView;
 import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
+import com.fanwe.lib.pulltorefresh.PullToRefreshView;
 import com.fanwe.library.activity.SDBaseActivity;
 import com.sd.demo.pulltorefresh.R;
 
@@ -28,7 +28,7 @@ public class ScrollViewActivity extends SDBaseActivity
         view_pull.setOnStateChangedCallback(new PullToRefreshView.OnStateChangedCallback()
         {
             @Override
-            public void onStateChanged(PullToRefreshView.State newState, PullToRefreshView.State oldState, BasePullToRefreshView view)
+            public void onStateChanged(PullToRefreshView.State newState, PullToRefreshView.State oldState, PullToRefreshView view)
             {
                 //状态变化回调
                 btn.setText(String.valueOf(view.getDirection()) + "->" + String.valueOf(newState));
@@ -37,7 +37,7 @@ public class ScrollViewActivity extends SDBaseActivity
         view_pull.setOnViewPositionChangedCallback(new PullToRefreshView.OnViewPositionChangedCallback()
         {
             @Override
-            public void onViewPositionChanged(BasePullToRefreshView view)
+            public void onViewPositionChanged(PullToRefreshView view)
             {
                 //view被拖动回调
                 Log.i(TAG, "onViewPositionChanged getScrollDistance:" + view.getScrollDistance());
@@ -46,10 +46,10 @@ public class ScrollViewActivity extends SDBaseActivity
         view_pull.setOnRefreshCallback(new PullToRefreshView.OnRefreshCallback()
         {
             @Override
-            public void onRefreshingFromHeader(final BasePullToRefreshView view)
+            public void onRefreshingFromHeader(final PullToRefreshView view)
             {
                 //头部刷新回调
-                view.postDelayed(new Runnable()
+                new Handler().postDelayed(new Runnable()
                 {
                     @Override
                     public void run()
@@ -60,10 +60,10 @@ public class ScrollViewActivity extends SDBaseActivity
             }
 
             @Override
-            public void onRefreshingFromFooter(final BasePullToRefreshView view)
+            public void onRefreshingFromFooter(final PullToRefreshView view)
             {
                 //底部加载回调
-                view.postDelayed(new Runnable()
+                new Handler().postDelayed(new Runnable()
                 {
                     @Override
                     public void run()

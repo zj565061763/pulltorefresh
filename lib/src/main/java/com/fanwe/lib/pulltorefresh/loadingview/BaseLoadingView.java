@@ -68,7 +68,7 @@ public abstract class BaseLoadingView extends FrameLayout implements
     }
 
     @Override
-    public void onViewPositionChanged(BasePullToRefreshView view)
+    public void onViewPositionChanged(PullToRefreshView view)
     {
 
     }

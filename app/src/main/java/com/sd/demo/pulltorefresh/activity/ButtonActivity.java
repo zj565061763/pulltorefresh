@@ -5,10 +5,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.fanwe.lib.pulltorefresh.BasePullToRefreshView;
+import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
 import com.fanwe.lib.pulltorefresh.PullToRefreshView;
 import com.fanwe.library.activity.SDBaseActivity;
-import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
 import com.sd.demo.pulltorefresh.R;
 import com.sd.demo.pulltorefresh.loadingview.google.GoogleLoadingView;
 
@@ -69,12 +68,12 @@ public class ButtonActivity extends SDBaseActivity
         view_pull.setOnRefreshCallback(new PullToRefreshView.OnRefreshCallback()
         {
             @Override
-            public void onRefreshingFromHeader(BasePullToRefreshView view)
+            public void onRefreshingFromHeader(PullToRefreshView view)
             {
             }
 
             @Override
-            public void onRefreshingFromFooter(BasePullToRefreshView view)
+            public void onRefreshingFromFooter(PullToRefreshView view)
             {
             }
         });

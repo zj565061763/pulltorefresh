@@ -253,7 +253,7 @@ public interface PullToRefreshView
          * @param oldState
          * @param view
          */
-        void onStateChanged(State newState, State oldState, BasePullToRefreshView view);
+        void onStateChanged(State newState, State oldState, PullToRefreshView view);
     }
 
     interface OnRefreshCallback
@@ -263,14 +263,14 @@ public interface PullToRefreshView
          *
          * @param view
          */
-        void onRefreshingFromHeader(BasePullToRefreshView view);
+        void onRefreshingFromHeader(PullToRefreshView view);
 
         /**
          * 上拉触发刷新回调
          *
          * @param view
          */
-        void onRefreshingFromFooter(BasePullToRefreshView view);
+        void onRefreshingFromFooter(PullToRefreshView view);
     }
 
     interface OnViewPositionChangedCallback
@@ -280,7 +280,7 @@ public interface PullToRefreshView
          *
          * @param view
          */
-        void onViewPositionChanged(BasePullToRefreshView view);
+        void onViewPositionChanged(PullToRefreshView view);
     }
 
     interface PullCondition

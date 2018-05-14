@@ -23,7 +23,6 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.TextView;
 
-import com.fanwe.lib.pulltorefresh.BasePullToRefreshView;
 import com.fanwe.lib.pulltorefresh.PullToRefreshView;
 import com.fanwe.lib.pulltorefresh.R;
 
@@ -52,7 +51,7 @@ public class SimpleTextLoadingView extends BaseLoadingView
     private void init()
     {
         LayoutInflater.from(getContext()).inflate(R.layout.view_simple_text_loading, this, true);
-        tv_content = (TextView) findViewById(R.id.tv_content);
+        tv_content = findViewById(R.id.tv_content);
     }
 
     public TextView getTextView()
@@ -61,7 +60,7 @@ public class SimpleTextLoadingView extends BaseLoadingView
     }
 
     @Override
-    public void onStateChanged(PullToRefreshView.State newState, PullToRefreshView.State oldState, BasePullToRefreshView view)
+    public void onStateChanged(PullToRefreshView.State newState, PullToRefreshView.State oldState, PullToRefreshView view)
     {
         switch (newState)
         {

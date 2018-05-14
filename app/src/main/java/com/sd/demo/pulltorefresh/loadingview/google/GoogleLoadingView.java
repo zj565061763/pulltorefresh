@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 
-import com.fanwe.lib.pulltorefresh.BasePullToRefreshView;
 import com.fanwe.lib.pulltorefresh.PullToRefreshView;
 import com.fanwe.lib.pulltorefresh.loadingview.BaseLoadingView;
 import com.fanwe.library.utils.LogUtil;
@@ -81,7 +80,7 @@ public class GoogleLoadingView extends BaseLoadingView
     }
 
     @Override
-    public void onViewPositionChanged(BasePullToRefreshView view)
+    public void onViewPositionChanged(PullToRefreshView view)
     {
         super.onViewPositionChanged(view);
 
@@ -105,7 +104,7 @@ public class GoogleLoadingView extends BaseLoadingView
     }
 
     @Override
-    public void onStateChanged(PullToRefreshView.State newState, PullToRefreshView.State oldState, BasePullToRefreshView view)
+    public void onStateChanged(PullToRefreshView.State newState, PullToRefreshView.State oldState, PullToRefreshView view)
     {
         switch (newState)
         {
