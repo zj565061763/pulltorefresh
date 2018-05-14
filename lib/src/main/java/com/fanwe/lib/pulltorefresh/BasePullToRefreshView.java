@@ -388,11 +388,11 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
     }
 
     /**
-     * 更新当前状态
+     * 根据移动距离刷新当前状态
      */
     protected final void updateStateByMoveDistance()
     {
-        int distance = Math.abs(getScrollDistance());
+        final int distance = Math.abs(getScrollDistance());
         if (getDirection() == Direction.FROM_HEADER)
         {
             if (mHeaderView.canRefresh(distance))
