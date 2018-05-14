@@ -94,13 +94,6 @@ public interface FIPullToRefreshView
     void setDurationShowRefreshResult(int durationShowRefreshResult);
 
     /**
-     * 设置是否判断拖动角度，默认判断拖动方向与y轴的夹角必须小于40度
-     *
-     * @param checkDragDegree true-判断拖动角度，false-不判断
-     */
-    void setCheckDragDegree(boolean checkDragDegree);
-
-    /**
      * 设置HeaderView处处于刷新状态
      */
     void startRefreshingFromHeader();

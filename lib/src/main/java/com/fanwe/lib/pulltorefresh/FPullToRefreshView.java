@@ -61,7 +61,6 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
     private State mState = State.RESET;
     private Direction mDirection = Direction.NONE;
     private Direction mLastDirection = Direction.NONE;
-    private boolean mCheckDragDegree = true;
     /**
      * HeaderView和FooterView是否是覆盖的模式
      */
@@ -271,12 +270,6 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
     }
 
     @Override
-    public void setCheckDragDegree(boolean checkDragDegree)
-    {
-        mCheckDragDegree = checkDragDegree;
-    }
-
-    @Override
     public void startRefreshingFromHeader()
     {
         if (mMode == Mode.DISABLE)
@@ -432,7 +425,7 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
         }
     }
 
-    private FTouchHelper mTouchHelper = new FTouchHelper();
+    private final FTouchHelper mTouchHelper = new FTouchHelper();
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev)
@@ -441,7 +434,7 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
         {
             return false;
         }
-        if (mTouchHelper.isNeedIntercept())
+        if (mTouchHelper.isTagIntercept())
         {
             return true;
         }
@@ -450,39 +443,33 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
         switch (ev.getAction())
         {
             case MotionEvent.ACTION_DOWN:
-                mTouchHelper.setNeedIntercept(false);
-                FTouchHelper.requestDisallowInterceptTouchEvent(this, false);
-
                 // 如果ViewDragHelper未收到过ACTION_DOWN事件，则不会处理后续的拖动逻辑
                 mViewDragHelper.processTouchEvent(ev);
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (canPull())
                 {
-                    mTouchHelper.setNeedIntercept(true);
+                    mTouchHelper.setTagIntercept(true);
                     FTouchHelper.requestDisallowInterceptTouchEvent(this, true);
                 }
                 break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                mTouchHelper.setTagIntercept(false);
+                FTouchHelper.requestDisallowInterceptTouchEvent(this, false);
+                break;
         }
-        return mTouchHelper.isNeedIntercept();
+        return mTouchHelper.isTagIntercept();
     }
 
     private boolean checkMoveParams()
     {
-        return (mCheckDragDegree ? mTouchHelper.getDegreeYFrom(FTouchHelper.EVENT_DOWN) < 40 : true);
+        return mTouchHelper.getDegreeYFrom(FTouchHelper.EVENT_DOWN) < 40;
     }
 
     private boolean isViewReset()
     {
-        if (!(mViewDragHelper.getViewDragState() == ViewDragHelper.STATE_IDLE))
-        {
-            return false;
-        }
-        if (mState != State.RESET)
-        {
-            return false;
-        }
-        return true;
+        return mState == State.RESET && mViewDragHelper.getViewDragState() == ViewDragHelper.STATE_IDLE;
     }
 
     private boolean canPull()
@@ -518,20 +505,20 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
         switch (event.getAction())
         {
             case MotionEvent.ACTION_MOVE:
-                if (mTouchHelper.isNeedCosume())
+                if (mTouchHelper.isTagConsume())
                 {
                     processMoveEvent(event);
                 } else
                 {
-                    if (mTouchHelper.isNeedIntercept() || canPull())
+                    if (mTouchHelper.isTagIntercept() || canPull())
                     {
-                        mTouchHelper.setNeedCosume(true);
-                        mTouchHelper.setNeedIntercept(true);
+                        mTouchHelper.setTagConsume(true);
+                        mTouchHelper.setTagIntercept(true);
                         FTouchHelper.requestDisallowInterceptTouchEvent(this, true);
                     } else
                     {
-                        mTouchHelper.setNeedCosume(false);
-                        mTouchHelper.setNeedIntercept(false);
+                        mTouchHelper.setTagConsume(false);
+                        mTouchHelper.setTagIntercept(false);
                         FTouchHelper.requestDisallowInterceptTouchEvent(this, false);
                     }
                 }
@@ -540,8 +527,8 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
             case MotionEvent.ACTION_CANCEL:
                 mViewDragHelper.processTouchEvent(event);
 
-                mTouchHelper.setNeedCosume(false);
-                mTouchHelper.setNeedIntercept(false);
+                mTouchHelper.setTagConsume(false);
+                mTouchHelper.setTagIntercept(false);
                 FTouchHelper.requestDisallowInterceptTouchEvent(this, false);
                 break;
             default:
@@ -549,7 +536,7 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
                 break;
         }
 
-        return mTouchHelper.isNeedCosume() || event.getAction() == MotionEvent.ACTION_DOWN;
+        return mTouchHelper.isTagConsume() || event.getAction() == MotionEvent.ACTION_DOWN;
     }
 
     /**

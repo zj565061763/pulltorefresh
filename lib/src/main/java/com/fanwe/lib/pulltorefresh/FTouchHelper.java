@@ -23,9 +23,9 @@ import android.view.ViewParent;
 /**
  * 触摸事件处理帮助类<br>
  */
-class FTouchHelper
+public class FTouchHelper
 {
-    private static final String TAG = "FTouchHelper";
+    private static final String TAG = FTouchHelper.class.getSimpleName();
 
     private boolean mIsDebug;
 
@@ -39,13 +39,13 @@ class FTouchHelper
     public static final int EVENT_LAST = 1;
 
     /**
-     * onInterceptTouchEvent方法是否需要拦截事件
+     * 是否需要拦截事件标识(用于onInterceptTouchEvent方法)
      */
-    private boolean mIsNeedIntercept = false;
+    private boolean mTagIntercept = false;
     /**
-     * onTouchEvent方法是否需要消费事件
+     * 是否需要消费事件标识(用于onTouchEvent方法)
      */
-    private boolean mIsNeedCosume = false;
+    private boolean mTagConsume = false;
 
     private float mCurrentX;
     private float mCurrentY;
@@ -96,6 +96,11 @@ class FTouchHelper
             case MotionEvent.ACTION_UP:
                 mUpX = mCurrentX;
                 mUpY = mCurrentY;
+
+                resetTag();
+                break;
+            case MotionEvent.ACTION_CANCEL:
+                resetTag();
                 break;
             default:
                 break;
@@ -108,44 +113,70 @@ class FTouchHelper
         }
     }
 
-    /**
-     * 设置onInterceptTouchEvent方法是否需要拦截事件
-     *
-     * @param needIntercept
-     */
-    public void setNeedIntercept(boolean needIntercept)
+    public void resetTag()
     {
-        mIsNeedIntercept = needIntercept;
+        setTagIntercept(false);
+        setTagConsume(false);
     }
 
     /**
-     * onInterceptTouchEvent方法是否需要拦截事件
+     * 设置是否需要拦截事件标识(用于onInterceptTouchEvent方法)
+     *
+     * @param tagIntercept
+     */
+    public void setTagIntercept(boolean tagIntercept)
+    {
+        mTagIntercept = tagIntercept;
+    }
+
+    /**
+     * 是否需要拦截事件标识(用于onInterceptTouchEvent方法)
      *
      * @return
      */
-    public boolean isNeedIntercept()
+    public boolean isTagIntercept()
     {
-        return mIsNeedIntercept;
+        return mTagIntercept;
     }
 
     /**
-     * 设置onTouchEvent方法是否需要消费事件
+     * 设置是否需要消费事件标识(用于onTouchEvent方法)
      *
-     * @param needCosume
+     * @param tagConsume
      */
-    public void setNeedCosume(boolean needCosume)
+    public void setTagConsume(boolean tagConsume)
     {
-        mIsNeedCosume = needCosume;
+        mTagConsume = tagConsume;
     }
 
     /**
-     * onTouchEvent方法是否需要消费事件
+     * 是否需要消费事件标识(用于onTouchEvent方法)
      *
      * @return
      */
-    public boolean isNeedCosume()
+    public boolean isTagConsume()
     {
-        return mIsNeedCosume;
+        return mTagConsume;
+    }
+
+    public float getCurrentX()
+    {
+        return mCurrentX;
+    }
+
+    public float getCurrentY()
+    {
+        return mCurrentY;
+    }
+
+    public float getLastX()
+    {
+        return mLastX;
+    }
+
+    public float getLastY()
+    {
+        return mLastY;
     }
 
     public float getDownX()
@@ -179,56 +210,21 @@ class FTouchHelper
     }
 
     /**
-     * 保存当前移动方向
-     */
-    public void saveDirection()
-    {
-        if (mDirection != Direction.None)
-        {
-            return;
-        }
-
-        final float dx = getDeltaXFrom(EVENT_DOWN);
-        final float dy = getDeltaYFrom(EVENT_DOWN);
-        if (dx == 0 && dy == 0)
-        {
-            return;
-        }
-
-        if (Math.abs(dx) > Math.abs(dy))
-        {
-            if (dx < 0)
-            {
-                setDirection(Direction.MoveLeft);
-            } else if (dx > 0)
-            {
-                setDirection(Direction.MoveRight);
-            }
-        } else
-        {
-            if (dy < 0)
-            {
-                setDirection(Direction.MoveTop);
-            } else if (dy > 0)
-            {
-                setDirection(Direction.MoveBottom);
-            }
-        }
-    }
-
-    /**
      * 保存水平方向
+     *
+     * @param event {@link #EVENT_DOWN} {@link #EVENT_LAST}
+     * @return
      */
-    public void saveDirectionHorizontal()
+    public boolean saveDirectionHorizontalFrom(int event)
     {
         if (mDirection == Direction.MoveLeft || mDirection == Direction.MoveRight)
         {
-            return;
+            return true;
         }
-        final int dx = (int) getDeltaXFrom(EVENT_DOWN);
+        final int dx = (int) getDeltaXFrom(event);
         if (dx == 0)
         {
-            return;
+            return false;
         }
 
         if (dx < 0)
@@ -238,21 +234,25 @@ class FTouchHelper
         {
             setDirection(Direction.MoveRight);
         }
+        return true;
     }
 
     /**
      * 保存竖直方向
+     *
+     * @param event {@link #EVENT_DOWN} {@link #EVENT_LAST}
+     * @return
      */
-    public void saveDirectionVertical()
+    public boolean saveDirectionVerticalFrom(int event)
     {
         if (mDirection == Direction.MoveTop || mDirection == Direction.MoveBottom)
         {
-            return;
+            return true;
         }
-        final int dy = (int) getDeltaYFrom(EVENT_DOWN);
+        final int dy = (int) getDeltaYFrom(event);
         if (dy == 0)
         {
-            return;
+            return false;
         }
 
         if (dy < 0)
@@ -262,6 +262,7 @@ class FTouchHelper
         {
             setDirection(Direction.MoveBottom);
         }
+        return true;
     }
 
     private void setDirection(Direction direction)
@@ -329,14 +330,13 @@ class FTouchHelper
      */
     public double getDegreeXFrom(int event)
     {
-        float dx = getDeltaXFrom(event);
+        final float dx = getDeltaXFrom(event);
         if (dx == 0)
         {
             return 0;
         }
-        float dy = getDeltaYFrom(event);
-
-        float angle = Math.abs(dy) / Math.abs(dx);
+        final float dy = getDeltaYFrom(event);
+        final float angle = Math.abs(dy) / Math.abs(dx);
         return Math.toDegrees(Math.atan(angle));
     }
 
@@ -348,14 +348,13 @@ class FTouchHelper
      */
     public double getDegreeYFrom(int event)
     {
-        float dy = getDeltaYFrom(event);
+        final float dy = getDeltaYFrom(event);
         if (dy == 0)
         {
             return 0;
         }
-        float dx = getDeltaXFrom(event);
-
-        float angle = Math.abs(dx) / Math.abs(dy);
+        final float dx = getDeltaXFrom(event);
+        final float angle = Math.abs(dx) / Math.abs(dy);
         return Math.toDegrees(Math.atan(angle));
     }
 
@@ -414,22 +413,20 @@ class FTouchHelper
      */
     public int getLegalDeltaX(int x, int minX, int maxX, int dx)
     {
-        int future = x + dx;
+        final int future = x + dx;
         if (isMoveLeftFrom(EVENT_LAST))
         {
             //如果向左拖动
             if (future < minX)
             {
-                int comsume = minX - future;
-                dx += comsume;
+                dx += (minX - future);
             }
         } else if (isMoveRightFrom(EVENT_LAST))
         {
             //如果向右拖动
             if (future > maxX)
             {
-                int comsume = future - maxX;
-                dx -= comsume;
+                dx -= (future - maxX);
             }
         }
         return dx;
@@ -446,22 +443,20 @@ class FTouchHelper
      */
     public int getLegalDeltaY(int y, int minY, int maxY, int dy)
     {
-        int future = y + dy;
+        final int future = y + dy;
         if (isMoveTopFrom(EVENT_LAST))
         {
             //如果向上拖动
             if (future < minY)
             {
-                int comsume = minY - future;
-                dy += comsume;
+                dy += (minY - future);
             }
         } else if (isMoveBottomFrom(EVENT_LAST))
         {
             //如果向下拖动
             if (future > maxY)
             {
-                int comsume = future - maxY;
-                dy -= comsume;
+                dy -= (future - maxY);
             }
         }
         return dy;
@@ -555,20 +550,14 @@ class FTouchHelper
     public StringBuilder getDebugInfo()
     {
         StringBuilder sb = new StringBuilder("\r\n")
-                .append("DownX:").append(mDownX).append("\r\n")
-                .append("DownY:").append(mDownY).append("\r\n")
-                .append("MoveX:").append(mMoveX).append("\r\n")
-                .append("MoveY:").append(mMoveY).append("\r\n").append("\r\n")
+                .append("Down:").append(mDownX).append(",").append(mDownY).append("\r\n")
+                .append("Move:").append(mMoveX).append(",").append(mMoveY).append("\r\n")
 
-                .append("DeltaX from down:").append(getDeltaXFrom(EVENT_DOWN)).append("\r\n")
-                .append("DeltaY from down:").append(getDeltaYFrom(EVENT_DOWN)).append("\r\n")
-                .append("DeltaX from last:").append(getDeltaXFrom(EVENT_LAST)).append("\r\n")
-                .append("DeltaY from last:").append(getDeltaYFrom(EVENT_LAST)).append("\r\n").append("\r\n")
+                .append("Delta from down:").append(getDeltaXFrom(EVENT_DOWN)).append(",").append(getDeltaYFrom(EVENT_DOWN)).append("\r\n")
+                .append("Delta from last:").append(getDeltaXFrom(EVENT_LAST)).append(",").append(getDeltaYFrom(EVENT_LAST)).append("\r\n")
 
-                .append("DegreeX from down:").append(getDegreeXFrom(EVENT_DOWN)).append("\r\n")
-                .append("DegreeY from down:").append(getDegreeYFrom(EVENT_DOWN)).append("\r\n")
-                .append("DegreeX from last:").append(getDegreeXFrom(EVENT_LAST)).append("\r\n")
-                .append("DegreeY from last:").append(getDegreeYFrom(EVENT_LAST)).append("\r\n");
+                .append("Degree from down:").append(getDegreeXFrom(EVENT_DOWN)).append(",").append(getDegreeYFrom(EVENT_DOWN)).append("\r\n")
+                .append("Degree from last:").append(getDegreeXFrom(EVENT_LAST)).append(",").append(getDegreeYFrom(EVENT_LAST)).append("\r\n");
         return sb;
     }
 }
