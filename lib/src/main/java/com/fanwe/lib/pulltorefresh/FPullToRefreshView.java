@@ -132,7 +132,7 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
                 {
                     setState(State.REFRESHING);
                 }
-                smoothScrollViewByState();
+                scrollViewByState();
             }
 
             @Override
@@ -282,7 +282,7 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
         {
             setDirection(Direction.FROM_HEADER);
             setState(State.REFRESHING);
-            smoothScrollViewByState();
+            scrollViewByState();
         }
     }
 
@@ -297,7 +297,7 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
         {
             setDirection(Direction.FROM_FOOTER);
             setState(State.REFRESHING);
-            smoothScrollViewByState();
+            scrollViewByState();
         }
     }
 
@@ -307,7 +307,7 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
         if (mState != State.RESET && mState != State.REFRESH_FINISH)
         {
             setState(State.REFRESH_FINISH);
-            smoothScrollViewByState();
+            scrollViewByState();
         }
     }
 
@@ -751,7 +751,7 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
     /**
      * 根据当前状态滚动view到对应的位置
      */
-    private void smoothScrollViewByState()
+    private void scrollViewByState()
     {
         if (mHasOnLayout)
         {
