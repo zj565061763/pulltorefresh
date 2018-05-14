@@ -129,6 +129,11 @@ public interface FIPullToRefreshView
      */
     State getState();
 
+    /**
+     * 返回当前的刷新模式
+     *
+     * @return
+     */
     Mode getMode();
 
     /**
