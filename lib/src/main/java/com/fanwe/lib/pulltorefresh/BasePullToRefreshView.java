@@ -316,6 +316,11 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
 
     //----------FIPullToRefreshView implements end----------
 
+    /**
+     * view是否处于静止的状态
+     *
+     * @return
+     */
     protected abstract boolean isViewIdle();
 
     protected abstract void smoothScrollViewByState();
