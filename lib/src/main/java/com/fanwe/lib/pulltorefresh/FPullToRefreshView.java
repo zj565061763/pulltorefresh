@@ -17,9 +17,6 @@ package com.fanwe.lib.pulltorefresh;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.AttrRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.text.TextUtils;
@@ -34,22 +31,22 @@ import com.fanwe.lib.pulltorefresh.loadingview.SimpleTextLoadingView;
 
 public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
 {
-    public FPullToRefreshView(@NonNull Context context)
+    public FPullToRefreshView(Context context)
     {
         super(context);
-        initInternal(null);
+        init(null);
     }
 
-    public FPullToRefreshView(@NonNull Context context, @Nullable AttributeSet attrs)
+    public FPullToRefreshView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
-        initInternal(attrs);
+        init(attrs);
     }
 
-    public FPullToRefreshView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr)
+    public FPullToRefreshView(Context context, AttributeSet attrs, int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
-        initInternal(attrs);
+        init(attrs);
     }
 
     private FPullToRefreshLoadingView mHeaderView;
@@ -85,7 +82,7 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
 
     private boolean mIsDebug;
 
-    private void initInternal(AttributeSet attrs)
+    private void init(AttributeSet attrs)
     {
         addLoadingViews();
         initViewDragHelper();
