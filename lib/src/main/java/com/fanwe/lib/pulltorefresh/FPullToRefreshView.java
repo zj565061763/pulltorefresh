@@ -24,6 +24,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,8 +51,6 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
         super(context, attrs, defStyleAttr);
         initInternal(attrs);
     }
-
-    private static final String TAG = "SDPullToRefreshView";
 
     private FPullToRefreshLoadingView mHeaderView;
     private FPullToRefreshLoadingView mFooterView;
@@ -84,7 +83,7 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
     private OnViewPositionChangedCallback mOnViewPositionChangedCallback;
     private IPullCondition mPullCondition;
 
-    private final LogUtils mLogUtils = new LogUtils(FPullToRefreshView.class);
+    private boolean mIsDebug;
 
     private void initInternal(AttributeSet attrs)
     {
@@ -94,13 +93,13 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
 
     public void setDebug(boolean debug)
     {
-        mLogUtils.setDebug(debug);
+        mIsDebug = debug;
         mTouchHelper.setDebug(debug);
     }
 
-    public void setDebugTag(String debugTag)
+    protected final String getDebugTag()
     {
-        mLogUtils.setDebugTag(debugTag);
+        return getClass().getSimpleName();
     }
 
     private void initViewDragHelper()
@@ -117,14 +116,20 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
             public void onViewCaptured(View capturedChild, int activePointerId)
             {
                 super.onViewCaptured(capturedChild, activePointerId);
-                mLogUtils.i("ViewDragHelper onViewCaptured----------");
+                if (mIsDebug)
+                {
+                    Log.i(getDebugTag(), "ViewDragHelper onViewCaptured----------");
+                }
             }
 
             @Override
             public void onViewReleased(View releasedChild, float xvel, float yvel)
             {
                 super.onViewReleased(releasedChild, xvel, yvel);
-                mLogUtils.i("ViewDragHelper onViewReleased");
+                if (mIsDebug)
+                {
+                    Log.i(getDebugTag(), "ViewDragHelper onViewReleased----------");
+                }
 
                 if (mState == State.RELEASE_TO_REFRESH)
                 {
@@ -405,7 +410,7 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
     {
         if (mViewDragHelper.continueSettling(true))
         {
-            if (mLogUtils.isDebug())
+            if (mIsDebug)
             {
                 int top = 0;
                 if (getDirection() == Direction.FROM_HEADER)
@@ -415,13 +420,13 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
                 {
                     top = mFooterView.getTop();
                 }
-                mLogUtils.i("computeScroll:" + top + " " + mState);
+                Log.i(getDebugTag(), "computeScroll:" + top + " " + mState);
             }
 
-            ViewCompat.postInvalidateOnAnimation(this);
+            invalidate();
         } else
         {
-            mLogUtils.i("computeScroll finish:" + mState);
+            Log.i(getDebugTag(), "computeScroll finish:" + mState);
         }
     }
 
@@ -658,15 +663,9 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
         final State oldState = mState;
         mState = state;
 
-        if (mLogUtils.isDebug())
+        if (mIsDebug)
         {
-            if (mState == State.RESET)
-            {
-                mLogUtils.e("setState:" + mState);
-            } else
-            {
-                mLogUtils.i("setState:" + mState);
-            }
+            Log.i(getDebugTag(), "setState:" + mState);
         }
 
         removeCallbacks(mStopRefreshingRunnable);
@@ -700,7 +699,10 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
 
     private void notifyRefreshCallback()
     {
-        mLogUtils.i("notifyRefreshCallback");
+        if (mIsDebug)
+        {
+            Log.i(getDebugTag(), "notifyRefreshCallback");
+        }
 
         if (mOnRefreshCallback != null)
         {
@@ -732,8 +734,10 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
         }
         if (needRequestLayout)
         {
-            mLogUtils.i("requestLayout when reset");
-
+            if (mIsDebug)
+            {
+                Log.i(getDebugTag(), "requestLayout when reset");
+            }
             requestLayout();
         }
     }
@@ -835,7 +839,10 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
 
                 if (mViewDragHelper.smoothSlideViewTo(view, view.getLeft(), endY))
                 {
-                    mLogUtils.i("smoothScrollViewByState:" + view.getTop() + "," + endY + " " + mState);
+                    if (mIsDebug)
+                    {
+                        Log.i(getDebugTag(), "smoothScrollViewByState:" + view.getTop() + "," + endY + " " + mState);
+                    }
 
                     smoothScrollViewStarted = true;
                     invalidate();
@@ -855,7 +862,10 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
 
                 if (mViewDragHelper.smoothSlideViewTo(view, view.getLeft(), endY))
                 {
-                    mLogUtils.i("smoothScrollViewByState:" + view.getTop() + "," + endY + " " + mState);
+                    if (mIsDebug)
+                    {
+                        Log.i(getDebugTag(), "smoothScrollViewByState:" + view.getTop() + "," + endY + " " + mState);
+                    }
 
                     smoothScrollViewStarted = true;
                     invalidate();
@@ -895,13 +905,19 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
                 mDirection = direction;
                 mLastDirection = direction;
 
-                mLogUtils.i("setDirection:" + mDirection);
+                if (mIsDebug)
+                {
+                    Log.i(getDebugTag(), "setDirection:" + mDirection);
+                }
             }
         } else
         {
             mDirection = Direction.NONE;
 
-            mLogUtils.i("setDirection:" + mDirection);
+            if (mIsDebug)
+            {
+                Log.i(getDebugTag(), "setDirection:" + mDirection);
+            }
         }
     }
 
@@ -1173,16 +1189,9 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b)
     {
-        if (mLogUtils.isDebug())
+        if (mIsDebug)
         {
-            int state = mViewDragHelper.getViewDragState();
-            if (state == ViewDragHelper.STATE_IDLE)
-            {
-                mLogUtils.i("onLayout " + state + " totalHeight:----------" + getHeight());
-            } else
-            {
-                mLogUtils.e("onLayout " + state + " totalHeight:----------" + getHeight());
-            }
+            Log.i(getDebugTag(), "onLayout " + mState + " totalHeight:----------" + getHeight());
         }
 
         int left = getPaddingLeft();
@@ -1195,7 +1204,10 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
         right = left + mHeaderView.getMeasuredWidth();
         bottom = top + mHeaderView.getMeasuredHeight();
         mHeaderView.layout(left, top, right, bottom);
-        mLogUtils.i("HeaderView:" + top + "," + bottom);
+        if (mIsDebug)
+        {
+            Log.i(getDebugTag(), "HeaderView:" + top + "," + bottom);
+        }
 
         // RefreshView
         top = getTopLayoutRefreshView();
@@ -1207,7 +1219,10 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
         right = left + mRefreshView.getMeasuredWidth();
         bottom = top + mRefreshView.getMeasuredHeight();
         mRefreshView.layout(left, top, right, bottom);
-        mLogUtils.i("RefreshView:" + top + "," + bottom);
+        if (mIsDebug)
+        {
+            Log.i(getDebugTag(), "RefreshView:" + top + "," + bottom);
+        }
 
         // FooterView
         top = getTopLayoutFooterView();
@@ -1219,7 +1234,10 @@ public class FPullToRefreshView extends ViewGroup implements FIPullToRefreshView
         right = left + mFooterView.getMeasuredWidth();
         bottom = top + mFooterView.getMeasuredHeight();
         mFooterView.layout(left, top, right, bottom);
-        mLogUtils.i("FooterView:" + top + "," + bottom);
+        if (mIsDebug)
+        {
+            Log.i(getDebugTag(), "FooterView:" + top + "," + bottom);
+        }
 
         mHasOnLayout = true;
         runUpdatePositionRunnableIfNeed();

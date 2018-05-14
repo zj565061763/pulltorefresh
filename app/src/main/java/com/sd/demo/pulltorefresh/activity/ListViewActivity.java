@@ -28,7 +28,6 @@ public class ListViewActivity extends SDBaseActivity
         mListView.setAdapter(mAdapter);
 
         view_pull.setDebug(true);
-        view_pull.setDebugTag(getClass().getSimpleName());
         view_pull.setFooterView(new CustomPullToRefreshLoadingView(this)); //自定义FooterView
         view_pull.setOnRefreshCallback(new FIPullToRefreshView.OnRefreshCallback()
         {
