@@ -9,7 +9,7 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 
 import com.fanwe.lib.pulltorefresh.BasePullToRefreshView;
-import com.fanwe.lib.pulltorefresh.FIPullToRefreshView;
+import com.fanwe.lib.pulltorefresh.PullToRefreshView;
 import com.fanwe.lib.pulltorefresh.loadingview.BaseLoadingView;
 import com.fanwe.library.utils.LogUtil;
 
@@ -105,7 +105,7 @@ public class GoogleLoadingView extends BaseLoadingView
     }
 
     @Override
-    public void onStateChanged(FIPullToRefreshView.State newState, FIPullToRefreshView.State oldState, BasePullToRefreshView view)
+    public void onStateChanged(PullToRefreshView.State newState, PullToRefreshView.State oldState, BasePullToRefreshView view)
     {
         switch (newState)
         {

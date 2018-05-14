@@ -7,7 +7,7 @@ import android.widget.TextView;
 import com.fanwe.lib.adapter.FSimpleRecyclerAdapter;
 import com.fanwe.lib.adapter.viewholder.FRecyclerViewHolder;
 import com.fanwe.lib.pulltorefresh.BasePullToRefreshView;
-import com.fanwe.lib.pulltorefresh.FIPullToRefreshView;
+import com.fanwe.lib.pulltorefresh.PullToRefreshView;
 import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
 import com.fanwe.library.activity.SDBaseActivity;
 import com.fanwe.library.view.SDRecyclerView;
@@ -30,7 +30,7 @@ public class RecyclerViewActivity extends SDBaseActivity
 
         view_pull.setDebug(true);
         view_pull.setHeaderView(new CustomPullToRefreshLoadingView(this)); //自定义HeaderView
-        view_pull.setOnRefreshCallback(new FIPullToRefreshView.OnRefreshCallback()
+        view_pull.setOnRefreshCallback(new PullToRefreshView.OnRefreshCallback()
         {
             @Override
             public void onRefreshingFromHeader(final BasePullToRefreshView view)

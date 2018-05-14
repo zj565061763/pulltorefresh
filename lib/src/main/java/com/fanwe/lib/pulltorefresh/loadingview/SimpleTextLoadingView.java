@@ -24,7 +24,7 @@ import android.view.LayoutInflater;
 import android.widget.TextView;
 
 import com.fanwe.lib.pulltorefresh.BasePullToRefreshView;
-import com.fanwe.lib.pulltorefresh.FIPullToRefreshView;
+import com.fanwe.lib.pulltorefresh.PullToRefreshView;
 import com.fanwe.lib.pulltorefresh.R;
 
 public class SimpleTextLoadingView extends BaseLoadingView
@@ -61,7 +61,7 @@ public class SimpleTextLoadingView extends BaseLoadingView
     }
 
     @Override
-    public void onStateChanged(FIPullToRefreshView.State newState, FIPullToRefreshView.State oldState, BasePullToRefreshView view)
+    public void onStateChanged(PullToRefreshView.State newState, PullToRefreshView.State oldState, BasePullToRefreshView view)
     {
         switch (newState)
         {
@@ -112,7 +112,7 @@ public class SimpleTextLoadingView extends BaseLoadingView
                 }
                 break;
             case FINISH:
-                if (oldState == FIPullToRefreshView.State.REFRESHING)
+                if (oldState == PullToRefreshView.State.REFRESHING)
                 {
                     if (isHeaderView())
                     {

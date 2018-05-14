@@ -24,15 +24,15 @@ import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
 import com.fanwe.lib.pulltorefresh.BasePullToRefreshView;
-import com.fanwe.lib.pulltorefresh.FIPullToRefreshView;
+import com.fanwe.lib.pulltorefresh.PullToRefreshView;
 import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
 
 import java.lang.reflect.Constructor;
 
 public abstract class BaseLoadingView extends FrameLayout implements
         LoadingView,
-        FIPullToRefreshView.OnStateChangedCallback,
-        FIPullToRefreshView.OnViewPositionChangedCallback
+        PullToRefreshView.OnStateChangedCallback,
+        PullToRefreshView.OnViewPositionChangedCallback
 {
     public BaseLoadingView(@NonNull Context context)
     {

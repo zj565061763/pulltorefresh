@@ -19,7 +19,7 @@ import android.view.View;
 
 import com.fanwe.lib.pulltorefresh.loadingview.BaseLoadingView;
 
-public interface FIPullToRefreshView
+public interface PullToRefreshView
 {
     /**
      * 默认的拖动距离消耗比例
@@ -63,7 +63,7 @@ public interface FIPullToRefreshView
      *
      * @param pullCondition
      */
-    void setPullCondition(IPullCondition pullCondition);
+    void setPullCondition(PullCondition pullCondition);
 
     /**
      * 设置HeaderView和FooterView是否是覆盖的模式（默认false）
@@ -283,7 +283,7 @@ public interface FIPullToRefreshView
         void onViewPositionChanged(BasePullToRefreshView view);
     }
 
-    interface IPullCondition
+    interface PullCondition
     {
         /**
          * 当View内部可以从Header处拖动条件成立并且这个方法返回true的时候触发拖动

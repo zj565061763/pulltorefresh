@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.fanwe.lib.pulltorefresh.BasePullToRefreshView;
-import com.fanwe.lib.pulltorefresh.FIPullToRefreshView;
+import com.fanwe.lib.pulltorefresh.PullToRefreshView;
 import com.fanwe.library.activity.SDBaseActivity;
 import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
 import com.sd.demo.pulltorefresh.R;
@@ -66,7 +66,7 @@ public class ButtonActivity extends SDBaseActivity
 
         view_pull.setDebug(true);
         view_pull.setHeaderView(new GoogleLoadingView(this));
-        view_pull.setOnRefreshCallback(new FIPullToRefreshView.OnRefreshCallback()
+        view_pull.setOnRefreshCallback(new PullToRefreshView.OnRefreshCallback()
         {
             @Override
             public void onRefreshingFromHeader(BasePullToRefreshView view)

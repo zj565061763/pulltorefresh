@@ -5,7 +5,7 @@ import android.util.Log;
 import android.widget.Button;
 
 import com.fanwe.lib.pulltorefresh.BasePullToRefreshView;
-import com.fanwe.lib.pulltorefresh.FIPullToRefreshView;
+import com.fanwe.lib.pulltorefresh.PullToRefreshView;
 import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
 import com.fanwe.library.activity.SDBaseActivity;
 import com.sd.demo.pulltorefresh.R;
@@ -25,16 +25,16 @@ public class ScrollViewActivity extends SDBaseActivity
         btn = (Button) findViewById(R.id.btn);
 
         view_pull.setDebug(true);
-        view_pull.setOnStateChangedCallback(new FIPullToRefreshView.OnStateChangedCallback()
+        view_pull.setOnStateChangedCallback(new PullToRefreshView.OnStateChangedCallback()
         {
             @Override
-            public void onStateChanged(FIPullToRefreshView.State newState, FIPullToRefreshView.State oldState, BasePullToRefreshView view)
+            public void onStateChanged(PullToRefreshView.State newState, PullToRefreshView.State oldState, BasePullToRefreshView view)
             {
                 //状态变化回调
                 btn.setText(String.valueOf(view.getDirection()) + "->" + String.valueOf(newState));
             }
         });
-        view_pull.setOnViewPositionChangedCallback(new FIPullToRefreshView.OnViewPositionChangedCallback()
+        view_pull.setOnViewPositionChangedCallback(new PullToRefreshView.OnViewPositionChangedCallback()
         {
             @Override
             public void onViewPositionChanged(BasePullToRefreshView view)
@@ -43,7 +43,7 @@ public class ScrollViewActivity extends SDBaseActivity
                 Log.i(TAG, "onViewPositionChanged getScrollDistance:" + view.getScrollDistance());
             }
         });
-        view_pull.setOnRefreshCallback(new FIPullToRefreshView.OnRefreshCallback()
+        view_pull.setOnRefreshCallback(new PullToRefreshView.OnRefreshCallback()
         {
             @Override
             public void onRefreshingFromHeader(final BasePullToRefreshView view)

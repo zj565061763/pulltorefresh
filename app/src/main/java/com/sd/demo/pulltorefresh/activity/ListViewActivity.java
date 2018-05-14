@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.fanwe.lib.adapter.FSimpleAdapter;
 import com.fanwe.lib.pulltorefresh.BasePullToRefreshView;
-import com.fanwe.lib.pulltorefresh.FIPullToRefreshView;
+import com.fanwe.lib.pulltorefresh.PullToRefreshView;
 import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
 import com.fanwe.library.activity.SDBaseActivity;
 import com.sd.demo.pulltorefresh.R;
@@ -30,7 +30,7 @@ public class ListViewActivity extends SDBaseActivity
 
         view_pull.setDebug(true);
         view_pull.setFooterView(new CustomPullToRefreshLoadingView(this)); //自定义FooterView
-        view_pull.setOnRefreshCallback(new FIPullToRefreshView.OnRefreshCallback()
+        view_pull.setOnRefreshCallback(new PullToRefreshView.OnRefreshCallback()
         {
             @Override
             public void onRefreshingFromHeader(final BasePullToRefreshView view)

@@ -27,7 +27,7 @@ import android.view.ViewGroup;
 import com.fanwe.lib.pulltorefresh.loadingview.BaseLoadingView;
 import com.fanwe.lib.pulltorefresh.loadingview.SimpleTextLoadingView;
 
-public abstract class BasePullToRefreshView extends ViewGroup implements FIPullToRefreshView
+public abstract class BasePullToRefreshView extends ViewGroup implements PullToRefreshView
 {
     public BasePullToRefreshView(Context context)
     {
@@ -71,7 +71,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
     private OnRefreshCallback mOnRefreshCallback;
     private OnStateChangedCallback mOnStateChangedCallback;
     private OnViewPositionChangedCallback mOnViewPositionChangedCallback;
-    protected IPullCondition mPullCondition;
+    protected PullCondition mPullCondition;
 
     protected boolean mIsDebug;
 
@@ -96,7 +96,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
         return new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
     }
 
-    //----------FIPullToRefreshView implements start----------
+    //----------PullToRefreshView implements start----------
 
     @Override
     public void setMode(Mode mode)
@@ -131,7 +131,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
     }
 
     @Override
-    public void setPullCondition(IPullCondition pullCondition)
+    public void setPullCondition(PullCondition pullCondition)
     {
         mPullCondition = pullCondition;
     }
@@ -314,7 +314,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
         }
     }
 
-    //----------FIPullToRefreshView implements end----------
+    //----------PullToRefreshView implements end----------
 
     /**
      * view是否处于静止的状态
