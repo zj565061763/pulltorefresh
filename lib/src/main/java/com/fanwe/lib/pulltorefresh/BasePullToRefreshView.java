@@ -666,17 +666,8 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
         final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         int height = MeasureSpec.getSize(heightMeasureSpec);
 
-        boolean needReMeasure = false;
-        int widthMeasureSpecLoadingView = widthMeasureSpec;
-        if (widthMode != MeasureSpec.EXACTLY)
-        {
-            widthMeasureSpecLoadingView = MeasureSpec.makeMeasureSpec(width, MeasureSpec.UNSPECIFIED);
-            needReMeasure = true;
-        }
-        int heightMeasureSpecLoadingView = MeasureSpec.makeMeasureSpec(height, MeasureSpec.UNSPECIFIED);
-        measureChild(mHeaderView, widthMeasureSpecLoadingView, heightMeasureSpecLoadingView);
-        measureChild(mFooterView, widthMeasureSpecLoadingView, heightMeasureSpecLoadingView);
-
+        measureChild(mHeaderView, widthMeasureSpec, heightMeasureSpec);
+        measureChild(mFooterView, widthMeasureSpec, heightMeasureSpec);
         measureChild(mRefreshView, widthMeasureSpec, heightMeasureSpec);
 
         if (widthMode != MeasureSpec.EXACTLY)
@@ -713,13 +704,6 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
             {
                 height = Math.min(maxHeight, height);
             }
-        }
-
-        if (needReMeasure)
-        {
-            widthMeasureSpecLoadingView = MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY);
-            measureChild(mHeaderView, widthMeasureSpecLoadingView, heightMeasureSpecLoadingView);
-            measureChild(mFooterView, widthMeasureSpecLoadingView, heightMeasureSpecLoadingView);
         }
 
         setMeasuredDimension(width, height);
