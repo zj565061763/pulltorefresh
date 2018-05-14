@@ -97,7 +97,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
                             notifyRefreshCallback();
                             break;
                         case PULL_TO_REFRESH:
-                        case REFRESH_FINISH:
+                        case FINISH:
                             setState(State.RESET);
                             break;
                     }
@@ -324,7 +324,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
         {
             case RESET:
             case PULL_TO_REFRESH:
-            case REFRESH_FINISH:
+            case FINISH:
                 if (getDirection() == Direction.FROM_HEADER)
                 {
                     view = getHeaderView();

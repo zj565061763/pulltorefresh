@@ -124,7 +124,7 @@ public class GoogleLoadingView extends FPullToRefreshLoadingView
                 break;
             case REFRESH_FAILURE:
                 break;
-            case REFRESH_FINISH:
+            case FINISH:
                 mProgress.stop();
                 break;
         }

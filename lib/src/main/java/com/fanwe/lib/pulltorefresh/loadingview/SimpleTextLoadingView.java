@@ -26,7 +26,6 @@ import android.widget.TextView;
 import com.fanwe.lib.pulltorefresh.BasePullToRefreshView;
 import com.fanwe.lib.pulltorefresh.FIPullToRefreshView;
 import com.fanwe.lib.pulltorefresh.R;
-import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
 
 public class SimpleTextLoadingView extends FPullToRefreshLoadingView
 {
@@ -112,7 +111,7 @@ public class SimpleTextLoadingView extends FPullToRefreshLoadingView
                     getTextView().setText(getResources().getString(R.string.lib_ptr_state_refreshing_failure_footer));
                 }
                 break;
-            case REFRESH_FINISH:
+            case FINISH:
                 if (oldState == FIPullToRefreshView.State.REFRESHING)
                 {
                     if (getLoadingViewType() == FIPullToRefreshView.LoadingViewType.HEADER)

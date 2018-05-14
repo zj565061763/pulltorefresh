@@ -214,7 +214,7 @@ public interface FIPullToRefreshView
         /**
          * 刷新完成
          */
-        REFRESH_FINISH,
+        FINISH,
     }
 
     enum Direction
