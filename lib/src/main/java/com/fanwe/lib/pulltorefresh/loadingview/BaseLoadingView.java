@@ -50,18 +50,15 @@ public abstract class BaseLoadingView extends FrameLayout implements
     }
 
     @Override
-    public final FIPullToRefreshView.LoadingViewType getLoadingViewType()
+    public final boolean isHeaderView()
     {
-        if (getPullToRefreshView().getHeaderView() == this)
-        {
-            return FIPullToRefreshView.LoadingViewType.HEADER;
-        } else if (getPullToRefreshView().getFooterView() == this)
-        {
-            return FIPullToRefreshView.LoadingViewType.FOOTER;
-        } else
-        {
-            return null;
-        }
+        return this == getPullToRefreshView().getHeaderView();
+    }
+
+    @Override
+    public final boolean isFooterView()
+    {
+        return this == getPullToRefreshView().getFooterView();
     }
 
     @Override

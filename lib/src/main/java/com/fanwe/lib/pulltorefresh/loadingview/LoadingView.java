@@ -1,6 +1,5 @@
 package com.fanwe.lib.pulltorefresh.loadingview;
 
-import com.fanwe.lib.pulltorefresh.FIPullToRefreshView;
 import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
 
 /**
@@ -24,11 +23,18 @@ public interface LoadingView
     boolean canRefresh(int scrollDistance);
 
     /**
-     * 返回加载view类型
+     * 返回当前view是否是下拉刷新控件的HeaderView
      *
      * @return
      */
-    FIPullToRefreshView.LoadingViewType getLoadingViewType();
+    boolean isHeaderView();
+
+    /**
+     * 返回当前view是否是下拉刷新控件的FooterView
+     *
+     * @return
+     */
+    boolean isFooterView();
 
     FPullToRefreshView getPullToRefreshView();
 }

@@ -67,46 +67,46 @@ public class SimpleTextLoadingView extends BaseLoadingView
         {
             case RESET:
             case PULL_TO_REFRESH:
-                if (getLoadingViewType() == FIPullToRefreshView.LoadingViewType.HEADER)
+                if (isHeaderView())
                 {
                     getTextView().setText(getResources().getString(R.string.lib_ptr_state_pull_to_refresh_header));
-                } else if (getLoadingViewType() == FIPullToRefreshView.LoadingViewType.FOOTER)
+                } else if (isFooterView())
                 {
                     getTextView().setText(getResources().getString(R.string.lib_ptr_state_pull_to_refresh_footer));
                 }
                 break;
             case RELEASE_TO_REFRESH:
-                if (getLoadingViewType() == FIPullToRefreshView.LoadingViewType.HEADER)
+                if (isHeaderView())
                 {
                     getTextView().setText(getResources().getString(R.string.lib_ptr_state_release_to_refresh_header));
-                } else if (getLoadingViewType() == FIPullToRefreshView.LoadingViewType.FOOTER)
+                } else if (isFooterView())
                 {
                     getTextView().setText(getResources().getString(R.string.lib_ptr_state_release_to_refresh_footer));
                 }
                 break;
             case REFRESHING:
-                if (getLoadingViewType() == FIPullToRefreshView.LoadingViewType.HEADER)
+                if (isHeaderView())
                 {
                     getTextView().setText(getResources().getString(R.string.lib_ptr_state_refreshing_header));
-                } else if (getLoadingViewType() == FIPullToRefreshView.LoadingViewType.FOOTER)
+                } else if (isFooterView())
                 {
                     getTextView().setText(getResources().getString(R.string.lib_ptr_state_refreshing_footer));
                 }
                 break;
             case REFRESH_SUCCESS:
-                if (getLoadingViewType() == FIPullToRefreshView.LoadingViewType.HEADER)
+                if (isHeaderView())
                 {
                     getTextView().setText(getResources().getString(R.string.lib_ptr_state_refreshing_success_header));
-                } else if (getLoadingViewType() == FIPullToRefreshView.LoadingViewType.FOOTER)
+                } else if (isFooterView())
                 {
                     getTextView().setText(getResources().getString(R.string.lib_ptr_state_refreshing_success_footer));
                 }
                 break;
             case REFRESH_FAILURE:
-                if (getLoadingViewType() == FIPullToRefreshView.LoadingViewType.HEADER)
+                if (isHeaderView())
                 {
                     getTextView().setText(getResources().getString(R.string.lib_ptr_state_refreshing_failure_header));
-                } else if (getLoadingViewType() == FIPullToRefreshView.LoadingViewType.FOOTER)
+                } else if (isFooterView())
                 {
                     getTextView().setText(getResources().getString(R.string.lib_ptr_state_refreshing_failure_footer));
                 }
@@ -114,15 +114,14 @@ public class SimpleTextLoadingView extends BaseLoadingView
             case FINISH:
                 if (oldState == FIPullToRefreshView.State.REFRESHING)
                 {
-                    if (getLoadingViewType() == FIPullToRefreshView.LoadingViewType.HEADER)
+                    if (isHeaderView())
                     {
                         getTextView().setText(getResources().getString(R.string.lib_ptr_state_pull_to_refresh_header));
-                    } else if (getLoadingViewType() == FIPullToRefreshView.LoadingViewType.FOOTER)
+                    } else if (isFooterView())
                     {
                         getTextView().setText(getResources().getString(R.string.lib_ptr_state_pull_to_refresh_footer));
                     }
                 }
-                break;
         }
     }
 }

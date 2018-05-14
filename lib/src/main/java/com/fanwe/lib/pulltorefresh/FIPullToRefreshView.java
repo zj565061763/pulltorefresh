@@ -244,12 +244,6 @@ public interface FIPullToRefreshView
         DISABLE,
     }
 
-    enum LoadingViewType
-    {
-        HEADER,
-        FOOTER,
-    }
-
     interface OnStateChangedCallback
     {
         /**

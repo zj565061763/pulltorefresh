@@ -50,7 +50,7 @@ public abstract class SimpleImageLoadingView extends BaseLoadingView
     protected void init()
     {
         LayoutInflater.from(getContext()).inflate(R.layout.view_simple_image_loading, this, true);
-        iv_image = (ImageView) findViewById(R.id.iv_image);
+        iv_image = findViewById(R.id.iv_image);
     }
 
     public ImageView getImageView()
