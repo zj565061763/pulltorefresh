@@ -104,7 +104,12 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
     @Override
     public void setMode(Mode mode)
     {
-        if (mode != null && mMode != mode)
+        if (mode == null)
+        {
+            throw new NullPointerException("mode is null");
+        }
+
+        if (mMode != mode)
         {
             mMode = mode;
         }
@@ -150,27 +155,27 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
     }
 
     @Override
-    public void setComsumeScrollPercent(float comsumeScrollPercent)
+    public void setComsumeScrollPercent(float percent)
     {
-        if (comsumeScrollPercent < 0)
+        if (percent >= 0 && percent <= 1)
         {
-            comsumeScrollPercent = 0;
-        }
-        if (comsumeScrollPercent > 1)
+            mComsumeScrollPercent = percent;
+        } else
         {
-            comsumeScrollPercent = 1;
+            throw new IllegalArgumentException("percent >= 0 && percent <= 1 required");
         }
-        mComsumeScrollPercent = comsumeScrollPercent;
     }
 
     @Override
-    public void setDurationShowRefreshResult(int durationShowRefreshResult)
+    public void setDurationShowRefreshResult(int duration)
     {
-        if (durationShowRefreshResult < 0)
+        if (duration >= 0)
         {
-            durationShowRefreshResult = DEFAULT_DURATION_SHOW_REFRESH_RESULT;
+            mDurationShowRefreshResult = duration;
+        } else
+        {
+            throw new IllegalArgumentException("duration >= 0 required");
         }
-        mDurationShowRefreshResult = durationShowRefreshResult;
     }
 
     @Override
@@ -262,7 +267,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
 
         removeView(mHeaderView);
         mHeaderView = headerView;
-        addView(mHeaderView);
+        addView(headerView);
     }
 
     @Override
@@ -281,7 +286,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
 
         removeView(mFooterView);
         mFooterView = footerView;
-        addView(mFooterView);
+        addView(footerView);
     }
 
     @Override
