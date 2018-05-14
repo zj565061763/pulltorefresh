@@ -16,9 +16,6 @@
 package com.fanwe.lib.pulltorefresh.loadingview;
 
 import android.content.Context;
-import android.support.annotation.AttrRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
@@ -27,19 +24,19 @@ import com.fanwe.lib.pulltorefresh.R;
 
 public abstract class SimpleImageLoadingView extends BaseLoadingView
 {
-    public SimpleImageLoadingView(@NonNull Context context)
+    public SimpleImageLoadingView(Context context)
     {
         super(context);
         init();
     }
 
-    public SimpleImageLoadingView(@NonNull Context context, @Nullable AttributeSet attrs)
+    public SimpleImageLoadingView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
         init();
     }
 
-    public SimpleImageLoadingView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr)
+    public SimpleImageLoadingView(Context context, AttributeSet attrs, int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
         init();
@@ -49,7 +46,7 @@ public abstract class SimpleImageLoadingView extends BaseLoadingView
 
     protected void init()
     {
-        LayoutInflater.from(getContext()).inflate(R.layout.view_simple_image_loading, this, true);
+        LayoutInflater.from(getContext()).inflate(R.layout.lib_ptr_view_simple_image_loading, this, true);
         iv_image = findViewById(R.id.iv_image);
     }
 

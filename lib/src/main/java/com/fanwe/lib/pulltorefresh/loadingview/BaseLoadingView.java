@@ -16,16 +16,12 @@
 package com.fanwe.lib.pulltorefresh.loadingview;
 
 import android.content.Context;
-import android.support.annotation.AttrRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
-import com.fanwe.lib.pulltorefresh.BasePullToRefreshView;
-import com.fanwe.lib.pulltorefresh.PullToRefreshView;
 import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
+import com.fanwe.lib.pulltorefresh.PullToRefreshView;
 
 import java.lang.reflect.Constructor;
 
@@ -34,17 +30,17 @@ public abstract class BaseLoadingView extends FrameLayout implements
         PullToRefreshView.OnStateChangedCallback,
         PullToRefreshView.OnViewPositionChangedCallback
 {
-    public BaseLoadingView(@NonNull Context context)
+    public BaseLoadingView(Context context)
     {
         super(context);
     }
 
-    public BaseLoadingView(@NonNull Context context, @Nullable AttributeSet attrs)
+    public BaseLoadingView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
     }
 
-    public BaseLoadingView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr)
+    public BaseLoadingView(Context context, AttributeSet attrs, int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
     }

@@ -16,9 +16,6 @@
 package com.fanwe.lib.pulltorefresh.loadingview;
 
 import android.content.Context;
-import android.support.annotation.AttrRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.TextView;
@@ -28,19 +25,19 @@ import com.fanwe.lib.pulltorefresh.R;
 
 public class SimpleTextLoadingView extends BaseLoadingView
 {
-    public SimpleTextLoadingView(@NonNull Context context)
+    public SimpleTextLoadingView(Context context)
     {
         super(context);
         init();
     }
 
-    public SimpleTextLoadingView(@NonNull Context context, @Nullable AttributeSet attrs)
+    public SimpleTextLoadingView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
         init();
     }
 
-    public SimpleTextLoadingView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr)
+    public SimpleTextLoadingView(Context context, AttributeSet attrs, int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
         init();
@@ -50,7 +47,7 @@ public class SimpleTextLoadingView extends BaseLoadingView
 
     private void init()
     {
-        LayoutInflater.from(getContext()).inflate(R.layout.view_simple_text_loading, this, true);
+        LayoutInflater.from(getContext()).inflate(R.layout.lib_ptr_view_simple_text_loading, this, true);
         tv_content = findViewById(R.id.tv_content);
     }
 
