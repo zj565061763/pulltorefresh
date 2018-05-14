@@ -48,6 +48,7 @@ public class GoogleLoadingView extends FPullToRefreshLoadingView
 
     private void init()
     {
+        setBackgroundColor(Color.BLACK);
         createProgressDrawable();
         createCircleImageView();
     }
