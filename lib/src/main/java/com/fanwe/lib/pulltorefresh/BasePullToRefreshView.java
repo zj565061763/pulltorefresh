@@ -674,8 +674,8 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
             needReMeasure = true;
         }
         int heightMeasureSpecLoadingView = MeasureSpec.makeMeasureSpec(height, MeasureSpec.UNSPECIFIED);
-        measureLoadingView(mHeaderView, widthMeasureSpecLoadingView, heightMeasureSpecLoadingView);
-        measureLoadingView(mFooterView, widthMeasureSpecLoadingView, heightMeasureSpecLoadingView);
+        measureChild(mHeaderView, widthMeasureSpecLoadingView, heightMeasureSpecLoadingView);
+        measureChild(mFooterView, widthMeasureSpecLoadingView, heightMeasureSpecLoadingView);
 
         measureChild(mRefreshView, widthMeasureSpec, heightMeasureSpec);
 
@@ -718,18 +718,11 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
         if (needReMeasure)
         {
             widthMeasureSpecLoadingView = MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY);
-            measureLoadingView(mHeaderView, widthMeasureSpecLoadingView, heightMeasureSpecLoadingView);
-            measureLoadingView(mFooterView, widthMeasureSpecLoadingView, heightMeasureSpecLoadingView);
+            measureChild(mHeaderView, widthMeasureSpecLoadingView, heightMeasureSpecLoadingView);
+            measureChild(mFooterView, widthMeasureSpecLoadingView, heightMeasureSpecLoadingView);
         }
 
         setMeasuredDimension(width, height);
-    }
-
-    private void measureLoadingView(View loadingView, int widthMeasureSpec, int heightMeasureSpec)
-    {
-        LayoutParams params = loadingView.getLayoutParams();
-        loadingView.measure(getChildMeasureSpec(widthMeasureSpec, getPaddingLeft() + getPaddingRight(), params.width),
-                getChildMeasureSpec(heightMeasureSpec, 0, params.height));
     }
 
     /**
