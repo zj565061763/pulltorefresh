@@ -857,8 +857,8 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
 
         // RefreshView
         top = getTopLayoutRefreshView();
-        if (!mIsOverLayMode && getDirection() == Direction.FROM_HEADER
-                && bottom > top)
+        if (!mIsOverLayMode
+                && getDirection() == Direction.FROM_HEADER && bottom > top)
         {
             top = bottom;
         }
@@ -872,8 +872,8 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
 
         // FooterView
         top = getTopLayoutFooterView();
-        if (!mIsOverLayMode && bottom <= getTopAlignBottom()
-                && bottom > top)
+        if (!mIsOverLayMode
+                && bottom <= getTopAlignBottom() && bottom > top)
         {
             top = bottom;
         }
