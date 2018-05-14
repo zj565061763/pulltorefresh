@@ -6,7 +6,7 @@ import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
 /**
  * 加载view
  */
-public interface IPullToRefreshLoadingView
+public interface LoadingView
 {
     /**
      * 返回view处于刷新中的时候需要显示的高度（默认view的测量高度）

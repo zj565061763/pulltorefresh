@@ -24,7 +24,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.fanwe.lib.pulltorefresh.loadingview.BasePullToRefreshLoadingView;
+import com.fanwe.lib.pulltorefresh.loadingview.BaseLoadingView;
 import com.fanwe.lib.pulltorefresh.loadingview.SimpleTextLoadingView;
 
 public abstract class BasePullToRefreshView extends ViewGroup implements FIPullToRefreshView
@@ -47,8 +47,8 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
         init(attrs);
     }
 
-    private BasePullToRefreshLoadingView mHeaderView;
-    private BasePullToRefreshLoadingView mFooterView;
+    private BaseLoadingView mHeaderView;
+    private BaseLoadingView mFooterView;
     private View mRefreshView;
 
     private Mode mMode = Mode.BOTH;
@@ -253,13 +253,13 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
     }
 
     @Override
-    public BasePullToRefreshLoadingView getHeaderView()
+    public BaseLoadingView getHeaderView()
     {
         return mHeaderView;
     }
 
     @Override
-    public void setHeaderView(BasePullToRefreshLoadingView headerView)
+    public void setHeaderView(BaseLoadingView headerView)
     {
         if (headerView == null || headerView == mHeaderView)
         {
@@ -272,13 +272,13 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
     }
 
     @Override
-    public BasePullToRefreshLoadingView getFooterView()
+    public BaseLoadingView getFooterView()
     {
         return mFooterView;
     }
 
     @Override
-    public void setFooterView(BasePullToRefreshLoadingView footerView)
+    public void setFooterView(BaseLoadingView footerView)
     {
         if (footerView == null || footerView == mFooterView)
         {
@@ -567,13 +567,13 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
     private void addLoadingViews()
     {
         // HeaderView
-        BasePullToRefreshLoadingView headerView = onCreateHeaderView();
+        BaseLoadingView headerView = onCreateHeaderView();
         if (headerView == null)
         {
             String headerClassName = getResources().getString(R.string.lib_ptr_header_class);
             if (!TextUtils.isEmpty(headerClassName))
             {
-                headerView = BasePullToRefreshLoadingView.getInstanceByClassName(headerClassName, getContext());
+                headerView = BaseLoadingView.getInstanceByClassName(headerClassName, getContext());
             }
         }
         if (headerView == null)
@@ -583,13 +583,13 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
         setHeaderView(headerView);
 
         // FooterView
-        BasePullToRefreshLoadingView footerView = onCreateFooterView();
+        BaseLoadingView footerView = onCreateFooterView();
         if (footerView == null)
         {
             String footerClassName = getResources().getString(R.string.lib_ptr_footer_class);
             if (footerClassName != null)
             {
-                footerView = BasePullToRefreshLoadingView.getInstanceByClassName(footerClassName, getContext());
+                footerView = BaseLoadingView.getInstanceByClassName(footerClassName, getContext());
             }
         }
         if (footerView == null)
@@ -604,7 +604,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
      *
      * @return
      */
-    protected BasePullToRefreshLoadingView onCreateHeaderView()
+    protected BaseLoadingView onCreateHeaderView()
     {
         return null;
     }
@@ -614,7 +614,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements FIPullT
      *
      * @return
      */
-    protected BasePullToRefreshLoadingView onCreateFooterView()
+    protected BaseLoadingView onCreateFooterView()
     {
         return null;
     }

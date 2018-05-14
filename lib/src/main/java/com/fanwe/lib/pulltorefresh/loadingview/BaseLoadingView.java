@@ -29,22 +29,22 @@ import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
 
 import java.lang.reflect.Constructor;
 
-public abstract class BasePullToRefreshLoadingView extends FrameLayout implements
-        IPullToRefreshLoadingView,
+public abstract class BaseLoadingView extends FrameLayout implements
+        LoadingView,
         FIPullToRefreshView.OnStateChangedCallback,
         FIPullToRefreshView.OnViewPositionChangedCallback
 {
-    public BasePullToRefreshLoadingView(@NonNull Context context)
+    public BaseLoadingView(@NonNull Context context)
     {
         super(context);
     }
 
-    public BasePullToRefreshLoadingView(@NonNull Context context, @Nullable AttributeSet attrs)
+    public BaseLoadingView(@NonNull Context context, @Nullable AttributeSet attrs)
     {
         super(context, attrs);
     }
 
-    public BasePullToRefreshLoadingView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr)
+    public BaseLoadingView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
     }
@@ -88,7 +88,7 @@ public abstract class BasePullToRefreshLoadingView extends FrameLayout implement
         return getMeasuredHeight();
     }
 
-    public static BasePullToRefreshLoadingView getInstanceByClassName(String className, Context context)
+    public static BaseLoadingView getInstanceByClassName(String className, Context context)
     {
         if (TextUtils.isEmpty(className) || context == null)
         {
@@ -99,7 +99,7 @@ public abstract class BasePullToRefreshLoadingView extends FrameLayout implement
         {
             Class clazz = Class.forName(className);
             Constructor constructor = clazz.getConstructor(Context.class);
-            return (BasePullToRefreshLoadingView) constructor.newInstance(context);
+            return (BaseLoadingView) constructor.newInstance(context);
         } catch (Exception e)
         {
             e.printStackTrace();
