@@ -89,7 +89,7 @@ public class SimpleTextLoadingView extends BaseLoadingView
                     getTextView().setText(getResources().getString(R.string.lib_ptr_state_refreshing_footer));
                 }
                 break;
-            case REFRESH_SUCCESS:
+            case REFRESHING_SUCCESS:
                 if (isHeaderView())
                 {
                     getTextView().setText(getResources().getString(R.string.lib_ptr_state_refreshing_success_header));
@@ -98,7 +98,7 @@ public class SimpleTextLoadingView extends BaseLoadingView
                     getTextView().setText(getResources().getString(R.string.lib_ptr_state_refreshing_success_footer));
                 }
                 break;
-            case REFRESH_FAILURE:
+            case REFRESHING_FAILURE:
                 if (isHeaderView())
                 {
                     getTextView().setText(getResources().getString(R.string.lib_ptr_state_refreshing_failure_header));

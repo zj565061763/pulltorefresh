@@ -119,9 +119,9 @@ public class GoogleLoadingView extends BaseLoadingView
             case REFRESHING:
                 mProgress.start();
                 break;
-            case REFRESH_SUCCESS:
+            case REFRESHING_SUCCESS:
                 break;
-            case REFRESH_FAILURE:
+            case REFRESHING_FAILURE:
                 break;
             case FINISH:
                 mProgress.stop();

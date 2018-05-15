@@ -206,11 +206,11 @@ public interface PullToRefreshView
         /**
          * 刷新结果，成功
          */
-        REFRESH_SUCCESS,
+        REFRESHING_SUCCESS,
         /**
          * 刷新结果，失败
          */
-        REFRESH_FAILURE,
+        REFRESHING_FAILURE,
         /**
          * 刷新完成
          */

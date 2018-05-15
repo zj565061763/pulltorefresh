@@ -225,10 +225,10 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         {
             if (success)
             {
-                setState(State.REFRESH_SUCCESS);
+                setState(State.REFRESHING_SUCCESS);
             } else
             {
-                setState(State.REFRESH_FAILURE);
+                setState(State.REFRESHING_FAILURE);
             }
         }
     }
@@ -428,7 +428,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         }
 
         removeCallbacks(mStopRefreshingRunnable);
-        if (mState == State.REFRESH_SUCCESS || mState == State.REFRESH_FAILURE)
+        if (mState == State.REFRESHING_SUCCESS || mState == State.REFRESHING_FAILURE)
         {
             postDelayed(mStopRefreshingRunnable, mDurationShowRefreshResult);
         }
@@ -754,8 +754,8 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
                 switch (mState)
                 {
                     case REFRESHING:
-                    case REFRESH_SUCCESS:
-                    case REFRESH_FAILURE:
+                    case REFRESHING_SUCCESS:
+                    case REFRESHING_FAILURE:
                         top += mHeaderView.getRefreshHeight();
                         break;
                 }
@@ -779,8 +779,8 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
                 switch (mState)
                 {
                     case REFRESHING:
-                    case REFRESH_SUCCESS:
-                    case REFRESH_FAILURE:
+                    case REFRESHING_SUCCESS:
+                    case REFRESHING_FAILURE:
                         top -= mFooterView.getRefreshHeight();
                         break;
                 }
@@ -806,8 +806,8 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
                 switch (mState)
                 {
                     case REFRESHING:
-                    case REFRESH_SUCCESS:
-                    case REFRESH_FAILURE:
+                    case REFRESHING_SUCCESS:
+                    case REFRESHING_FAILURE:
                         if (getDirection() == Direction.FROM_HEADER)
                         {
                             top += mHeaderView.getRefreshHeight();
