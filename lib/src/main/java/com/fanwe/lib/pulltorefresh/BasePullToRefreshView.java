@@ -377,24 +377,14 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     protected final void updateStateByMoveDistance()
     {
         final int distance = Math.abs(getScrollDistance());
-        if (getDirection() == Direction.FROM_HEADER)
+        final BaseLoadingView loadingView = getDirection() == Direction.FROM_HEADER ? mHeaderView : mFooterView;
+
+        if (loadingView.canRefresh(distance))
         {
-            if (mHeaderView.canRefresh(distance))
-            {
-                setState(State.RELEASE_TO_REFRESH);
-            } else
-            {
-                setState(State.PULL_TO_REFRESH);
-            }
+            setState(State.RELEASE_TO_REFRESH);
         } else
         {
-            if (mFooterView.canRefresh(distance))
-            {
-                setState(State.RELEASE_TO_REFRESH);
-            } else
-            {
-                setState(State.PULL_TO_REFRESH);
-            }
+            setState(State.PULL_TO_REFRESH);
         }
     }
 
