@@ -238,8 +238,10 @@ public class FPullToRefreshView extends BasePullToRefreshView
     @Override
     protected void flingViewByState()
     {
-        int endY = 0;
         final BaseLoadingView loadingView = getLoadingViewByDirection();
+
+        final int startY = loadingView.getTop();
+        int endY = 0;
 
         boolean isScrollViewStarted = false;
         switch (getState())
@@ -248,11 +250,11 @@ public class FPullToRefreshView extends BasePullToRefreshView
             case PULL_TO_REFRESH:
             case FINISH:
                 endY = getTopLoadingViewReset(loadingView);
-                if (mScroller.scrollToY(loadingView.getTop(), endY, -1))
+                if (mScroller.scrollToY(startY, endY, -1))
                 {
                     if (mIsDebug)
                     {
-                        Log.i(getDebugTag(), "flingViewByState:" + loadingView.getTop() + " -> " + endY + " " + getState());
+                        Log.i(getDebugTag(), "flingViewByState:" + startY + " -> " + endY + " " + getState());
                     }
 
                     isScrollViewStarted = true;
@@ -262,11 +264,11 @@ public class FPullToRefreshView extends BasePullToRefreshView
             case RELEASE_TO_REFRESH:
             case REFRESHING:
                 endY = getTopLoadingViewRefreshing(loadingView);
-                if (mScroller.scrollToY(loadingView.getTop(), endY, -1))
+                if (mScroller.scrollToY(startY, endY, -1))
                 {
                     if (mIsDebug)
                     {
-                        Log.i(getDebugTag(), "flingViewByState:" + loadingView.getTop() + " -> " + endY + " " + getState());
+                        Log.i(getDebugTag(), "flingViewByState:" + startY + " -> " + endY + " " + getState());
                     }
 
                     isScrollViewStarted = true;
