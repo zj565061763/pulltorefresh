@@ -337,6 +337,13 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
      */
     protected abstract boolean isViewIdle();
 
+    /**
+     * 执行滑动逻辑
+     *
+     * @param startY
+     * @param endY
+     * @return true-触发滑动
+     */
     protected abstract boolean onSmoothSlide(int startY, int endY);
 
     /**
