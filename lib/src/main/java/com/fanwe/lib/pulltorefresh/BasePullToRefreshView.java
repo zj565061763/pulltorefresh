@@ -80,11 +80,21 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         addLoadingViews();
     }
 
+    /**
+     * 设置是否打印日志
+     *
+     * @param debug
+     */
     public final void setDebug(boolean debug)
     {
         mIsDebug = debug;
     }
 
+    /**
+     * 设置是否打印{@link #onLayout(boolean, int, int, int, int)}日志
+     *
+     * @param debugLayout
+     */
     public final void setDebugLayout(boolean debugLayout)
     {
         mIsDebugLayout = debugLayout;
