@@ -342,36 +342,25 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
      */
     protected final void moveViews(int dy, boolean moveHeaderOrFooter)
     {
-        if (getDirection() == Direction.FROM_HEADER)
-        {
-            if (moveHeaderOrFooter) Utils.offsetTopAndBottom(mHeaderView, dy);
+        final BaseLoadingView loadingView = getDirection() == Direction.FROM_HEADER ? mHeaderView : mFooterView;
 
-            if (mIsOverLayMode)
+        // HeaderView or FooterView
+        if (moveHeaderOrFooter)
+        {
+            Utils.offsetTopAndBottom(loadingView, dy);
+        }
+        loadingView.onViewPositionChanged(this);
+
+        // RefreshView
+        if (mIsOverLayMode)
+        {
+            if (Utils.getZ(loadingView) <= Utils.getZ(mRefreshView))
             {
-                if (Utils.getZ(mHeaderView) <= Utils.getZ(mRefreshView))
-                {
-                    Utils.setZ(mHeaderView, Utils.getZ(mRefreshView) + 1);
-                }
-            } else
-            {
-                Utils.offsetTopAndBottom(mRefreshView, dy);
+                Utils.setZ(loadingView, Utils.getZ(mRefreshView) + 1);
             }
-            mHeaderView.onViewPositionChanged(this);
         } else
         {
-            if (moveHeaderOrFooter) Utils.offsetTopAndBottom(mFooterView, dy);
-
-            if (mIsOverLayMode)
-            {
-                if (Utils.getZ(mFooterView) <= Utils.getZ(mRefreshView))
-                {
-                    Utils.setZ(mFooterView, Utils.getZ(mRefreshView) + 1);
-                }
-            } else
-            {
-                Utils.offsetTopAndBottom(mRefreshView, dy);
-            }
-            mFooterView.onViewPositionChanged(this);
+            Utils.offsetTopAndBottom(mRefreshView, dy);
         }
 
         if (mOnViewPositionChangedCallback != null)
