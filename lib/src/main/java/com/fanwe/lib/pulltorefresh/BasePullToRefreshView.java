@@ -138,7 +138,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     @Override
     public void setOverLayMode(boolean overLayMode)
     {
-        if (isViewIdle() && mState == State.RESET)
+        if (mState == State.RESET)
         {
             mIsOverLayMode = overLayMode;
         }
@@ -316,7 +316,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     //----------PullToRefreshView implements end----------
 
     /**
-     * view是否处于静止的状态
+     * view是否处于静止，并且未拖动状态
      *
      * @return
      */
