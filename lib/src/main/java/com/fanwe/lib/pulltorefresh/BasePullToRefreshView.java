@@ -858,7 +858,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         // RefreshView
         top = getTopLayoutRefreshView();
         if (!mIsOverLayMode
-                && getDirection() == Direction.FROM_HEADER && bottom > top)
+                && mDirection == Direction.FROM_HEADER && bottom > top)
         {
             top = bottom;
         }
