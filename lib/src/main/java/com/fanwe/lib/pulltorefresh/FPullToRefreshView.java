@@ -52,63 +52,60 @@ public class FPullToRefreshView extends BasePullToRefreshView
 
     private void init(AttributeSet attrs)
     {
-        initViewDragHelper();
+        initScroller();
+        initGestureManager();
     }
 
-    private FScroller getScroller()
+    private void initScroller()
     {
-        if (mScroller == null)
+        mScroller = new FScroller(new Scroller(getContext()));
+        mScroller.setCallback(new FScroller.Callback()
         {
-            mScroller = new FScroller(new Scroller(getContext()));
-            mScroller.setCallback(new FScroller.Callback()
+            @Override
+            public void onScrollStateChanged(boolean isFinished)
             {
-                @Override
-                public void onScrollStateChanged(boolean isFinished)
+                if (isFinished)
                 {
-                    if (isFinished)
-                    {
-                        if (mIsDebug)
-                        {
-                            Log.e(getDebugTag(), "onScroll finished:" + " " + getState());
-                        }
-
-                        switch (getState())
-                        {
-                            case REFRESHING:
-                                notifyRefreshCallback();
-                                break;
-                            case PULL_TO_REFRESH:
-                            case FINISH:
-                                setState(State.RESET);
-                                break;
-                        }
-                    }
-                }
-
-                @Override
-                public void onScroll(int dx, int dy)
-                {
-                    moveViews(dy, true);
-
                     if (mIsDebug)
                     {
-                        int top = 0;
-                        if (getDirection() == Direction.FROM_HEADER)
-                        {
-                            top = getHeaderView().getTop();
-                        } else
-                        {
-                            top = getFooterView().getTop();
-                        }
-                        Log.i(getDebugTag(), "onScroll:" + top + " " + getState());
+                        Log.e(getDebugTag(), "onScroll finished:" + " " + getState());
+                    }
+
+                    switch (getState())
+                    {
+                        case REFRESHING:
+                            notifyRefreshCallback();
+                            break;
+                        case PULL_TO_REFRESH:
+                        case FINISH:
+                            setState(State.RESET);
+                            break;
                     }
                 }
-            });
-        }
-        return mScroller;
+            }
+
+            @Override
+            public void onScroll(int dx, int dy)
+            {
+                moveViews(dy, true);
+
+                if (mIsDebug)
+                {
+                    int top = 0;
+                    if (getDirection() == Direction.FROM_HEADER)
+                    {
+                        top = getHeaderView().getTop();
+                    } else
+                    {
+                        top = getFooterView().getTop();
+                    }
+                    Log.i(getDebugTag(), "onScroll:" + top + " " + getState());
+                }
+            }
+        });
     }
 
-    private void initViewDragHelper()
+    private void initGestureManager()
     {
         mGestureManager = new FGestureManager(new FGestureManager.Callback()
         {
@@ -124,9 +121,9 @@ public class FPullToRefreshView extends BasePullToRefreshView
             }
 
             @Override
-            public void onTagInterceptChanged(boolean intercept)
+            public void onTagInterceptChanged(boolean tagIntercept)
             {
-                FTouchHelper.requestDisallowInterceptTouchEvent(FPullToRefreshView.this, intercept);
+                FTouchHelper.requestDisallowInterceptTouchEvent(FPullToRefreshView.this, tagIntercept);
             }
 
             @Override
@@ -141,9 +138,9 @@ public class FPullToRefreshView extends BasePullToRefreshView
             }
 
             @Override
-            public void onTagConsumeChanged(boolean consume)
+            public void onTagConsumeChanged(boolean tagConsume)
             {
-                FTouchHelper.requestDisallowInterceptTouchEvent(FPullToRefreshView.this, consume);
+                FTouchHelper.requestDisallowInterceptTouchEvent(FPullToRefreshView.this, tagConsume);
             }
 
             @Override
@@ -181,20 +178,11 @@ public class FPullToRefreshView extends BasePullToRefreshView
         if (mGestureManager.getTouchHelper().isMoveBottomFrom(FTouchHelper.EVENT_DOWN))
         {
             setDirection(Direction.FROM_HEADER);
-            getScroller().setMaxScrollDistance(getHeaderView().getHeight());
+            mScroller.setMaxScrollDistance(getHeaderView().getHeight());
         } else if (mGestureManager.getTouchHelper().isMoveTopFrom(FTouchHelper.EVENT_DOWN))
         {
             setDirection(Direction.FROM_FOOTER);
-            getScroller().setMaxScrollDistance(getFooterView().getHeight());
-        }
-    }
-
-    @Override
-    public void computeScroll()
-    {
-        if (getScroller().computeScrollOffset())
-        {
-            invalidate();
+            mScroller.setMaxScrollDistance(getFooterView().getHeight());
         }
     }
 
@@ -241,9 +229,18 @@ public class FPullToRefreshView extends BasePullToRefreshView
     }
 
     @Override
+    public void computeScroll()
+    {
+        if (mScroller.computeScrollOffset())
+        {
+            invalidate();
+        }
+    }
+
+    @Override
     protected boolean isViewIdle()
     {
-        return getScroller().isFinished();
+        return mScroller.isFinished();
     }
 
     @Override
@@ -268,7 +265,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
                     endY = getTopFooterViewReset();
                 }
 
-                if (getScroller().scrollToY(view.getTop(), endY, -1))
+                if (mScroller.scrollToY(view.getTop(), endY, -1))
                 {
                     if (mIsDebug)
                     {
@@ -291,7 +288,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
                     endY = getTopFooterViewReset() - getFooterView().getRefreshHeight();
                 }
 
-                if (getScroller().scrollToY(view.getTop(), endY, -1))
+                if (mScroller.scrollToY(view.getTop(), endY, -1))
                 {
                     if (mIsDebug)
                     {
@@ -322,6 +319,6 @@ public class FPullToRefreshView extends BasePullToRefreshView
     protected void onDetachedFromWindow()
     {
         super.onDetachedFromWindow();
-        getScroller().abortAnimation();
+        mScroller.abortAnimation();
     }
 }
