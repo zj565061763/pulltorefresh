@@ -191,9 +191,8 @@ public class FPullToRefreshView extends BasePullToRefreshView
         final boolean checkDegree = mGestureManager.getTouchHelper().getDegreeYFrom(FTouchHelper.EVENT_DOWN) < 40;
         final boolean checkPull = canPullFromHeader() || canPullFromFooter();
         final boolean checkState = getState() == State.RESET;
-        final boolean checkIdle = isViewIdle();
 
-        return checkDegree && checkPull && checkState && checkIdle;
+        return checkDegree && checkPull && checkState;
     }
 
     private boolean canPullFromHeader()
@@ -240,7 +239,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
     @Override
     protected boolean isViewIdle()
     {
-        return mScroller.isFinished();
+        return mScroller.isFinished() && !mGestureManager.isTagConsume();
     }
 
     @Override
