@@ -20,12 +20,12 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
-import android.view.View;
 import android.widget.Scroller;
 
 import com.fanwe.lib.gesture.FGestureManager;
 import com.fanwe.lib.gesture.FScroller;
 import com.fanwe.lib.gesture.FTouchHelper;
+import com.fanwe.lib.pulltorefresh.loadingview.BaseLoadingView;
 
 public class FPullToRefreshView extends BasePullToRefreshView
 {
@@ -246,7 +246,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
     protected void flingViewByState()
     {
         int endY = 0;
-        View view = null;
+        final BaseLoadingView view = getDirection() == Direction.FROM_HEADER ? getHeaderView() : getFooterView();
 
         boolean isScrollViewStarted = false;
         switch (getState())
@@ -254,16 +254,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
             case RESET:
             case PULL_TO_REFRESH:
             case FINISH:
-                if (getDirection() == Direction.FROM_HEADER)
-                {
-                    view = getHeaderView();
-                    endY = getTopHeaderViewReset();
-                } else
-                {
-                    view = getFooterView();
-                    endY = getTopFooterViewReset();
-                }
-
+                endY = getTopLoadingViewReset(view);
                 if (mScroller.scrollToY(view.getTop(), endY, -1))
                 {
                     if (mIsDebug)
@@ -277,16 +268,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
                 break;
             case RELEASE_TO_REFRESH:
             case REFRESHING:
-                if (getDirection() == Direction.FROM_HEADER)
-                {
-                    view = getHeaderView();
-                    endY = getTopHeaderViewReset() + getHeaderView().getRefreshHeight();
-                } else
-                {
-                    view = getFooterView();
-                    endY = getTopFooterViewReset() - getFooterView().getRefreshHeight();
-                }
-
+                endY = getTopLoadingViewRefreshing(view);
                 if (mScroller.scrollToY(view.getTop(), endY, -1))
                 {
                     if (mIsDebug)

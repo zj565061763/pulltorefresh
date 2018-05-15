@@ -306,10 +306,10 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     {
         if (getDirection() == Direction.FROM_HEADER)
         {
-            return mHeaderView.getTop() - getTopHeaderViewReset();
+            return mHeaderView.getTop() - getTopLoadingViewReset(mHeaderView);
         } else
         {
-            return mFooterView.getTop() - getTopFooterViewReset();
+            return mFooterView.getTop() - getTopLoadingViewReset(mFooterView);
         }
     }
 
@@ -427,7 +427,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
 
         if (mState == State.RESET)
         {
-            requestLayoutIfNeed();
+            requestLayoutWhenReset();
             setDirection(Direction.NONE);
         }
     }
@@ -451,23 +451,10 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         }
     }
 
-    private void requestLayoutIfNeed()
+    private void requestLayoutWhenReset()
     {
-        boolean needRequestLayout = false;
-        if (getDirection() == Direction.FROM_HEADER)
-        {
-            if (mHeaderView.getTop() != getTopHeaderViewReset())
-            {
-                needRequestLayout = true;
-            }
-        } else if (getDirection() == Direction.FROM_FOOTER)
-        {
-            if (mFooterView.getTop() != getTopFooterViewReset())
-            {
-                needRequestLayout = true;
-            }
-        }
-        if (needRequestLayout)
+        final BaseLoadingView loadingView = getDirection() == Direction.FROM_HEADER ? mHeaderView : mFooterView;
+        if (loadingView.getTop() != getTopLoadingViewReset(loadingView))
         {
             if (mIsDebug)
             {
@@ -700,29 +687,51 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     }
 
     /**
-     * 返回HeaderView的Reset静止状态下top值
+     * 返回loadingView在{@link State#RESET}状态下的top值
      *
+     * @param loadingView
      * @return
      */
-    protected final int getTopHeaderViewReset()
+    protected final int getTopLoadingViewReset(BaseLoadingView loadingView)
     {
-        return getTopAlignTop() - mHeaderView.getMeasuredHeight();
+        if (loadingView == mHeaderView)
+        {
+            return getTopAlignTop() - mHeaderView.getMeasuredHeight();
+        } else if (loadingView == mFooterView)
+        {
+            return getTopAlignBottom();
+        } else
+        {
+            throw new IllegalArgumentException("Illegal loadingView:" + loadingView);
+        }
     }
 
     /**
-     * 返回FooterView的Reset静止状态下top值
+     * 返回loadingView在{@link State#REFRESHING}状态下的top值
      *
+     * @param loadingView
      * @return
      */
-    protected final int getTopFooterViewReset()
+    protected final int getTopLoadingViewRefreshing(BaseLoadingView loadingView)
     {
-        return getTopAlignBottom();
+        final int reset = getTopLoadingViewReset(loadingView);
+
+        if (loadingView == mHeaderView)
+        {
+            return reset + mHeaderView.getRefreshHeight();
+        } else if (loadingView == mFooterView)
+        {
+            return reset - mFooterView.getRefreshHeight();
+        } else
+        {
+            throw new IllegalArgumentException("Illegal loadingView:" + loadingView);
+        }
     }
 
     private int getTopLayoutHeaderView()
     {
         // 初始值
-        int top = getTopHeaderViewReset();
+        int top = getTopLoadingViewReset(mHeaderView);
 
         if (getDirection() == Direction.FROM_HEADER)
         {
@@ -747,7 +756,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     private int getTopLayoutFooterView()
     {
         // 初始值
-        int top = getTopFooterViewReset();
+        int top = getTopLoadingViewReset(mFooterView);
 
         if (getDirection() == Direction.FROM_FOOTER)
         {
