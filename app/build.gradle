@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     defaultConfig {
         applicationId "com.sd.demo.pulltorefresh"
         minSdkVersion 15
@@ -24,7 +24,6 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.github.zj565061763:libcore:1.1.1'
-    implementation 'com.github.zj565061763:adapter:1.0.6'
-    implementation 'com.github.zj565061763:switchbutton:1.0.18'
+    implementation 'com.github.zj565061763:adapter:1.0.7'
     implementation project(':lib')
 }
