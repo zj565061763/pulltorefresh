@@ -53,7 +53,6 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     private Mode mMode = Mode.BOTH;
     private State mState = State.RESET;
     private Direction mDirection = Direction.NONE;
-    private Direction mLastDirection = Direction.NONE;
     /**
      * HeaderView和FooterView是否是覆盖的模式
      */
@@ -298,19 +297,20 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     @Override
     public Direction getDirection()
     {
-        return mLastDirection;
+        return mDirection;
     }
 
     @Override
     public int getScrollDistance()
     {
-        if (getDirection() == Direction.FROM_HEADER)
+        final BaseLoadingView loadingView = getLoadingViewByDirection();
+        if (loadingView == null)
         {
-            return mHeaderView.getTop() - getTopLoadingViewReset(mHeaderView);
-        } else
-        {
-            return mFooterView.getTop() - getTopLoadingViewReset(mFooterView);
+            return 0;
         }
+
+        final int topReset = getTopLoadingViewReset(loadingView);
+        return loadingView.getTop() - topReset;
     }
 
     //----------PullToRefreshView implements end----------
@@ -340,9 +340,12 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         if (direction == Direction.FROM_HEADER)
         {
             return mHeaderView;
-        } else
+        } else if (direction == Direction.FROM_FOOTER)
         {
             return mFooterView;
+        } else
+        {
+            return null;
         }
     }
 
@@ -501,8 +504,6 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
             if (mDirection == Direction.NONE)
             {
                 mDirection = direction;
-                mLastDirection = direction;
-
                 if (mIsDebug)
                 {
                     Log.i(getDebugTag(), "setDirection:" + mDirection);
