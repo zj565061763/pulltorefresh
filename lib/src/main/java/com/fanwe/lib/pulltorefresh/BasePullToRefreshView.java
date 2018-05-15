@@ -363,6 +363,14 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         }
     }
 
+    private void checkDirection()
+    {
+        if (mDirection == Direction.NONE)
+        {
+            throw new RuntimeException("Direction is not specified before this");
+        }
+    }
+
     /**
      * 移动view
      *
@@ -416,14 +424,6 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         } else
         {
             setState(State.PULL_TO_REFRESH);
-        }
-    }
-
-    private void checkDirection()
-    {
-        if (mDirection == Direction.NONE)
-        {
-            throw new RuntimeException("Direction is not specified before this");
         }
     }
 
