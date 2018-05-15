@@ -253,11 +253,6 @@ public class FPullToRefreshView extends BasePullToRefreshView
                 endY = getTopLoadingViewReset(loadingView);
                 if (mScroller.scrollToY(startY, endY, -1))
                 {
-                    if (mIsDebug)
-                    {
-                        Log.i(getDebugTag(), "flingViewByState:" + startY + " -> " + endY + " " + getState());
-                    }
-
                     isScrollViewStarted = true;
                     invalidate();
                 }
@@ -267,15 +262,15 @@ public class FPullToRefreshView extends BasePullToRefreshView
                 endY = getTopLoadingViewRefreshing(loadingView);
                 if (mScroller.scrollToY(startY, endY, -1))
                 {
-                    if (mIsDebug)
-                    {
-                        Log.i(getDebugTag(), "flingViewByState:" + startY + " -> " + endY + " " + getState());
-                    }
-
                     isScrollViewStarted = true;
                     invalidate();
                 }
                 break;
+        }
+
+        if (mIsDebug)
+        {
+            Log.i(getDebugTag(), "flingViewByState:" + startY + " -> " + endY + " " + getState());
         }
 
         //通知刷新回调
