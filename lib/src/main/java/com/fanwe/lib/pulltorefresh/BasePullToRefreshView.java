@@ -351,9 +351,10 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     /**
      * 移动view
      *
-     * @param dy 要移动的距离
+     * @param dy
+     * @param isDrag true-手指拖动，false-惯性滑动
      */
-    protected final void moveViews(int dy)
+    protected final void moveViews(int dy, boolean isDrag)
     {
         if (dy == 0) return;
 
@@ -379,12 +380,17 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         {
             mOnViewPositionChangedCallback.onViewPositionChanged(this);
         }
+
+        if (isDrag)
+        {
+            updateStateByMoveDistance();
+        }
     }
 
     /**
      * 根据移动距离刷新当前状态
      */
-    protected final void updateStateByMoveDistance()
+    private void updateStateByMoveDistance()
     {
         final int distance = Math.abs(getScrollDistance());
         final BaseLoadingView loadingView = getLoadingViewByDirection();
