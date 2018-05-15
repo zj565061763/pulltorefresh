@@ -15,7 +15,6 @@
  */
 package com.fanwe.lib.pulltorefresh.pullcondition;
 
-import android.support.v4.view.ViewCompat;
 import android.view.View;
 
 import com.fanwe.lib.pulltorefresh.PullToRefreshView;
@@ -45,24 +44,26 @@ public class SimpleViewPullCondition implements PullToRefreshView.PullCondition
     @Override
     public boolean canPullFromHeader()
     {
-        if (getView() == null)
+        final View view = getView();
+        if (view == null)
         {
             return true;
         } else
         {
-            return !ViewCompat.canScrollVertically(getView(), -1);
+            return !view.canScrollVertically(-1);
         }
     }
 
     @Override
     public boolean canPullFromFooter()
     {
-        if (getView() == null)
+        final View view = getView();
+        if (view == null)
         {
             return true;
         } else
         {
-            return !ViewCompat.canScrollVertically(getView(), 1);
+            return !view.canScrollVertically(1);
         }
     }
 }

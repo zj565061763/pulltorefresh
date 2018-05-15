@@ -20,7 +20,6 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
-import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
 import com.fanwe.lib.pulltorefresh.PullToRefreshView;
 
 import java.lang.reflect.Constructor;
@@ -58,9 +57,9 @@ public abstract class BaseLoadingView extends FrameLayout implements
     }
 
     @Override
-    public final FPullToRefreshView getPullToRefreshView()
+    public final PullToRefreshView getPullToRefreshView()
     {
-        return (FPullToRefreshView) getParent();
+        return (PullToRefreshView) getParent();
     }
 
     @Override
