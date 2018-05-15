@@ -154,7 +154,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
             {
                 if (mIsDebug)
                 {
-                    Log.i(getDebugTag(), "onConsumeEventFinish");
+                    Log.e(getDebugTag(), "onConsumeEventFinish:" + event.getAction());
                 }
 
                 if (getState() == State.RELEASE_TO_REFRESH)

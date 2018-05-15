@@ -17,7 +17,6 @@ package com.fanwe.lib.pulltorefresh;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.v4.view.ViewCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -335,32 +334,32 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     {
         if (getDirection() == Direction.FROM_HEADER)
         {
-            if (moveHeaderOrFooter) ViewCompat.offsetTopAndBottom(mHeaderView, dy);
+            if (moveHeaderOrFooter) Utils.offsetTopAndBottom(mHeaderView, dy);
 
             if (mIsOverLayMode)
             {
-                if (ViewCompat.getZ(mHeaderView) <= ViewCompat.getZ(mRefreshView))
+                if (Utils.getZ(mHeaderView) <= Utils.getZ(mRefreshView))
                 {
-                    ViewCompat.setZ(mHeaderView, ViewCompat.getZ(mRefreshView) + 1);
+                    Utils.setZ(mHeaderView, Utils.getZ(mRefreshView) + 1);
                 }
             } else
             {
-                ViewCompat.offsetTopAndBottom(mRefreshView, dy);
+                Utils.offsetTopAndBottom(mRefreshView, dy);
             }
             mHeaderView.onViewPositionChanged(this);
         } else
         {
-            if (moveHeaderOrFooter) ViewCompat.offsetTopAndBottom(mFooterView, dy);
+            if (moveHeaderOrFooter) Utils.offsetTopAndBottom(mFooterView, dy);
 
             if (mIsOverLayMode)
             {
-                if (ViewCompat.getZ(mFooterView) <= ViewCompat.getZ(mRefreshView))
+                if (Utils.getZ(mFooterView) <= Utils.getZ(mRefreshView))
                 {
-                    ViewCompat.setZ(mFooterView, ViewCompat.getZ(mRefreshView) + 1);
+                    Utils.setZ(mFooterView, Utils.getZ(mRefreshView) + 1);
                 }
             } else
             {
-                ViewCompat.offsetTopAndBottom(mRefreshView, dy);
+                Utils.offsetTopAndBottom(mRefreshView, dy);
             }
             mFooterView.onViewPositionChanged(this);
         }
