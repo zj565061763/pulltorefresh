@@ -70,7 +70,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     private OnRefreshCallback mOnRefreshCallback;
     private OnStateChangedCallback mOnStateChangedCallback;
     private OnViewPositionChangedCallback mOnViewPositionChangedCallback;
-    protected PullCondition mPullCondition;
+    private PullCondition mPullCondition;
 
     protected boolean mIsDebug;
 
@@ -323,6 +323,16 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     protected abstract boolean isViewIdle();
 
     protected abstract void flingViewByState();
+
+    protected final boolean checkPullConditionHeader()
+    {
+        return mPullCondition != null ? mPullCondition.canPullFromHeader() : true;
+    }
+
+    protected final boolean checkPullConditionFooter()
+    {
+        return mPullCondition != null ? mPullCondition.canPullFromFooter() : true;
+    }
 
     /**
      * 移动view
