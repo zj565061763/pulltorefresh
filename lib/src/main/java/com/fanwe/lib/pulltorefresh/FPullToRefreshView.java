@@ -158,9 +158,11 @@ public class FPullToRefreshView extends BasePullToRefreshView
         if (mGestureManager.getTouchHelper().isMoveBottomFrom(FTouchHelper.EVENT_DOWN))
         {
             setDirection(Direction.FROM_HEADER);
+            getScroller().setMaxScrollDistance(getHeaderView().getHeight());
         } else if (mGestureManager.getTouchHelper().isMoveTopFrom(FTouchHelper.EVENT_DOWN))
         {
             setDirection(Direction.FROM_FOOTER);
+            getScroller().setMaxScrollDistance(getFooterView().getHeight());
         }
     }
 
