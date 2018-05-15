@@ -336,11 +336,10 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
 
     protected final BaseLoadingView getLoadingViewByDirection()
     {
-        final Direction direction = getDirection();
-        if (direction == Direction.FROM_HEADER)
+        if (mDirection == Direction.FROM_HEADER)
         {
             return mHeaderView;
-        } else if (direction == Direction.FROM_FOOTER)
+        } else if (mDirection == Direction.FROM_FOOTER)
         {
             return mFooterView;
         } else
