@@ -17,14 +17,15 @@ package com.fanwe.lib.pulltorefresh;
 
 import android.content.Context;
 import android.os.Build;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.fanwe.lib.pulltorefresh.loadingview.BaseLoadingView;
+import com.fanwe.lib.pulltorefresh.loadingview.LoadingView;
 import com.fanwe.lib.pulltorefresh.loadingview.SimpleTextLoadingView;
+
+import java.lang.reflect.Constructor;
 
 public abstract class BasePullToRefreshView extends ViewGroup implements PullToRefreshView
 {
@@ -46,8 +47,8 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         init(attrs);
     }
 
-    private BaseLoadingView mHeaderView;
-    private BaseLoadingView mFooterView;
+    private LoadingView mHeaderView;
+    private LoadingView mFooterView;
     private View mRefreshView;
 
     private Mode mMode = Mode.PULL_BOTH;
@@ -176,11 +177,6 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     @Override
     public void startRefreshingFromHeader()
     {
-        if (mMode == Mode.PULL_DISABLE)
-        {
-            return;
-        }
-
         if (mState == State.RESET)
         {
             setDirection(Direction.FROM_HEADER);
@@ -192,11 +188,6 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     @Override
     public void startRefreshingFromFooter()
     {
-        if (mMode == Mode.PULL_DISABLE)
-        {
-            return;
-        }
-
         if (mState == State.RESET)
         {
             setDirection(Direction.FROM_FOOTER);
@@ -251,41 +242,49 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     }
 
     @Override
-    public BaseLoadingView getHeaderView()
+    public LoadingView getHeaderView()
     {
         return mHeaderView;
     }
 
     @Override
-    public void setHeaderView(BaseLoadingView headerView)
+    public void setHeaderView(LoadingView headerView)
     {
         if (headerView == null || headerView == mHeaderView)
         {
             return;
         }
+        if (!(headerView instanceof View))
+        {
+            throw new IllegalArgumentException("headerView should be instance of " + View.class);
+        }
 
-        removeView(mHeaderView);
+        removeView((View) mHeaderView);
+        addView((View) headerView);
         mHeaderView = headerView;
-        addView(headerView);
     }
 
     @Override
-    public BaseLoadingView getFooterView()
+    public LoadingView getFooterView()
     {
         return mFooterView;
     }
 
     @Override
-    public void setFooterView(BaseLoadingView footerView)
+    public void setFooterView(LoadingView footerView)
     {
         if (footerView == null || footerView == mFooterView)
         {
             return;
         }
+        if (!(footerView instanceof View))
+        {
+            throw new IllegalArgumentException("footerView should be instance of " + View.class);
+        }
 
-        removeView(mFooterView);
+        removeView((View) mFooterView);
+        addView((View) footerView);
         mFooterView = footerView;
-        addView(footerView);
     }
 
     @Override
@@ -303,14 +302,14 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     @Override
     public int getScrollDistance()
     {
-        final BaseLoadingView loadingView = getLoadingViewByDirection();
+        final LoadingView loadingView = getLoadingViewByDirection();
         if (loadingView == null)
         {
             return 0;
         }
 
         final int topReset = getTopLoadingViewReset(loadingView);
-        return loadingView.getTop() - topReset;
+        return ((View) loadingView).getTop() - topReset;
     }
 
     //----------PullToRefreshView implements end----------
@@ -349,7 +348,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
      *
      * @return
      */
-    protected final BaseLoadingView getLoadingViewByDirection()
+    protected final LoadingView getLoadingViewByDirection()
     {
         if (mDirection == Direction.FROM_HEADER)
         {
@@ -381,18 +380,18 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     {
         if (dy == 0) return;
 
-        final BaseLoadingView loadingView = getLoadingViewByDirection();
+        final LoadingView loadingView = getLoadingViewByDirection();
 
         // HeaderView or FooterView
-        Utils.offsetTopAndBottom(loadingView, dy);
+        Utils.offsetTopAndBottom((View) loadingView, dy);
         loadingView.onViewPositionChanged(this);
 
         // RefreshView
         if (mIsOverLayMode)
         {
-            if (Utils.getZ(loadingView) <= Utils.getZ(mRefreshView))
+            if (Utils.getZ((View) loadingView) <= Utils.getZ(mRefreshView))
             {
-                Utils.setZ(loadingView, Utils.getZ(mRefreshView) + 1);
+                Utils.setZ((View) loadingView, Utils.getZ(mRefreshView) + 1);
             }
         } else
         {
@@ -416,7 +415,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     private void updateStateByMoveDistance()
     {
         final int distance = Math.abs(getScrollDistance());
-        final BaseLoadingView loadingView = getLoadingViewByDirection();
+        final LoadingView loadingView = getLoadingViewByDirection();
 
         if (loadingView.canRefresh(distance))
         {
@@ -456,7 +455,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         }
 
         //通知view改变状态
-        final BaseLoadingView loadingView = getLoadingViewByDirection();
+        final LoadingView loadingView = getLoadingViewByDirection();
         loadingView.onStateChanged(mState, oldState, this);
 
         //通知状态变化回调
@@ -495,8 +494,8 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
 
     private void requestLayoutWhenReset()
     {
-        final BaseLoadingView loadingView = getLoadingViewByDirection();
-        if (loadingView.getTop() != getTopLoadingViewReset(loadingView))
+        final LoadingView loadingView = getLoadingViewByDirection();
+        if (((View) loadingView).getTop() != getTopLoadingViewReset(loadingView))
         {
             if (mIsDebug)
             {
@@ -580,14 +579,11 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     private void addLoadingViews()
     {
         // HeaderView
-        BaseLoadingView headerView = onCreateHeaderView();
+        LoadingView headerView = onCreateHeaderView();
         if (headerView == null)
         {
             final String headerClassName = getResources().getString(R.string.lib_ptr_header_class);
-            if (!TextUtils.isEmpty(headerClassName))
-            {
-                headerView = BaseLoadingView.getInstanceByClassName(headerClassName, getContext());
-            }
+            headerView = createLoadingViewByClassName(headerClassName);
         }
         if (headerView == null)
         {
@@ -596,14 +592,11 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         setHeaderView(headerView);
 
         // FooterView
-        BaseLoadingView footerView = onCreateFooterView();
+        LoadingView footerView = onCreateFooterView();
         if (footerView == null)
         {
             final String footerClassName = getResources().getString(R.string.lib_ptr_footer_class);
-            if (footerClassName != null)
-            {
-                footerView = BaseLoadingView.getInstanceByClassName(footerClassName, getContext());
-            }
+            footerView = createLoadingViewByClassName(footerClassName);
         }
         if (footerView == null)
         {
@@ -612,12 +605,26 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         setFooterView(footerView);
     }
 
+    private LoadingView createLoadingViewByClassName(String className)
+    {
+        try
+        {
+            Class clazz = Class.forName(className);
+            Constructor constructor = clazz.getConstructor(Context.class);
+            return (LoadingView) constructor.newInstance(getContext());
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     /**
      * 可以重写返回HeaderView
      *
      * @return
      */
-    protected BaseLoadingView onCreateHeaderView()
+    protected LoadingView onCreateHeaderView()
     {
         return null;
     }
@@ -627,7 +634,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
      *
      * @return
      */
-    protected BaseLoadingView onCreateFooterView()
+    protected LoadingView onCreateFooterView()
     {
         return null;
     }
@@ -663,13 +670,13 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         int height = MeasureSpec.getSize(heightMeasureSpec);
 
-        measureChild(mHeaderView, widthMeasureSpec, heightMeasureSpec);
-        measureChild(mFooterView, widthMeasureSpec, heightMeasureSpec);
+        measureChild((View) mHeaderView, widthMeasureSpec, heightMeasureSpec);
+        measureChild((View) mFooterView, widthMeasureSpec, heightMeasureSpec);
         measureChild(mRefreshView, widthMeasureSpec, heightMeasureSpec);
 
         if (widthMode != MeasureSpec.EXACTLY)
         {
-            int maxWidth = Math.max(mHeaderView.getMeasuredWidth(), mFooterView.getMeasuredWidth());
+            int maxWidth = Math.max(((View) mHeaderView).getMeasuredWidth(), ((View) mFooterView).getMeasuredWidth());
             maxWidth = Math.max(maxWidth, mRefreshView.getMeasuredWidth());
             maxWidth += (getPaddingLeft() + getPaddingRight());
 
@@ -689,7 +696,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
             if (maxHeight == 0)
             {
                 //如果刷新view的高度为0，则给当前view一个默认高度，否则会出现代码触发刷新的时候HeaderView或者FooterView看不见
-                maxHeight = Math.max(mHeaderView.getMeasuredHeight(), mFooterView.getMeasuredHeight());
+                maxHeight = Math.max(((View) mHeaderView).getMeasuredHeight(), ((View) mFooterView).getMeasuredHeight());
             }
             maxHeight += (getPaddingTop() + getPaddingBottom());
 
@@ -732,11 +739,11 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
      * @param loadingView
      * @return
      */
-    protected final int getTopLoadingViewReset(BaseLoadingView loadingView)
+    protected final int getTopLoadingViewReset(LoadingView loadingView)
     {
         if (loadingView == mHeaderView)
         {
-            return getTopAlignTop() - mHeaderView.getMeasuredHeight();
+            return getTopAlignTop() - ((View) mHeaderView).getMeasuredHeight();
         } else if (loadingView == mFooterView)
         {
             return getTopAlignBottom();
@@ -752,16 +759,16 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
      * @param loadingView
      * @return
      */
-    protected final int getTopLoadingViewRefreshing(BaseLoadingView loadingView)
+    protected final int getTopLoadingViewRefreshing(LoadingView loadingView)
     {
         final int reset = getTopLoadingViewReset(loadingView);
 
         if (loadingView == mHeaderView)
         {
-            return reset + mHeaderView.getRefreshHeight();
+            return reset + mHeaderView.getRefreshingHeight();
         } else if (loadingView == mFooterView)
         {
-            return reset - mFooterView.getRefreshHeight();
+            return reset - mFooterView.getRefreshingHeight();
         } else
         {
             throw new IllegalArgumentException("Illegal loadingView:" + loadingView);
@@ -782,12 +789,12 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
                     case REFRESHING:
                     case REFRESHING_SUCCESS:
                     case REFRESHING_FAILURE:
-                        top += mHeaderView.getRefreshHeight();
+                        top += mHeaderView.getRefreshingHeight();
                         break;
                 }
             } else
             {
-                top = mHeaderView.getTop();
+                top = ((View) mHeaderView).getTop();
             }
         }
         return top;
@@ -807,12 +814,12 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
                     case REFRESHING:
                     case REFRESHING_SUCCESS:
                     case REFRESHING_FAILURE:
-                        top -= mFooterView.getRefreshHeight();
+                        top -= mFooterView.getRefreshingHeight();
                         break;
                 }
             } else
             {
-                top = mFooterView.getTop();
+                top = ((View) mFooterView).getTop();
             }
         }
         return top;
@@ -836,10 +843,10 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
                     case REFRESHING_FAILURE:
                         if (mDirection == Direction.FROM_HEADER)
                         {
-                            top += mHeaderView.getRefreshHeight();
+                            top += mHeaderView.getRefreshingHeight();
                         } else if (mDirection == Direction.FROM_FOOTER)
                         {
-                            top -= mFooterView.getRefreshHeight();
+                            top -= mFooterView.getRefreshingHeight();
                         }
                         break;
                 }
@@ -868,12 +875,12 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
 
         // HeaderView
         top = getTopLayoutHeaderView();
-        right = left + mHeaderView.getMeasuredWidth();
-        bottom = top + mHeaderView.getMeasuredHeight();
-        mHeaderView.layout(left, top, right, bottom);
+        right = left + ((View) mHeaderView).getMeasuredWidth();
+        bottom = top + ((View) mHeaderView).getMeasuredHeight();
+        ((View) mHeaderView).layout(left, top, right, bottom);
         if (mIsDebug)
         {
-            logString += "HeaderView:" + top + "," + bottom + " -> " + mHeaderView.getMeasuredHeight() + "\r\n";
+            logString += "HeaderView:" + top + "," + bottom + " -> " + (bottom - top) + "\r\n";
         }
 
         // RefreshView
@@ -888,7 +895,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         mRefreshView.layout(left, top, right, bottom);
         if (mIsDebug)
         {
-            logString += "RefreshView:" + top + "," + bottom + " -> " + mRefreshView.getMeasuredHeight() + "\r\n";
+            logString += "RefreshView:" + top + "," + bottom + " -> " + (bottom - top) + "\r\n";
         }
 
         // FooterView
@@ -898,12 +905,12 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         {
             top = bottom;
         }
-        right = left + mFooterView.getMeasuredWidth();
-        bottom = top + mFooterView.getMeasuredHeight();
-        mFooterView.layout(left, top, right, bottom);
+        right = left + ((View) mFooterView).getMeasuredWidth();
+        bottom = top + ((View) mFooterView).getMeasuredHeight();
+        ((View) mFooterView).layout(left, top, right, bottom);
         if (mIsDebug)
         {
-            logString += "FooterView:" + top + "," + bottom + " -> " + mFooterView.getMeasuredHeight();
+            logString += "FooterView:" + top + "," + bottom + " -> " + (bottom - top);
             Log.i(getDebugTag(), logString);
         }
     }

@@ -17,7 +17,7 @@ package com.fanwe.lib.pulltorefresh;
 
 import android.view.View;
 
-import com.fanwe.lib.pulltorefresh.loadingview.BaseLoadingView;
+import com.fanwe.lib.pulltorefresh.loadingview.LoadingView;
 
 public interface PullToRefreshView
 {
@@ -141,28 +141,28 @@ public interface PullToRefreshView
      *
      * @return
      */
-    BaseLoadingView getHeaderView();
+    LoadingView getHeaderView();
 
     /**
      * 设置HeaderView
      *
      * @param headerView
      */
-    void setHeaderView(BaseLoadingView headerView);
+    void setHeaderView(LoadingView headerView);
 
     /**
      * 返回FooterView
      *
      * @return
      */
-    BaseLoadingView getFooterView();
+    LoadingView getFooterView();
 
     /**
      * 设置FooterView
      *
      * @param footerView
      */
-    void setFooterView(BaseLoadingView footerView);
+    void setFooterView(LoadingView footerView);
 
     /**
      * 返回要支持刷新的view

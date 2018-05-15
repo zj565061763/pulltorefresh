@@ -63,46 +63,46 @@ public class SimpleTextLoadingView extends BaseLoadingView
         {
             case RESET:
             case PULL_TO_REFRESH:
-                if (isHeaderView())
+                if (this == getPullToRefreshView().getHeaderView())
                 {
                     getTextView().setText(getResources().getString(R.string.lib_ptr_state_pull_to_refresh_header));
-                } else if (isFooterView())
+                } else if (this == getPullToRefreshView().getFooterView())
                 {
                     getTextView().setText(getResources().getString(R.string.lib_ptr_state_pull_to_refresh_footer));
                 }
                 break;
             case RELEASE_TO_REFRESH:
-                if (isHeaderView())
+                if (this == getPullToRefreshView().getHeaderView())
                 {
                     getTextView().setText(getResources().getString(R.string.lib_ptr_state_release_to_refresh_header));
-                } else if (isFooterView())
+                } else if (this == getPullToRefreshView().getFooterView())
                 {
                     getTextView().setText(getResources().getString(R.string.lib_ptr_state_release_to_refresh_footer));
                 }
                 break;
             case REFRESHING:
-                if (isHeaderView())
+                if (this == getPullToRefreshView().getHeaderView())
                 {
                     getTextView().setText(getResources().getString(R.string.lib_ptr_state_refreshing_header));
-                } else if (isFooterView())
+                } else if (this == getPullToRefreshView().getFooterView())
                 {
                     getTextView().setText(getResources().getString(R.string.lib_ptr_state_refreshing_footer));
                 }
                 break;
             case REFRESHING_SUCCESS:
-                if (isHeaderView())
+                if (this == getPullToRefreshView().getHeaderView())
                 {
                     getTextView().setText(getResources().getString(R.string.lib_ptr_state_refreshing_success_header));
-                } else if (isFooterView())
+                } else if (this == getPullToRefreshView().getFooterView())
                 {
                     getTextView().setText(getResources().getString(R.string.lib_ptr_state_refreshing_success_footer));
                 }
                 break;
             case REFRESHING_FAILURE:
-                if (isHeaderView())
+                if (this == getPullToRefreshView().getHeaderView())
                 {
                     getTextView().setText(getResources().getString(R.string.lib_ptr_state_refreshing_failure_header));
-                } else if (isFooterView())
+                } else if (this == getPullToRefreshView().getFooterView())
                 {
                     getTextView().setText(getResources().getString(R.string.lib_ptr_state_refreshing_failure_footer));
                 }
@@ -110,10 +110,10 @@ public class SimpleTextLoadingView extends BaseLoadingView
             case FINISH:
                 if (oldState == PullToRefreshView.State.REFRESHING)
                 {
-                    if (isHeaderView())
+                    if (this == getPullToRefreshView().getHeaderView())
                     {
                         getTextView().setText(getResources().getString(R.string.lib_ptr_state_pull_to_refresh_header));
-                    } else if (isFooterView())
+                    } else if (this == getPullToRefreshView().getFooterView())
                     {
                         getTextView().setText(getResources().getString(R.string.lib_ptr_state_pull_to_refresh_footer));
                     }

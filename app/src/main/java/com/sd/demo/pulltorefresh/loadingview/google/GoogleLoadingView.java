@@ -87,7 +87,7 @@ public class GoogleLoadingView extends BaseLoadingView
         LogUtil.i("onViewPositionChanged--------------------");
 
         float scrollDistance = Math.abs(view.getScrollDistance());
-        float dragPercent = Math.min(1f, scrollDistance / (float) getRefreshHeight());
+        float dragPercent = Math.min(1f, scrollDistance / (float) getRefreshingHeight());
         LogUtil.i("dragPercent:" + dragPercent);
         float adjustedPercent = (float) Math.max(dragPercent - .4, 0) * 5 / 3;
         float strokeStart = adjustedPercent * .8f;

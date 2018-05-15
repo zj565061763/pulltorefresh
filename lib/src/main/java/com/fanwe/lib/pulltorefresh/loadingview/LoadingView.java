@@ -20,17 +20,11 @@ import com.fanwe.lib.pulltorefresh.PullToRefreshView;
 /**
  * 加载view
  */
-public interface LoadingView
+public interface LoadingView extends PullToRefreshView.OnViewPositionChangedCallback,
+        PullToRefreshView.OnStateChangedCallback
 {
     /**
-     * 返回view处于刷新中的时候需要显示的高度（默认view的测量高度）
-     *
-     * @return
-     */
-    int getRefreshHeight();
-
-    /**
-     * 返回是否可以触发刷新（默认大于等于view的测量高度的时候触发刷新）
+     * 返回是否满足刷新条件（默认滚动距离大于等于view的测量高度的时候满足）
      *
      * @param scrollDistance 已经滚动的距离
      * @return
@@ -38,18 +32,16 @@ public interface LoadingView
     boolean canRefresh(int scrollDistance);
 
     /**
-     * 返回当前view是否是下拉刷新控件的HeaderView
+     * 返回view处于刷新中的时候需要显示的高度（默认view的测量高度）
      *
      * @return
      */
-    boolean isHeaderView();
+    int getRefreshingHeight();
 
     /**
-     * 返回当前view是否是下拉刷新控件的FooterView
+     * 默认返回当前view的parent对象
      *
      * @return
      */
-    boolean isFooterView();
-
     PullToRefreshView getPullToRefreshView();
 }

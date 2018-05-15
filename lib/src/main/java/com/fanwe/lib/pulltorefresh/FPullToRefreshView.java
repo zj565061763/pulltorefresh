@@ -20,12 +20,13 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
+import android.view.View;
 import android.widget.Scroller;
 
 import com.fanwe.lib.gesture.FGestureManager;
 import com.fanwe.lib.gesture.FScroller;
 import com.fanwe.lib.gesture.FTouchHelper;
-import com.fanwe.lib.pulltorefresh.loadingview.BaseLoadingView;
+import com.fanwe.lib.pulltorefresh.loadingview.LoadingView;
 
 public class FPullToRefreshView extends BasePullToRefreshView
 {
@@ -91,8 +92,8 @@ public class FPullToRefreshView extends BasePullToRefreshView
 
                 if (mIsDebug)
                 {
-                    final BaseLoadingView loadingView = getLoadingViewByDirection();
-                    final int top = loadingView.getTop();
+                    final LoadingView loadingView = getLoadingViewByDirection();
+                    final int top = ((View) loadingView).getTop();
                     Log.i(getDebugTag(), "onScroll:" + top + " " + getState());
                 }
             }
@@ -171,11 +172,11 @@ public class FPullToRefreshView extends BasePullToRefreshView
         if (mGestureManager.getTouchHelper().isMoveBottomFrom(FTouchHelper.EVENT_DOWN))
         {
             setDirection(Direction.FROM_HEADER);
-            mScroller.setMaxScrollDistance(getHeaderView().getHeight());
+            mScroller.setMaxScrollDistance(((View) getHeaderView()).getHeight());
         } else if (mGestureManager.getTouchHelper().isMoveTopFrom(FTouchHelper.EVENT_DOWN))
         {
             setDirection(Direction.FROM_FOOTER);
-            mScroller.setMaxScrollDistance(getFooterView().getHeight());
+            mScroller.setMaxScrollDistance(((View) getFooterView()).getHeight());
         }
     }
 
@@ -238,9 +239,9 @@ public class FPullToRefreshView extends BasePullToRefreshView
     @Override
     protected void flingViewByState()
     {
-        final BaseLoadingView loadingView = getLoadingViewByDirection();
+        final LoadingView loadingView = getLoadingViewByDirection();
 
-        final int startY = loadingView.getTop();
+        final int startY = ((View) loadingView).getTop();
         int endY = 0;
 
         boolean isScrollViewStarted = false;

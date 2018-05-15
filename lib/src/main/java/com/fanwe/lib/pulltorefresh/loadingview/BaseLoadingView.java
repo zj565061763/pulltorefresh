@@ -16,13 +16,10 @@
 package com.fanwe.lib.pulltorefresh.loadingview;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
 import com.fanwe.lib.pulltorefresh.PullToRefreshView;
-
-import java.lang.reflect.Constructor;
 
 public abstract class BaseLoadingView extends FrameLayout implements
         LoadingView,
@@ -45,18 +42,6 @@ public abstract class BaseLoadingView extends FrameLayout implements
     }
 
     @Override
-    public final boolean isHeaderView()
-    {
-        return this == getPullToRefreshView().getHeaderView();
-    }
-
-    @Override
-    public final boolean isFooterView()
-    {
-        return this == getPullToRefreshView().getFooterView();
-    }
-
-    @Override
     public final PullToRefreshView getPullToRefreshView()
     {
         return (PullToRefreshView) getParent();
@@ -75,27 +60,8 @@ public abstract class BaseLoadingView extends FrameLayout implements
     }
 
     @Override
-    public int getRefreshHeight()
+    public int getRefreshingHeight()
     {
         return getMeasuredHeight();
-    }
-
-    public static BaseLoadingView getInstanceByClassName(String className, Context context)
-    {
-        if (TextUtils.isEmpty(className) || context == null)
-        {
-            return null;
-        }
-
-        try
-        {
-            Class clazz = Class.forName(className);
-            Constructor constructor = clazz.getConstructor(Context.class);
-            return (BaseLoadingView) constructor.newInstance(context);
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return null;
     }
 }
