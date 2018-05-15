@@ -819,9 +819,11 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b)
     {
+        String logString = "";
+
         if (mIsDebug)
         {
-            Log.i(getDebugTag(), "onLayout " + mState + " totalHeight:----------" + getHeight());
+            logString += "----------onLayout height:" + getHeight() + " " + mState + "\r\n";
         }
 
         int left = getPaddingLeft();
@@ -836,7 +838,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         mHeaderView.layout(left, top, right, bottom);
         if (mIsDebug)
         {
-            Log.i(getDebugTag(), "HeaderView:" + top + "," + bottom);
+            logString += "HeaderView:" + top + "," + bottom + " -> " + mHeaderView.getMeasuredHeight() + "\r\n";
         }
 
         // RefreshView
@@ -851,7 +853,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         mRefreshView.layout(left, top, right, bottom);
         if (mIsDebug)
         {
-            Log.i(getDebugTag(), "RefreshView:" + top + "," + bottom);
+            logString += "RefreshView:" + top + "," + bottom + " -> " + mRefreshView.getMeasuredHeight() + "\r\n";
         }
 
         // FooterView
@@ -866,7 +868,8 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         mFooterView.layout(left, top, right, bottom);
         if (mIsDebug)
         {
-            Log.i(getDebugTag(), "FooterView:" + top + "," + bottom);
+            logString += "FooterView:" + top + "," + bottom + " -> " + mFooterView.getMeasuredHeight();
+            Log.i(getDebugTag(), logString);
         }
     }
 
