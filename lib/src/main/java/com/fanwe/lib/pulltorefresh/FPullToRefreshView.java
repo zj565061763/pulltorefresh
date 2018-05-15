@@ -266,7 +266,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
                 {
                     if (mIsDebug)
                     {
-                        Log.i(getDebugTag(), "flingViewByState:" + view.getTop() + "," + endY + " " + getState());
+                        Log.i(getDebugTag(), "flingViewByState:" + view.getTop() + " -> " + endY + " " + getState());
                     }
 
                     isScrollViewStarted = true;
@@ -289,7 +289,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
                 {
                     if (mIsDebug)
                     {
-                        Log.i(getDebugTag(), "flingViewByState:" + view.getTop() + "," + endY + " " + getState());
+                        Log.i(getDebugTag(), "flingViewByState:" + view.getTop() + " -> " + endY + " " + getState());
                     }
 
                     isScrollViewStarted = true;
