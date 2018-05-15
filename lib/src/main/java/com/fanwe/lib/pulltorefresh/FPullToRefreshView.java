@@ -115,7 +115,12 @@ public class FPullToRefreshView extends BasePullToRefreshView
             @Override
             public boolean shouldInterceptTouchEvent(MotionEvent event)
             {
-                return canPull();
+                final boolean canPull = canPull();
+                if (mIsDebug)
+                {
+                    Log.i(getDebugTag(), "shouldInterceptTouchEvent:" + canPull);
+                }
+                return canPull;
             }
 
             @Override
@@ -127,7 +132,12 @@ public class FPullToRefreshView extends BasePullToRefreshView
             @Override
             public boolean shouldConsumeTouchEvent(MotionEvent event)
             {
-                return canPull();
+                final boolean canPull = canPull();
+                if (mIsDebug)
+                {
+                    Log.i(getDebugTag(), "shouldConsumeTouchEvent:" + canPull);
+                }
+                return canPull;
             }
 
             @Override
@@ -195,12 +205,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
         final boolean checkState = getState() == State.RESET;
         final boolean checkIdle = isViewIdle();
 
-        final boolean canPull = checkDegree && checkPull && checkState && checkIdle;
-        if (mIsDebug)
-        {
-            Log.i(getDebugTag(), "canPull:" + canPull);
-        }
-        return canPull;
+        return checkDegree && checkPull && checkState && checkIdle;
     }
 
     private boolean canPullFromHeader()
