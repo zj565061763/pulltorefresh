@@ -398,6 +398,14 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         }
     }
 
+    private void checkDirection()
+    {
+        if (mDirection == Direction.NONE)
+        {
+            throw new RuntimeException("Direction is not specified before this");
+        }
+    }
+
     /**
      * 设置状态
      *
@@ -410,10 +418,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
             return;
         }
 
-        if (mDirection == Direction.NONE)
-        {
-            throw new RuntimeException("Direction is not specified before this");
-        }
+        checkDirection();
 
         final State oldState = mState;
         mState = state;
@@ -448,6 +453,8 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
 
     protected final void notifyRefreshCallback()
     {
+        checkDirection();
+
         if (mIsDebug)
         {
             Log.i(getDebugTag(), "notifyRefreshCallback");
@@ -455,10 +462,10 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
 
         if (mOnRefreshCallback != null)
         {
-            if (getDirection() == Direction.FROM_HEADER)
+            if (mDirection == Direction.FROM_HEADER)
             {
                 mOnRefreshCallback.onRefreshingFromHeader(this);
-            } else
+            } else if (mDirection == Direction.FROM_FOOTER)
             {
                 mOnRefreshCallback.onRefreshingFromFooter(this);
             }
