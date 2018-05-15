@@ -229,7 +229,7 @@ public interface PullToRefreshView
         /**
          * 支持上下拉
          */
-        BOTH,
+        PULL_BOTH,
         /**
          * 只支持下拉
          */
@@ -241,7 +241,7 @@ public interface PullToRefreshView
         /**
          * 不支持上下拉
          */
-        DISABLE,
+        PULL_DISABLE,
     }
 
     interface OnStateChangedCallback

@@ -191,7 +191,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
     private boolean canPullFromHeader()
     {
         final boolean checkIsMoveBottom = mGestureManager.getTouchHelper().isMoveBottomFrom(FTouchHelper.EVENT_DOWN);
-        final boolean checkMode = getMode() == Mode.BOTH || getMode() == Mode.PULL_FROM_HEADER;
+        final boolean checkMode = getMode() == Mode.PULL_BOTH || getMode() == Mode.PULL_FROM_HEADER;
         final boolean checkIsScrollToTop = FTouchHelper.isScrollToTop(getRefreshView());
         final boolean checkPullCondition = checkPullConditionHeader();
 
@@ -201,7 +201,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
     private boolean canPullFromFooter()
     {
         final boolean checkIsMoveTop = mGestureManager.getTouchHelper().isMoveTopFrom(FTouchHelper.EVENT_DOWN);
-        final boolean checkMode = getMode() == Mode.BOTH || getMode() == Mode.PULL_FROM_FOOTER;
+        final boolean checkMode = getMode() == Mode.PULL_BOTH || getMode() == Mode.PULL_FROM_FOOTER;
         final boolean checkIsScrollToBottom = FTouchHelper.isScrollToBottom(getRefreshView());
         final boolean checkPullCondition = checkPullConditionFooter();
 

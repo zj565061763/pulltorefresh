@@ -50,7 +50,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     private BaseLoadingView mFooterView;
     private View mRefreshView;
 
-    private Mode mMode = Mode.BOTH;
+    private Mode mMode = Mode.PULL_BOTH;
     private State mState = State.RESET;
     private Direction mDirection = Direction.NONE;
     /**
@@ -176,7 +176,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     @Override
     public void startRefreshingFromHeader()
     {
-        if (mMode == Mode.DISABLE)
+        if (mMode == Mode.PULL_DISABLE)
         {
             return;
         }
@@ -192,7 +192,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     @Override
     public void startRefreshingFromFooter()
     {
-        if (mMode == Mode.DISABLE)
+        if (mMode == Mode.PULL_DISABLE)
         {
             return;
         }
