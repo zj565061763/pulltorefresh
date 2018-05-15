@@ -342,6 +342,8 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
      */
     protected final void moveViews(int dy, boolean moveHeaderOrFooter)
     {
+        if (dy == 0) return;
+
         final BaseLoadingView loadingView = getDirection() == Direction.FROM_HEADER ? mHeaderView : mFooterView;
 
         // HeaderView or FooterView
