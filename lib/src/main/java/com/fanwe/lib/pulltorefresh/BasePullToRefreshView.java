@@ -752,7 +752,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         // 初始值
         int top = getTopLoadingViewReset(mHeaderView);
 
-        if (getDirection() == Direction.FROM_HEADER)
+        if (mDirection == Direction.FROM_HEADER)
         {
             if (isViewIdle())
             {
@@ -777,7 +777,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         // 初始值
         int top = getTopLoadingViewReset(mFooterView);
 
-        if (getDirection() == Direction.FROM_FOOTER)
+        if (mDirection == Direction.FROM_FOOTER)
         {
             if (isViewIdle())
             {
@@ -813,10 +813,10 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
                     case REFRESHING:
                     case REFRESHING_SUCCESS:
                     case REFRESHING_FAILURE:
-                        if (getDirection() == Direction.FROM_HEADER)
+                        if (mDirection == Direction.FROM_HEADER)
                         {
                             top += mHeaderView.getRefreshHeight();
-                        } else if (getDirection() == Direction.FROM_FOOTER)
+                        } else if (mDirection == Direction.FROM_FOOTER)
                         {
                             top -= mFooterView.getRefreshHeight();
                         }
