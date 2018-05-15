@@ -187,7 +187,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         {
             setDirection(Direction.FROM_HEADER);
             setState(State.REFRESHING);
-            flingViewByState();
+            smoothSlideViewByState();
         }
     }
 
@@ -198,7 +198,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         {
             setDirection(Direction.FROM_FOOTER);
             setState(State.REFRESHING);
-            flingViewByState();
+            smoothSlideViewByState();
         }
     }
 
@@ -210,7 +210,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
                 || mState == State.REFRESHING_FAILURE)
         {
             setState(State.FINISH);
-            flingViewByState();
+            smoothSlideViewByState();
         }
     }
 
@@ -327,7 +327,51 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
      */
     protected abstract boolean isViewIdle();
 
-    protected abstract void flingViewByState();
+    protected abstract boolean onSmoothSlide(int startY, int endY);
+
+    /**
+     * 根据当前状态滑动view到某个位置
+     */
+    protected final void smoothSlideViewByState()
+    {
+        final LoadingView loadingView = getLoadingViewByDirection();
+
+        final int startY = ((View) loadingView).getTop();
+        int endY = 0;
+
+        switch (getState())
+        {
+            case RESET:
+            case PULL_TO_REFRESH:
+            case FINISH:
+                endY = getTopLoadingViewReset(loadingView);
+                break;
+            case RELEASE_TO_REFRESH:
+            case REFRESHING:
+                endY = getTopLoadingViewRefreshing(loadingView);
+                break;
+        }
+
+        if (mIsDebug)
+        {
+            Log.i(getDebugTag(), "smoothSlideViewByState:" + startY + " -> " + endY + " " + getState());
+        }
+
+        final boolean slide = onSmoothSlide(startY, endY);
+
+        if (getState() == State.REFRESHING)
+        {
+            if (slide)
+            {
+                //如果滚动触发成功，则滚动结束会通知刷新回调
+                invalidate();
+            } else
+            {
+                //如果滚动未触发成功，则立即通知刷新回调
+                notifyRefreshCallback();
+            }
+        }
+    }
 
     /**
      * 检查{@link PullCondition}是否可以从头部刷新

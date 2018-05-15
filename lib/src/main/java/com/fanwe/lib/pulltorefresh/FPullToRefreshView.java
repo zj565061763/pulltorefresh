@@ -162,7 +162,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
                 {
                     setState(State.REFRESHING);
                 }
-                flingViewByState();
+                smoothSlideViewByState();
             }
         });
     }
@@ -237,54 +237,9 @@ public class FPullToRefreshView extends BasePullToRefreshView
     }
 
     @Override
-    protected void flingViewByState()
+    protected boolean onSmoothSlide(int startY, int endY)
     {
-        final LoadingView loadingView = getLoadingViewByDirection();
-
-        final int startY = ((View) loadingView).getTop();
-        int endY = 0;
-
-        boolean isScrollViewStarted = false;
-        switch (getState())
-        {
-            case RESET:
-            case PULL_TO_REFRESH:
-            case FINISH:
-                endY = getTopLoadingViewReset(loadingView);
-                if (mScroller.scrollToY(startY, endY, -1))
-                {
-                    isScrollViewStarted = true;
-                    invalidate();
-                }
-                break;
-            case RELEASE_TO_REFRESH:
-            case REFRESHING:
-                endY = getTopLoadingViewRefreshing(loadingView);
-                if (mScroller.scrollToY(startY, endY, -1))
-                {
-                    isScrollViewStarted = true;
-                    invalidate();
-                }
-                break;
-        }
-
-        if (mIsDebug)
-        {
-            Log.i(getDebugTag(), "flingViewByState:" + startY + " -> " + endY + " " + getState());
-        }
-
-        //通知刷新回调
-        if (getState() == State.REFRESHING)
-        {
-            if (isScrollViewStarted)
-            {
-                //如果滚动触发成功，则滚动结束会通知刷新回调
-            } else
-            {
-                //如果滚动未触发成功，则立即通知刷新回调
-                notifyRefreshCallback();
-            }
-        }
+        return mScroller.scrollToY(startY, endY, -1);
     }
 
     @Override
