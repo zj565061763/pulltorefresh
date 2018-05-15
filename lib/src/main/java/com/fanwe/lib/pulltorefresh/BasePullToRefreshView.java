@@ -324,16 +324,31 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
 
     protected abstract void flingViewByState();
 
+    /**
+     * 检查{@link PullCondition}是否可以从头部刷新
+     *
+     * @return
+     */
     protected final boolean checkPullConditionHeader()
     {
         return mPullCondition != null ? mPullCondition.canPullFromHeader() : true;
     }
 
+    /**
+     * 检查{@link PullCondition}是否可以从尾部刷新
+     *
+     * @return
+     */
     protected final boolean checkPullConditionFooter()
     {
         return mPullCondition != null ? mPullCondition.canPullFromFooter() : true;
     }
 
+    /**
+     * 返回当前拖动方向对应的加载view
+     *
+     * @return
+     */
     protected final BaseLoadingView getLoadingViewByDirection()
     {
         if (mDirection == Direction.FROM_HEADER)
