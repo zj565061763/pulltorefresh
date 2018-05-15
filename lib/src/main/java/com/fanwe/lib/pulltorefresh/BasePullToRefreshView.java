@@ -364,17 +364,18 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
 
         if (mIsDebug)
         {
-            Log.i(getDebugTag(), "smoothSlideViewByState:" + startY + " -> " + endY + " " + getState());
+            final String headerOrFooter = loadingView == mHeaderView ? "Header" : "Footer";
+            Log.i(getDebugTag(), "smoothSlideViewByState " + headerOrFooter + " " + startY + " -> " + endY + " " + getState());
         }
 
         final boolean slide = onSmoothSlide(startY, endY);
+        if (slide) invalidate();
 
         if (getState() == State.REFRESHING)
         {
             if (slide)
             {
                 //如果滚动触发成功，则滚动结束会通知刷新回调
-                invalidate();
             } else
             {
                 //如果滚动未触发成功，则立即通知刷新回调
