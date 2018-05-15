@@ -87,7 +87,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
             @Override
             public void onScroll(int dx, int dy)
             {
-                moveViews(dy, true);
+                moveViews(dy);
 
                 if (mIsDebug)
                 {
@@ -150,7 +150,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
 
                 final int dy = (int) mGestureManager.getTouchHelper().getDeltaYFrom(FTouchHelper.EVENT_LAST);
                 final int dyConsume = getComsumedDistance(dy);
-                moveViews(dyConsume, true);
+                moveViews(dyConsume);
 
                 updateStateByMoveDistance();
                 return true;

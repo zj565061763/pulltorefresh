@@ -337,20 +337,16 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     /**
      * 移动view
      *
-     * @param dy                 要移动的距离
-     * @param moveHeaderOrFooter
+     * @param dy 要移动的距离
      */
-    protected final void moveViews(int dy, boolean moveHeaderOrFooter)
+    protected final void moveViews(int dy)
     {
         if (dy == 0) return;
 
         final BaseLoadingView loadingView = getDirection() == Direction.FROM_HEADER ? mHeaderView : mFooterView;
 
         // HeaderView or FooterView
-        if (moveHeaderOrFooter)
-        {
-            Utils.offsetTopAndBottom(loadingView, dy);
-        }
+        Utils.offsetTopAndBottom(loadingView, dy);
         loadingView.onViewPositionChanged(this);
 
         // RefreshView
