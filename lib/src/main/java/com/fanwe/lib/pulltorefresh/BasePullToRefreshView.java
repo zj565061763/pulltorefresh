@@ -334,6 +334,18 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         return mPullCondition != null ? mPullCondition.canPullFromFooter() : true;
     }
 
+    protected final BaseLoadingView getLoadingViewByDirection()
+    {
+        final Direction direction = getDirection();
+        if (direction == Direction.FROM_HEADER)
+        {
+            return mHeaderView;
+        } else
+        {
+            return mFooterView;
+        }
+    }
+
     /**
      * 移动view
      *
@@ -343,7 +355,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     {
         if (dy == 0) return;
 
-        final BaseLoadingView loadingView = getDirection() == Direction.FROM_HEADER ? mHeaderView : mFooterView;
+        final BaseLoadingView loadingView = getLoadingViewByDirection();
 
         // HeaderView or FooterView
         Utils.offsetTopAndBottom(loadingView, dy);
@@ -373,7 +385,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     protected final void updateStateByMoveDistance()
     {
         final int distance = Math.abs(getScrollDistance());
-        final BaseLoadingView loadingView = getDirection() == Direction.FROM_HEADER ? mHeaderView : mFooterView;
+        final BaseLoadingView loadingView = getLoadingViewByDirection();
 
         if (loadingView.canRefresh(distance))
         {
@@ -453,7 +465,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
 
     private void requestLayoutWhenReset()
     {
-        final BaseLoadingView loadingView = getDirection() == Direction.FROM_HEADER ? mHeaderView : mFooterView;
+        final BaseLoadingView loadingView = getLoadingViewByDirection();
         if (loadingView.getTop() != getTopLoadingViewReset(loadingView))
         {
             if (mIsDebug)

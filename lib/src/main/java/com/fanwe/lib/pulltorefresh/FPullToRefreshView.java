@@ -149,8 +149,9 @@ public class FPullToRefreshView extends BasePullToRefreshView
                 saveDirectionWhenMove();
 
                 final int dy = (int) mGestureManager.getTouchHelper().getDeltaYFrom(FTouchHelper.EVENT_LAST);
-                final int dyConsume = getComsumedDistance(dy);
-                moveViews(dyConsume);
+                final int dyConsumed = getComsumedDistance(dy);
+
+                moveViews(dyConsumed);
 
                 updateStateByMoveDistance();
                 return true;
@@ -246,7 +247,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
     protected void flingViewByState()
     {
         int endY = 0;
-        final BaseLoadingView view = getDirection() == Direction.FROM_HEADER ? getHeaderView() : getFooterView();
+        final BaseLoadingView view = getLoadingViewByDirection();
 
         boolean isScrollViewStarted = false;
         switch (getState())
