@@ -106,7 +106,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     }
 
     @Override
-    protected LayoutParams generateDefaultLayoutParams()
+    protected final LayoutParams generateDefaultLayoutParams()
     {
         return new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
     }
