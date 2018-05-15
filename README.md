@@ -46,13 +46,13 @@ demo中实现了简单的自定义效果
 1. 自定义加载view中根据状态变化设置不同的图片
 ```java
 @Override
-public void onStateChanged(FIPullToRefreshView.State newState, FIPullToRefreshView.State oldState, FPullToRefreshView view)
+public void onStateChanged(FIPullToRefreshView.State newState, FIPullToRefreshView.State oldState, PullToRefreshView view)
 {
     switch (newState)
     {
         case RESET:
         case PULL_TO_REFRESH:
-        case REFRESH_FINISH:
+        case FINISH:
             getImageView().setImageResource(R.drawable.ic_pull_refresh_normal);
             break;
         case RELEASE_TO_REFRESH:
@@ -91,27 +91,27 @@ child可以是RecyclerView,ListView,ScrollView等...
 view_pull.setDebug(true); //设置调试模式，会打印log
 view_pull.setMode(FIPullToRefreshView.Mode.BOTH); //刷新模式，详细模式见源码
 view_pull.setOverLayMode(false); //设置LoadingView是覆盖模式，还是拖拽模式，默认拖拽模式
-view_pull.startRefreshingFromHeader(); //触发下拉刷新，此方法只受DISABLE模式限制，不受其他模式限制
-view_pull.startRefreshingFromFooter(); //触发上拉加载，此方法只受DISABLE模式限制，不受其他模式限制
+view_pull.startRefreshingFromHeader(); //触发下拉刷新，此方法不受模式限制
+view_pull.startRefreshingFromFooter(); //触发上拉加载，此方法不受模式限制
 view_pull.stopRefreshing(); //停止刷新或者加载
 view_pull.stopRefreshingWithResult(true); //停止刷新，刷新结果成功
 view_pull.stopRefreshingWithResult(false); //停止刷新，刷新结果失败
 view_pull.setComsumeScrollPercent(0.5f); //设置拖动距离消耗比例[0-1]，让拖动具有阻尼感，默认0.5f
 view_pull.setDurationShowRefreshResult(600); //设置显示刷新结果的时长，默认600毫秒
 view_pull.getScrollDistance(); //获得滚动的距离
-view_pull.getDirection(); //获得滚动的方向，FROM_HEADER，FROM_FOOTER
+view_pull.getDirection(); //获得滚动的方向，FROM_HEADER，FROM_FOOTER，NONE
 view_pull.setHeaderView(new CustomPullToRefreshLoadingView(this)); //自定义HeaderView
 view_pull.setFooterView(new CustomPullToRefreshLoadingView(this)); //自定义FooterView
 view_pull.setOnRefreshCallback(new FIPullToRefreshView.OnRefreshCallback() //设置触发刷新回调
 {
     @Override
-    public void onRefreshingFromHeader(final FPullToRefreshView view)
+    public void onRefreshingFromHeader(final PullToRefreshView view)
     {
         //头部刷新回调
     }
 
     @Override
-    public void onRefreshingFromFooter(final FPullToRefreshView view)
+    public void onRefreshingFromFooter(final PullToRefreshView view)
     {
         //底部加载回调
     }
@@ -121,7 +121,7 @@ view_pull.setOnRefreshCallback(new FIPullToRefreshView.OnRefreshCallback() //设
 view_pull.setOnStateChangedCallback(new FIPullToRefreshView.OnStateChangedCallback()
 {
     @Override
-    public void onStateChanged(FIPullToRefreshView.State newState, FIPullToRefreshView.State oldState, FPullToRefreshView view)
+    public void onStateChanged(FIPullToRefreshView.State newState, FIPullToRefreshView.State oldState, PullToRefreshView view)
     {
         //自定义的加载view继承库中的加载view基类后也可以收到此事件，可以根据状态展示不同的ui
     }
@@ -131,7 +131,7 @@ view_pull.setOnStateChangedCallback(new FIPullToRefreshView.OnStateChangedCallba
 view_pull.setOnViewPositionChangedCallback(new FIPullToRefreshView.OnViewPositionChangedCallback()
 {
     @Override
-    public void onViewPositionChanged(FPullToRefreshView view)
+    public void onViewPositionChanged(PullToRefreshView view)
     {
         //自定义的加载view继承库中的加载view基类后也可以收到此事件，可以根据状态和滚动距离自定义各种加载ui
     }
@@ -139,7 +139,7 @@ view_pull.setOnViewPositionChangedCallback(new FIPullToRefreshView.OnViewPositio
 ```
 ## 支持的方法
 ```java
-public interface FIPullToRefreshView
+public interface PullToRefreshView
 {
     /**
      * 默认的拖动距离消耗比例
@@ -183,7 +183,7 @@ public interface FIPullToRefreshView
      *
      * @param pullCondition
      */
-    void setPullCondition(IPullCondition pullCondition);
+    void setPullCondition(PullCondition pullCondition);
 
     /**
      * 设置HeaderView和FooterView是否是覆盖的模式（默认false）
@@ -212,13 +212,6 @@ public interface FIPullToRefreshView
      * @param durationShowRefreshResult
      */
     void setDurationShowRefreshResult(int durationShowRefreshResult);
-
-    /**
-     * 设置是否判断拖动角度，默认判断拖动方向与y轴的夹角必须小于40度
-     *
-     * @param checkDragDegree true-判断拖动角度，false-不判断
-     */
-    void setCheckDragDegree(boolean checkDragDegree);
 
     /**
      * 设置HeaderView处处于刷新状态
@@ -257,32 +250,39 @@ public interface FIPullToRefreshView
     State getState();
 
     /**
+     * 返回当前的刷新模式
+     *
+     * @return
+     */
+    Mode getMode();
+
+    /**
      * 返回HeaderView
      *
      * @return
      */
-    FPullToRefreshLoadingView getHeaderView();
+    LoadingView getHeaderView();
 
     /**
      * 设置HeaderView
      *
      * @param headerView
      */
-    void setHeaderView(FPullToRefreshLoadingView headerView);
+    void setHeaderView(LoadingView headerView);
 
     /**
      * 返回FooterView
      *
      * @return
      */
-    FPullToRefreshLoadingView getFooterView();
+    LoadingView getFooterView();
 
     /**
      * 设置FooterView
      *
      * @param footerView
      */
-    void setFooterView(FPullToRefreshLoadingView footerView);
+    void setFooterView(LoadingView footerView);
 
     /**
      * 返回要支持刷新的view
@@ -326,15 +326,15 @@ public interface FIPullToRefreshView
         /**
          * 刷新结果，成功
          */
-        REFRESH_SUCCESS,
+        REFRESHING_SUCCESS,
         /**
          * 刷新结果，失败
          */
-        REFRESH_FAILURE,
+        REFRESHING_FAILURE,
         /**
          * 刷新完成
          */
-        REFRESH_FINISH,
+        FINISH,
     }
 
     enum Direction
@@ -349,7 +349,7 @@ public interface FIPullToRefreshView
         /**
          * 支持上下拉
          */
-        BOTH,
+        PULL_BOTH,
         /**
          * 只支持下拉
          */
@@ -361,13 +361,7 @@ public interface FIPullToRefreshView
         /**
          * 不支持上下拉
          */
-        DISABLE,
-    }
-
-    enum LoadingViewType
-    {
-        HEADER,
-        FOOTER,
+        PULL_DISABLE,
     }
 
     interface OnStateChangedCallback
@@ -379,7 +373,7 @@ public interface FIPullToRefreshView
          * @param oldState
          * @param view
          */
-        void onStateChanged(State newState, State oldState, FPullToRefreshView view);
+        void onStateChanged(State newState, State oldState, PullToRefreshView view);
     }
 
     interface OnRefreshCallback
@@ -389,14 +383,14 @@ public interface FIPullToRefreshView
          *
          * @param view
          */
-        void onRefreshingFromHeader(FPullToRefreshView view);
+        void onRefreshingFromHeader(PullToRefreshView view);
 
         /**
          * 上拉触发刷新回调
          *
          * @param view
          */
-        void onRefreshingFromFooter(FPullToRefreshView view);
+        void onRefreshingFromFooter(PullToRefreshView view);
     }
 
     interface OnViewPositionChangedCallback
@@ -406,10 +400,10 @@ public interface FIPullToRefreshView
          *
          * @param view
          */
-        void onViewPositionChanged(FPullToRefreshView view);
+        void onViewPositionChanged(PullToRefreshView view);
     }
 
-    interface IPullCondition
+    interface PullCondition
     {
         /**
          * 当View内部可以从Header处拖动条件成立并且这个方法返回true的时候触发拖动
