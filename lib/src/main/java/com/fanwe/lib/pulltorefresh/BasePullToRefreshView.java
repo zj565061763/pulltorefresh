@@ -411,6 +411,11 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
             return;
         }
 
+        if (mDirection == Direction.NONE)
+        {
+            throw new RuntimeException("Direction is not specified before this");
+        }
+
         final State oldState = mState;
         mState = state;
 
