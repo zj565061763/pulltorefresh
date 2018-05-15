@@ -69,7 +69,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
                     {
                         if (mIsDebug)
                         {
-                            Log.e(getDebugTag(), "computeScroll finish:" + " " + getState());
+                            Log.e(getDebugTag(), "onScroll finished:" + " " + getState());
                         }
 
                         switch (getState())
@@ -89,6 +89,19 @@ public class FPullToRefreshView extends BasePullToRefreshView
                 public void onScroll(int dx, int dy)
                 {
                     moveViews(dy, true);
+
+                    if (mIsDebug)
+                    {
+                        int top = 0;
+                        if (getDirection() == Direction.FROM_HEADER)
+                        {
+                            top = getHeaderView().getTop();
+                        } else
+                        {
+                            top = getFooterView().getTop();
+                        }
+                        Log.i(getDebugTag(), "onScroll:" + top + " " + getState());
+                    }
                 }
             });
         }
@@ -171,18 +184,6 @@ public class FPullToRefreshView extends BasePullToRefreshView
     {
         if (getScroller().computeScrollOffset())
         {
-            if (mIsDebug)
-            {
-                int top = 0;
-                if (getDirection() == Direction.FROM_HEADER)
-                {
-                    top = getHeaderView().getTop();
-                } else
-                {
-                    top = getFooterView().getTop();
-                }
-                Log.i(getDebugTag(), "computeScroll:" + top + " " + getState());
-            }
             invalidate();
         }
     }
