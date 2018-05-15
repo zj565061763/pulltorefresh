@@ -26,6 +26,7 @@ android {
 
 dependencies {
     compileOnly 'com.android.support:support-v4:27.1.1'
+    implementation 'com.github.zj565061763:gesture:1a1efbde70'
 }
 
 // 指定编码
