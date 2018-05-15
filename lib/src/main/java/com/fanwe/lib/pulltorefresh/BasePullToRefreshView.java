@@ -337,7 +337,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     /**
      * 移动view
      *
-     * @param dy
+     * @param dy                 要移动的距离
      * @param moveHeaderOrFooter
      */
     protected final void moveViews(int dy, boolean moveHeaderOrFooter)
