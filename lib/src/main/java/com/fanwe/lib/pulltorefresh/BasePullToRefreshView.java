@@ -349,6 +349,14 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         return mPullCondition != null ? mPullCondition.canPullFromFooter() : true;
     }
 
+    private void checkDirection()
+    {
+        if (mDirection == Direction.NONE)
+        {
+            throw new RuntimeException("Direction is not specified before this");
+        }
+    }
+
     /**
      * 返回当前拖动方向对应的加载view
      *
@@ -368,14 +376,6 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         }
     }
 
-    private void checkDirection()
-    {
-        if (mDirection == Direction.NONE)
-        {
-            throw new RuntimeException("Direction is not specified before this");
-        }
-    }
-
     /**
      * 移动view
      *
@@ -385,6 +385,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     protected final void moveViews(int dy, boolean isDrag)
     {
         if (dy == 0) return;
+        checkDirection();
 
         final LoadingView loadingView = getLoadingViewByDirection();
 
