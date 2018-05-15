@@ -91,14 +91,8 @@ public class FPullToRefreshView extends BasePullToRefreshView
 
                 if (mIsDebug)
                 {
-                    int top = 0;
-                    if (getDirection() == Direction.FROM_HEADER)
-                    {
-                        top = getHeaderView().getTop();
-                    } else
-                    {
-                        top = getFooterView().getTop();
-                    }
+                    final BaseLoadingView loadingView = getLoadingViewByDirection();
+                    final int top = loadingView.getTop();
                     Log.i(getDebugTag(), "onScroll:" + top + " " + getState());
                 }
             }
