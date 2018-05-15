@@ -426,13 +426,8 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         }
 
         //通知view改变状态
-        if (getDirection() == Direction.FROM_HEADER)
-        {
-            mHeaderView.onStateChanged(mState, oldState, this);
-        } else
-        {
-            mFooterView.onStateChanged(mState, oldState, this);
-        }
+        final BaseLoadingView loadingView = getLoadingViewByDirection();
+        loadingView.onStateChanged(mState, oldState, this);
 
         //通知状态变化回调
         if (mOnStateChangedCallback != null)
