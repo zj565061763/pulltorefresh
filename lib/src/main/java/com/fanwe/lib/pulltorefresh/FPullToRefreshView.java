@@ -235,7 +235,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
     @Override
     protected boolean isViewIdle()
     {
-        return getScroller().isFinished() && mGestureManager.getTouchHelper().isIdle();
+        return getScroller().isFinished();
     }
 
     @Override
