@@ -208,13 +208,13 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     @Override
     public void stopRefreshing()
     {
-        if (mState == State.RESET || mState == State.FINISH)
+        if (mState == State.REFRESHING
+                || mState == State.REFRESHING_SUCCESS
+                || mState == State.REFRESHING_FAILURE)
         {
-            return;
+            setState(State.FINISH);
+            flingViewByState();
         }
-
-        setState(State.FINISH);
-        flingViewByState();
     }
 
     @Override
