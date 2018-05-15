@@ -73,6 +73,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     private PullCondition mPullCondition;
 
     protected boolean mIsDebug;
+    private boolean mIsDebugLayout;
 
     private void init(AttributeSet attrs)
     {
@@ -82,6 +83,11 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     public final void setDebug(boolean debug)
     {
         mIsDebug = debug;
+    }
+
+    public final void setDebugLayout(boolean debugLayout)
+    {
+        mIsDebugLayout = debugLayout;
     }
 
     protected final String getDebugTag()
@@ -863,7 +869,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     {
         String logString = "";
 
-        if (mIsDebug)
+        if (mIsDebugLayout)
         {
             logString += "----------onLayout height:" + getHeight() + " " + mState + "\r\n";
         }
@@ -878,7 +884,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         right = left + ((View) mHeaderView).getMeasuredWidth();
         bottom = top + ((View) mHeaderView).getMeasuredHeight();
         ((View) mHeaderView).layout(left, top, right, bottom);
-        if (mIsDebug)
+        if (mIsDebugLayout)
         {
             logString += "HeaderView:" + top + "," + bottom + " -> " + (bottom - top) + "\r\n";
         }
@@ -893,7 +899,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         right = left + mRefreshView.getMeasuredWidth();
         bottom = top + mRefreshView.getMeasuredHeight();
         mRefreshView.layout(left, top, right, bottom);
-        if (mIsDebug)
+        if (mIsDebugLayout)
         {
             logString += "RefreshView:" + top + "," + bottom + " -> " + (bottom - top) + "\r\n";
         }
@@ -908,7 +914,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         right = left + ((View) mFooterView).getMeasuredWidth();
         bottom = top + ((View) mFooterView).getMeasuredHeight();
         ((View) mFooterView).layout(left, top, right, bottom);
-        if (mIsDebug)
+        if (mIsDebugLayout)
         {
             logString += "FooterView:" + top + "," + bottom + " -> " + (bottom - top);
             Log.i(getDebugTag(), logString);
