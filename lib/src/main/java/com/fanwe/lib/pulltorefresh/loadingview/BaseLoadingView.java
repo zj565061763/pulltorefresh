@@ -21,10 +21,7 @@ import android.widget.FrameLayout;
 
 import com.fanwe.lib.pulltorefresh.PullToRefreshView;
 
-public abstract class BaseLoadingView extends FrameLayout implements
-        LoadingView,
-        PullToRefreshView.OnStateChangedCallback,
-        PullToRefreshView.OnViewPositionChangedCallback
+public abstract class BaseLoadingView extends FrameLayout implements LoadingView
 {
     public BaseLoadingView(Context context)
     {
@@ -50,7 +47,6 @@ public abstract class BaseLoadingView extends FrameLayout implements
     @Override
     public void onViewPositionChanged(PullToRefreshView view)
     {
-
     }
 
     @Override
