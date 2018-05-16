@@ -75,6 +75,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
                     switch (getState())
                     {
                         case REFRESHING:
+                            requestLayoutIfNeed();
                             notifyRefreshCallback();
                             break;
                         case PULL_TO_REFRESH:

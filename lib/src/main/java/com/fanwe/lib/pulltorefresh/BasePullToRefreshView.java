@@ -575,8 +575,11 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         switch (mState)
         {
             case REFRESHING:
+                if (((View) loadingView).getTop() != getTopLoadingViewRefreshing(loadingView))
+                {
+                    layout = true;
+                }
                 break;
-
             case RESET:
                 if (((View) loadingView).getTop() != getTopLoadingViewReset(loadingView))
                 {
