@@ -154,16 +154,19 @@ public class FPullToRefreshView extends BasePullToRefreshView
             @Override
             public void onConsumeEventFinish(MotionEvent event, VelocityTracker velocityTracker)
             {
-                if (mIsDebug)
+                if (mGestureManager.hasConsumeEvent())
                 {
-                    Log.e(getDebugTag(), "onConsumeEventFinish:" + event.getAction());
-                }
+                    if (mIsDebug)
+                    {
+                        Log.e(getDebugTag(), "onConsumeEventFinish:" + event.getAction() + " " + getState());
+                    }
 
-                if (getState() == State.RELEASE_TO_REFRESH)
-                {
-                    setState(State.REFRESHING);
+                    if (getState() == State.RELEASE_TO_REFRESH)
+                    {
+                        setState(State.REFRESHING);
+                    }
+                    smoothSlideViewByState();
                 }
-                smoothSlideViewByState();
             }
         });
     }
