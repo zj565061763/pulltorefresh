@@ -1,5 +1,5 @@
 # About
-基于ViewDragHelper实现的下拉刷新和上拉加载的库，支持xml中配置全局默认的HeaderView和FooterView，提供拖动回调监听，获取滚动距离后方便扩展各种加载效果<br>
+一个方便扩展的下拉刷新和上拉加载的库，支持xml中配置全局默认的HeaderView和FooterView，提供拖动回调监听，获取滚动距离后方便扩展各种加载效果<br>
 
 ## Gradle
 [![](https://jitpack.io/v/zj565061763/pulltorefresh.svg)](https://jitpack.io/#zj565061763/pulltorefresh)
