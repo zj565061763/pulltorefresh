@@ -182,7 +182,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
 
     private boolean canPull()
     {
-        final boolean checkDegree = mGestureManager.getTouchHelper().getDegreeYFrom(FTouchHelper.EVENT_DOWN) < 40;
+        final boolean checkDegree = mGestureManager.getTouchHelper().getDegreeYFrom(FTouchHelper.EVENT_DOWN) < 30;
         final boolean checkPull = canPullFromHeader() || canPullFromFooter();
         final boolean checkState = getState() == State.RESET;
 
