@@ -71,18 +71,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
                     {
                         Log.e(getDebugTag(), "onScroll finished:" + " " + getState());
                     }
-
-                    switch (getState())
-                    {
-                        case REFRESHING:
-                            requestLayoutIfNeed();
-                            notifyRefreshCallback();
-                            break;
-                        case PULL_TO_REFRESH:
-                        case FINISH:
-                            setState(State.RESET);
-                            break;
-                    }
+                    dealViewIdle();
                 }
             }
 
@@ -146,7 +135,6 @@ public class FPullToRefreshView extends BasePullToRefreshView
 
                 final int dy = (int) mGestureManager.getTouchHelper().getDeltaYFrom(FTouchHelper.EVENT_LAST);
                 final int dyConsumed = getComsumedDistance(dy);
-
                 moveViews(dyConsumed, true);
                 return true;
             }

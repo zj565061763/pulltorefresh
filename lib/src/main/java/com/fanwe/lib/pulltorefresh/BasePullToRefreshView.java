@@ -376,18 +376,38 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         }
 
         final boolean slide = onSmoothSlide(startY, endY);
-        if (slide) invalidate();
 
-        if (getState() == State.REFRESHING)
+        if (slide)
         {
-            if (slide)
-            {
-                //如果滚动触发成功，则滚动结束会通知刷新回调
-            } else
-            {
-                //如果滚动未触发成功，则立即通知刷新回调
+            invalidate();
+        } else
+        {
+            dealViewIdle();
+        }
+    }
+
+    /**
+     * 处理view空闲的时候需要执行的逻辑
+     */
+    protected final void dealViewIdle()
+    {
+        if (!isViewIdle()) return;
+
+        if (mIsDebug)
+        {
+            Log.i(getDebugTag(), "dealViewIdle:" + mState);
+        }
+
+        switch (getState())
+        {
+            case REFRESHING:
+                requestLayoutIfNeed();
                 notifyRefreshCallback();
-            }
+                break;
+            case PULL_TO_REFRESH:
+            case FINISH:
+                setState(State.RESET);
+                break;
         }
     }
 
@@ -446,10 +466,29 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
      */
     protected final void moveViews(int dy, boolean isDrag)
     {
-        if (dy == 0) return;
         checkDirection();
 
         final LoadingView loadingView = getLoadingViewByDirection();
+
+        final int top = ((View) loadingView).getTop();
+        final int topReset = getTopLoadingViewReset(loadingView);
+        final int future = top + dy;
+
+        if (loadingView == mHeaderView)
+        {
+            if (future < topReset)
+            {
+                dy += (topReset - future);
+            }
+        } else if (loadingView == mFooterView)
+        {
+            if (future > topReset)
+            {
+                dy += (topReset - future);
+            }
+        }
+
+        if (dy == 0) return;
 
         // HeaderView or FooterView
         Utils.offsetTopAndBottom((View) loadingView, dy);
