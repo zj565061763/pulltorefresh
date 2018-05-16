@@ -532,9 +532,10 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
             mOnStateChangedCallback.onStateChanged(mState, oldState, this);
         }
 
+        requestLayoutIfNeed();
+
         if (mState == State.RESET)
         {
-            requestLayoutWhenReset();
             setDirection(Direction.NONE);
         }
     }
@@ -560,14 +561,37 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         }
     }
 
-    private void requestLayoutWhenReset()
+    /**
+     * view处于静止，并且未拖动的时候，如果位置不对，调用此方法修正位置
+     */
+    protected final void requestLayoutIfNeed()
     {
+        if (!isViewIdle())
+        {
+            return;
+        }
+
+        checkDirection();
+        boolean layout = false;
         final LoadingView loadingView = getLoadingViewByDirection();
-        if (((View) loadingView).getTop() != getTopLoadingViewReset(loadingView))
+        switch (mState)
+        {
+            case REFRESHING:
+                break;
+
+            case RESET:
+                if (((View) loadingView).getTop() != getTopLoadingViewReset(loadingView))
+                {
+                    layout = true;
+                }
+                break;
+        }
+
+        if (layout)
         {
             if (mIsDebug)
             {
-                Log.e(getDebugTag(), "requestLayout when reset");
+                Log.e(getDebugTag(), "requestLayout with state:" + mState);
             }
             requestLayout();
         }
