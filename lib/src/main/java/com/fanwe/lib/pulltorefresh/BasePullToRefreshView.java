@@ -331,7 +331,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     //----------PullToRefreshView implements end----------
 
     /**
-     * view是否处于静止，并且未拖动状态
+     * view是否处于空闲状态（静止且未被拖动状态）
      *
      * @return
      */
@@ -599,9 +599,9 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     }
 
     /**
-     * view处于静止，并且未拖动的时候，如果位置不对，调用此方法修正位置
+     * view处于空闲{@link #isViewIdle()}时候，如果位置不对，调用此方法修正位置
      */
-    protected final void requestLayoutIfNeed()
+    private void requestLayoutIfNeed()
     {
         if (!isViewIdle()) return;
 
