@@ -541,6 +541,8 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
 
     protected final void notifyRefreshCallback()
     {
+        if (mState != State.REFRESHING) return;
+
         if (mIsDebug)
         {
             Log.i(getDebugTag(), "notifyRefreshCallback:" + mDirection);
