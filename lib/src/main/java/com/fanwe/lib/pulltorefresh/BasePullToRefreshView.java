@@ -411,6 +411,27 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         }
     }
 
+    private void notifyRefreshCallback()
+    {
+        if (mState != State.REFRESHING) throw new RuntimeException("Illegal state:" + mState);
+
+        if (mIsDebug)
+        {
+            Log.i(getDebugTag(), "notifyRefreshCallback:" + mDirection);
+        }
+
+        if (mOnRefreshCallback != null)
+        {
+            if (mDirection == Direction.FROM_HEADER)
+            {
+                mOnRefreshCallback.onRefreshingFromHeader(this);
+            } else if (mDirection == Direction.FROM_FOOTER)
+            {
+                mOnRefreshCallback.onRefreshingFromFooter(this);
+            }
+        }
+    }
+
     /**
      * 检查{@link PullCondition}是否可以从头部刷新
      *
@@ -574,27 +595,6 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         {
             requestLayoutIfNeed();
             setDirection(Direction.NONE);
-        }
-    }
-
-    protected final void notifyRefreshCallback()
-    {
-        if (mState != State.REFRESHING) return;
-
-        if (mIsDebug)
-        {
-            Log.i(getDebugTag(), "notifyRefreshCallback:" + mDirection);
-        }
-
-        if (mOnRefreshCallback != null)
-        {
-            if (mDirection == Direction.FROM_HEADER)
-            {
-                mOnRefreshCallback.onRefreshingFromHeader(this);
-            } else if (mDirection == Direction.FROM_FOOTER)
-            {
-                mOnRefreshCallback.onRefreshingFromFooter(this);
-            }
         }
     }
 
