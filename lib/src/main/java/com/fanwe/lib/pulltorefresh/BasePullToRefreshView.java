@@ -531,10 +531,9 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
             mOnStateChangedCallback.onStateChanged(mState, oldState, this);
         }
 
-        requestLayoutIfNeed();
-
         if (mState == State.RESET)
         {
+            requestLayoutIfNeed();
             setDirection(Direction.NONE);
         }
     }
