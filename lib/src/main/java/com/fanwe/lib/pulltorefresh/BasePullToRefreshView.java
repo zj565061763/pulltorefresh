@@ -324,7 +324,8 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         }
 
         final int topReset = getTopLoadingViewReset(loadingView);
-        return ((View) loadingView).getTop() - topReset;
+        final int distance = ((View) loadingView).getTop() - topReset;
+        return Math.abs(distance);
     }
 
     //----------PullToRefreshView implements end----------
@@ -482,10 +483,8 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
      */
     private void updateStateByMoveDistance()
     {
-        final int distance = Math.abs(getScrollDistance());
         final LoadingView loadingView = getLoadingViewByDirection();
-
-        if (loadingView.canRefresh(distance))
+        if (loadingView.canRefresh(getScrollDistance()))
         {
             setState(State.RELEASE_TO_REFRESH);
         } else
