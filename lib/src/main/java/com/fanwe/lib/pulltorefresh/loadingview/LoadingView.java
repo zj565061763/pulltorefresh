@@ -20,8 +20,8 @@ import com.fanwe.lib.pulltorefresh.PullToRefreshView;
 /**
  * 加载view
  */
-public interface LoadingView extends PullToRefreshView.OnViewPositionChangedCallback,
-        PullToRefreshView.OnStateChangedCallback
+public interface LoadingView extends PullToRefreshView.OnViewPositionChangeCallback,
+        PullToRefreshView.OnStateChangeCallback
 {
     /**
      * 返回是否满足刷新条件（默认滚动距离大于等于view的测量高度的时候满足）

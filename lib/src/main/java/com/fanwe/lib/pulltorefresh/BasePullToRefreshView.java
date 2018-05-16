@@ -67,8 +67,8 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     private int mDurationShowRefreshResult = DEFAULT_DURATION_SHOW_REFRESH_RESULT;
 
     private OnRefreshCallback mOnRefreshCallback;
-    private OnStateChangedCallback mOnStateChangedCallback;
-    private OnViewPositionChangedCallback mOnViewPositionChangedCallback;
+    private OnStateChangeCallback mOnStateChangeCallback;
+    private OnViewPositionChangeCallback mOnViewPositionChangeCallback;
     private PullCondition mPullCondition;
 
     protected boolean mIsDebug;
@@ -133,15 +133,15 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     }
 
     @Override
-    public void setOnStateChangedCallback(OnStateChangedCallback onStateChangedCallback)
+    public void setOnStateChangeCallback(OnStateChangeCallback onStateChangeCallback)
     {
-        mOnStateChangedCallback = onStateChangedCallback;
+        mOnStateChangeCallback = onStateChangeCallback;
     }
 
     @Override
-    public void setOnViewPositionChangedCallback(OnViewPositionChangedCallback onViewPositionChangedCallback)
+    public void setOnViewPositionChangeCallback(OnViewPositionChangeCallback onViewPositionChangeCallback)
     {
-        mOnViewPositionChangedCallback = onViewPositionChangedCallback;
+        mOnViewPositionChangeCallback = onViewPositionChangeCallback;
     }
 
     @Override
@@ -528,9 +528,9 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
             Utils.offsetTopAndBottom(mRefreshView, dy);
         }
 
-        if (mOnViewPositionChangedCallback != null)
+        if (mOnViewPositionChangeCallback != null)
         {
-            mOnViewPositionChangedCallback.onViewPositionChanged(this);
+            mOnViewPositionChangeCallback.onViewPositionChanged(this);
         }
 
         if (isDrag)
@@ -587,9 +587,9 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         loadingView.onStateChanged(mState, oldState, this);
 
         //通知状态变化回调
-        if (mOnStateChangedCallback != null)
+        if (mOnStateChangeCallback != null)
         {
-            mOnStateChangedCallback.onStateChanged(mState, oldState, this);
+            mOnStateChangeCallback.onStateChanged(mState, oldState, this);
         }
 
         if (mState == State.RESET)

@@ -25,7 +25,7 @@ public class ScrollViewActivity extends SDBaseActivity
         btn = (Button) findViewById(R.id.btn);
 
         view_pull.setDebug(true);
-        view_pull.setOnStateChangedCallback(new PullToRefreshView.OnStateChangedCallback()
+        view_pull.setOnStateChangeCallback(new PullToRefreshView.OnStateChangeCallback()
         {
             @Override
             public void onStateChanged(PullToRefreshView.State newState, PullToRefreshView.State oldState, PullToRefreshView view)
@@ -34,7 +34,7 @@ public class ScrollViewActivity extends SDBaseActivity
                 btn.setText(String.valueOf(view.getDirection()) + "->" + String.valueOf(newState));
             }
         });
-        view_pull.setOnViewPositionChangedCallback(new PullToRefreshView.OnViewPositionChangedCallback()
+        view_pull.setOnViewPositionChangeCallback(new PullToRefreshView.OnViewPositionChangeCallback()
         {
             @Override
             public void onViewPositionChanged(PullToRefreshView view)

@@ -47,16 +47,16 @@ public interface PullToRefreshView
     /**
      * 设置状态变化回调
      *
-     * @param onStateChangedCallback
+     * @param onStateChangeCallback
      */
-    void setOnStateChangedCallback(OnStateChangedCallback onStateChangedCallback);
+    void setOnStateChangeCallback(OnStateChangeCallback onStateChangeCallback);
 
     /**
      * 设置view位置变化回调
      *
-     * @param onViewPositionChangedCallback
+     * @param onViewPositionChangeCallback
      */
-    void setOnViewPositionChangedCallback(OnViewPositionChangedCallback onViewPositionChangedCallback);
+    void setOnViewPositionChangeCallback(OnViewPositionChangeCallback onViewPositionChangeCallback);
 
     /**
      * 设置可以触发拖动的条件，设置后当view内部满足拖动，并且此对象也满足条件后才可以触发拖动
@@ -244,7 +244,7 @@ public interface PullToRefreshView
         PULL_DISABLE,
     }
 
-    interface OnStateChangedCallback
+    interface OnStateChangeCallback
     {
         /**
          * 状态变化回调
@@ -273,7 +273,7 @@ public interface PullToRefreshView
         void onRefreshingFromFooter(PullToRefreshView view);
     }
 
-    interface OnViewPositionChangedCallback
+    interface OnViewPositionChangeCallback
     {
         /**
          * view位置变化回调
