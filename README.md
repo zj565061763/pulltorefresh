@@ -89,7 +89,7 @@ child可以是RecyclerView,ListView,ScrollView等...
 ## 常用方法
 ```java
 view_pull.setDebug(true); //设置调试模式，会打印log
-view_pull.setMode(FIPullToRefreshView.Mode.BOTH); //刷新模式，详细模式见源码
+view_pull.setMode(FIPullToRefreshView.Mode.PULL_BOTH); //刷新模式，详细模式见源码
 view_pull.setOverLayMode(false); //设置LoadingView是覆盖模式，还是拖拽模式，默认拖拽模式
 view_pull.startRefreshingFromHeader(); //触发下拉刷新，此方法不受模式限制
 view_pull.startRefreshingFromFooter(); //触发上拉加载，此方法不受模式限制
