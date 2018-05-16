@@ -42,28 +42,26 @@ public class SimpleViewPullCondition implements PullToRefreshView.PullCondition
     }
 
     @Override
-    public boolean canPullFromHeader()
+    public boolean canPullFromHeader(PullToRefreshView view)
     {
-        final View view = getView();
-        if (view == null)
+        if (getView() == null)
         {
             return true;
         } else
         {
-            return !view.canScrollVertically(-1);
+            return !getView().canScrollVertically(-1);
         }
     }
 
     @Override
-    public boolean canPullFromFooter()
+    public boolean canPullFromFooter(PullToRefreshView view)
     {
-        final View view = getView();
-        if (view == null)
+        if (getView() == null)
         {
             return true;
         } else
         {
-            return !view.canScrollVertically(1);
+            return !getView().canScrollVertically(1);
         }
     }
 }

@@ -434,23 +434,23 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     }
 
     /**
-     * 检查{@link PullCondition}是否可以从头部刷新
+     * 检查{@link PullCondition}是否可以从Header处触发刷新
      *
      * @return
      */
     protected final boolean checkPullConditionHeader()
     {
-        return mPullCondition != null ? mPullCondition.canPullFromHeader() : true;
+        return mPullCondition != null ? mPullCondition.canPullFromHeader(this) : true;
     }
 
     /**
-     * 检查{@link PullCondition}是否可以从尾部刷新
+     * 检查{@link PullCondition}是否可以从Footer处触发刷新
      *
      * @return
      */
     protected final boolean checkPullConditionFooter()
     {
-        return mPullCondition != null ? mPullCondition.canPullFromFooter() : true;
+        return mPullCondition != null ? mPullCondition.canPullFromFooter(this) : true;
     }
 
     private void checkDirection()

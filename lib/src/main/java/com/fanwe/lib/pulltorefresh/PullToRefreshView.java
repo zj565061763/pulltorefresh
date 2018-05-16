@@ -286,17 +286,19 @@ public interface PullToRefreshView
     interface PullCondition
     {
         /**
-         * 当View内部可以从Header处拖动条件成立并且这个方法返回true的时候触发拖动
+         * 是否可以从Header处触发拖动
          *
+         * @param view
          * @return
          */
-        boolean canPullFromHeader();
+        boolean canPullFromHeader(PullToRefreshView view);
 
         /**
-         * 当View内部可以从Footer处拖动条件成立并且这个方法返回true的时候触发拖动
+         * 是否可以从Footer处触发拖动
          *
+         * @param view
          * @return
          */
-        boolean canPullFromFooter();
+        boolean canPullFromFooter(PullToRefreshView view);
     }
 }
