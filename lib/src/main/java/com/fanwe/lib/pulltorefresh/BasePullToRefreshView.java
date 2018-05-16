@@ -387,27 +387,28 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     }
 
     /**
-     * 处理view空闲的时候需要执行的逻辑
+     * 处理view空闲{@link #isViewIdle()}时候需要执行的逻辑
      */
     protected final void dealViewIdle()
     {
-        if (!isViewIdle()) return;
-
-        if (mIsDebug)
+        if (isViewIdle())
         {
-            Log.i(getDebugTag(), "dealViewIdle:" + mState);
-        }
+            if (mIsDebug)
+            {
+                Log.i(getDebugTag(), "dealViewIdle:" + mState);
+            }
 
-        switch (getState())
-        {
-            case REFRESHING:
-                requestLayoutIfNeed();
-                notifyRefreshCallback();
-                break;
-            case PULL_TO_REFRESH:
-            case FINISH:
-                setState(State.RESET);
-                break;
+            switch (getState())
+            {
+                case REFRESHING:
+                    requestLayoutIfNeed();
+                    notifyRefreshCallback();
+                    break;
+                case PULL_TO_REFRESH:
+                case FINISH:
+                    setState(State.RESET);
+                    break;
+            }
         }
     }
 
