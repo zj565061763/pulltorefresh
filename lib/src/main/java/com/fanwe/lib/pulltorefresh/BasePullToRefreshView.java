@@ -564,14 +564,12 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
      */
     protected final void requestLayoutIfNeed()
     {
-        if (!isViewIdle())
-        {
-            return;
-        }
+        if (!isViewIdle()) return;
 
-        checkDirection();
-        boolean layout = false;
         final LoadingView loadingView = getLoadingViewByDirection();
+        if (loadingView == null) return;
+
+        boolean layout = false;
         switch (mState)
         {
             case REFRESHING:
