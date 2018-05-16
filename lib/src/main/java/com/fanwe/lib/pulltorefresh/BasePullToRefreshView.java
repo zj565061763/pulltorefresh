@@ -604,35 +604,36 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
      */
     private void requestLayoutIfNeed()
     {
-        if (!isViewIdle()) return;
-
         final LoadingView loadingView = getLoadingViewByDirection();
         if (loadingView == null) return;
 
-        boolean layout = false;
-        switch (mState)
+        if (isViewIdle())
         {
-            case REFRESHING:
-                if (((View) loadingView).getTop() != getTopLoadingViewRefreshing(loadingView))
-                {
-                    layout = true;
-                }
-                break;
-            case RESET:
-                if (((View) loadingView).getTop() != getTopLoadingViewReset(loadingView))
-                {
-                    layout = true;
-                }
-                break;
-        }
-
-        if (layout)
-        {
-            if (mIsDebug)
+            boolean layout = false;
+            switch (mState)
             {
-                Log.e(getDebugTag(), "requestLayout with state:" + mState);
+                case REFRESHING:
+                    if (((View) loadingView).getTop() != getTopLoadingViewRefreshing(loadingView))
+                    {
+                        layout = true;
+                    }
+                    break;
+                case RESET:
+                    if (((View) loadingView).getTop() != getTopLoadingViewReset(loadingView))
+                    {
+                        layout = true;
+                    }
+                    break;
             }
-            requestLayout();
+
+            if (layout)
+            {
+                if (mIsDebug)
+                {
+                    Log.e(getDebugTag(), "requestLayout with state:" + mState);
+                }
+                requestLayout();
+            }
         }
     }
 
