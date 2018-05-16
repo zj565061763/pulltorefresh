@@ -233,7 +233,10 @@ public class FPullToRefreshView extends BasePullToRefreshView
     @Override
     protected boolean isViewIdle()
     {
-        return mScroller.isFinished() && !mGestureManager.isTagConsume();
+        final boolean checkScrollerFinished = mScroller.isFinished();
+        final boolean checkNotDragging = !mGestureManager.isTagConsume();
+
+        return checkScrollerFinished && checkNotDragging;
     }
 
     @Override
