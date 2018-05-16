@@ -16,7 +16,6 @@
 package com.fanwe.lib.pulltorefresh;
 
 import android.content.Context;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -708,28 +707,6 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         return null;
     }
 
-    private int getMinWidthInternal()
-    {
-        if (Build.VERSION.SDK_INT >= 16)
-        {
-            return getMinimumWidth();
-        } else
-        {
-            return 0;
-        }
-    }
-
-    private int getMinHeightInternal()
-    {
-        if (Build.VERSION.SDK_INT >= 16)
-        {
-            return getMinimumHeight();
-        } else
-        {
-            return 0;
-        }
-    }
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
     {
@@ -749,7 +726,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
             maxWidth = Math.max(maxWidth, mRefreshView.getMeasuredWidth());
             maxWidth += (getPaddingLeft() + getPaddingRight());
 
-            maxWidth = Math.max(maxWidth, getMinWidthInternal());
+            maxWidth = Math.max(maxWidth, Utils.getMinimumWidth(this));
             if (widthMode == MeasureSpec.UNSPECIFIED)
             {
                 width = maxWidth;
@@ -769,7 +746,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
             }
             maxHeight += (getPaddingTop() + getPaddingBottom());
 
-            maxHeight = Math.max(maxHeight, getMinHeightInternal());
+            maxHeight = Math.max(maxHeight, Utils.getMinimumHeight(this));
             if (heightMode == MeasureSpec.UNSPECIFIED)
             {
                 height = maxHeight;
