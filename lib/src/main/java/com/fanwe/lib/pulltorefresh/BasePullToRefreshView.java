@@ -634,6 +634,12 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
                 }
                 requestLayout();
             }
+        } else
+        {
+            if (mIsDebug)
+            {
+                Log.e(getDebugTag(), "try requestLayoutIfNeed when view is busy");
+            }
         }
     }
 
