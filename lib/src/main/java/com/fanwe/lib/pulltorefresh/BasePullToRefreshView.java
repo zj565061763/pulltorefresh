@@ -387,7 +387,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     }
 
     /**
-     * 处理view由非忙碌变成空闲{@link #isViewIdle()}时候需要执行的逻辑
+     * 处理view由忙碌变成空闲{@link #isViewIdle()}时候需要执行的逻辑
      */
     protected final void dealViewIdle()
     {
