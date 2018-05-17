@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fanwe.lib.gesture.FTouchHelper;
 import com.fanwe.lib.pulltorefresh.loadingview.LoadingView;
 import com.fanwe.lib.pulltorefresh.loadingview.SimpleTextLoadingView;
 
@@ -489,37 +490,30 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     /**
      * 移动view
      *
-     * @param dy
+     * @param delta
      * @param isDrag true-手指拖动，false-惯性滑动
      */
-    protected final void moveViews(int dy, boolean isDrag)
+    protected final void moveViews(int delta, boolean isDrag)
     {
+        if (delta == 0) return;
         checkDirection();
 
         final LoadingView loadingView = getLoadingViewByDirection();
-
         final int top = ((View) loadingView).getTop();
         final int topReset = getTopLoadingViewReset(loadingView);
-        final int future = top + dy;
 
         if (loadingView == mHeaderView)
         {
-            if (future < topReset)
-            {
-                dy += (topReset - future);
-            }
+            delta = FTouchHelper.getLegalDelta(top, topReset, Integer.MAX_VALUE, delta);
         } else if (loadingView == mFooterView)
         {
-            if (future > topReset)
-            {
-                dy += (topReset - future);
-            }
+            delta = FTouchHelper.getLegalDelta(top, Integer.MIN_VALUE, topReset, delta);
         }
 
-        if (dy == 0) return;
+        if (delta == 0) return;
 
         // HeaderView or FooterView
-        Utils.offsetTopAndBottom((View) loadingView, dy);
+        Utils.offsetTopAndBottom((View) loadingView, delta);
         loadingView.onViewPositionChanged(this);
 
         // RefreshView
@@ -531,7 +525,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
             }
         } else
         {
-            Utils.offsetTopAndBottom(mRefreshView, dy);
+            Utils.offsetTopAndBottom(mRefreshView, delta);
         }
 
         if (mOnViewPositionChangeCallback != null)
