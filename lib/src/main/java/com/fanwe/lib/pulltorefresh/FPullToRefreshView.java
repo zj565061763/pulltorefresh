@@ -26,6 +26,7 @@ import android.widget.Scroller;
 import com.fanwe.lib.gesture.FGestureManager;
 import com.fanwe.lib.gesture.FScroller;
 import com.fanwe.lib.gesture.FTouchHelper;
+import com.fanwe.lib.gesture.tag.TagHolder;
 import com.fanwe.lib.pulltorefresh.loadingview.LoadingView;
 
 public class FPullToRefreshView extends BasePullToRefreshView
@@ -33,116 +34,100 @@ public class FPullToRefreshView extends BasePullToRefreshView
     public FPullToRefreshView(Context context)
     {
         super(context);
-        init(null);
     }
 
     public FPullToRefreshView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
-        init(attrs);
     }
 
     public FPullToRefreshView(Context context, AttributeSet attrs, int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
-        init(attrs);
     }
 
     private FGestureManager mGestureManager;
     private FScroller mScroller;
 
-    private void init(AttributeSet attrs)
+    private FScroller getScroller()
     {
-        initScroller();
-        initGestureManager();
-    }
-
-    private void initScroller()
-    {
-        mScroller = new FScroller(new Scroller(getContext()));
-        mScroller.setCallback(new FScroller.Callback()
+        if (mScroller == null)
         {
-            @Override
-            public void onScrollStateChanged(boolean isFinished)
+            mScroller = new FScroller(new Scroller(getContext()));
+            mScroller.setCallback(new FScroller.Callback()
             {
-                if (isFinished)
+                @Override
+                public void onScrollStateChanged(boolean isFinished)
                 {
+                    if (isFinished)
+                    {
+                        if (mIsDebug)
+                        {
+                            Log.e(getDebugTag(), "onScroll finished:" + " " + getState());
+                        }
+                        dealViewIdle();
+                    }
+                }
+
+                @Override
+                public void onScroll(int dx, int dy)
+                {
+                    moveViews(dy, false);
+
                     if (mIsDebug)
                     {
-                        Log.e(getDebugTag(), "onScroll finished:" + " " + getState());
+                        final LoadingView loadingView = getLoadingViewByDirection();
+                        final int top = ((View) loadingView).getTop();
+                        Log.i(getDebugTag(), "onScroll:" + top + " " + getState());
                     }
-                    dealViewIdle();
                 }
-            }
-
-            @Override
-            public void onScroll(int dx, int dy)
-            {
-                moveViews(dy, false);
-
-                if (mIsDebug)
-                {
-                    final LoadingView loadingView = getLoadingViewByDirection();
-                    final int top = ((View) loadingView).getTop();
-                    Log.i(getDebugTag(), "onScroll:" + top + " " + getState());
-                }
-            }
-        });
+            });
+        }
+        return mScroller;
     }
 
-    private void initGestureManager()
+    private FGestureManager getGestureManager()
     {
-        mGestureManager = new FGestureManager(new FGestureManager.Callback()
+        if (mGestureManager == null)
         {
-            @Override
-            public boolean shouldInterceptTouchEvent(MotionEvent event)
+            mGestureManager = new FGestureManager(new FGestureManager.Callback()
             {
-                final boolean canPull = canPull();
-                if (mIsDebug)
+                @Override
+                public boolean shouldInterceptEvent(MotionEvent event)
                 {
-                    Log.i(getDebugTag(), "shouldInterceptTouchEvent:" + canPull);
+                    final boolean canPull = canPull();
+                    if (mIsDebug)
+                    {
+                        Log.i(getDebugTag(), "shouldInterceptEvent:" + canPull);
+                    }
+                    return canPull;
                 }
-                return canPull;
-            }
 
-            @Override
-            public void onTagInterceptChanged(boolean tagIntercept)
-            {
-                FTouchHelper.requestDisallowInterceptTouchEvent(FPullToRefreshView.this, tagIntercept);
-            }
-
-            @Override
-            public boolean shouldConsumeTouchEvent(MotionEvent event)
-            {
-                final boolean canPull = canPull();
-                if (mIsDebug)
+                @Override
+                public boolean shouldConsumeEvent(MotionEvent event)
                 {
-                    Log.i(getDebugTag(), "shouldConsumeTouchEvent:" + canPull);
+                    final boolean canPull = canPull();
+                    if (mIsDebug)
+                    {
+                        Log.i(getDebugTag(), "shouldConsumeEvent:" + canPull);
+                    }
+                    return canPull;
                 }
-                return canPull;
-            }
 
-            @Override
-            public void onTagConsumeChanged(boolean tagConsume)
-            {
-                FTouchHelper.requestDisallowInterceptTouchEvent(FPullToRefreshView.this, tagConsume);
-            }
+                @Override
+                public boolean onConsumeEvent(MotionEvent event)
+                {
+                    saveDirectionWhenMove();
 
-            @Override
-            public boolean onConsumeEvent(MotionEvent event)
-            {
-                saveDirectionWhenMove();
+                    final int dy = (int) getGestureManager().getTouchHelper().getDeltaYFrom(FTouchHelper.EVENT_LAST);
+                    final int dyConsumed = getComsumedDistance(dy);
+                    moveViews(dyConsumed, true);
 
-                final int dy = (int) mGestureManager.getTouchHelper().getDeltaYFrom(FTouchHelper.EVENT_LAST);
-                final int dyConsumed = getComsumedDistance(dy);
-                moveViews(dyConsumed, true);
-                return true;
-            }
+                    return true;
+                }
 
-            @Override
-            public void onConsumeEventFinish(MotionEvent event, VelocityTracker velocityTracker)
-            {
-                if (mGestureManager.hasConsumeEvent())
+                @Override
+                public void onConsumeEventFinish(MotionEvent event, VelocityTracker velocityTracker)
                 {
                     if (mIsDebug)
                     {
@@ -155,26 +140,41 @@ public class FPullToRefreshView extends BasePullToRefreshView
                     }
                     smoothSlideViewByState();
                 }
-            }
-        });
+            });
+            mGestureManager.getTagHolder().setCallback(new TagHolder.Callback()
+            {
+                @Override
+                public void onTagInterceptChanged(boolean tag)
+                {
+                    FTouchHelper.requestDisallowInterceptTouchEvent(FPullToRefreshView.this, tag);
+                }
+
+                @Override
+                public void onTagConsumeChanged(boolean tag)
+                {
+                    FTouchHelper.requestDisallowInterceptTouchEvent(FPullToRefreshView.this, tag);
+                }
+            });
+        }
+        return mGestureManager;
     }
 
     private void saveDirectionWhenMove()
     {
-        if (mGestureManager.getTouchHelper().isMoveBottomFrom(FTouchHelper.EVENT_DOWN))
+        if (getGestureManager().getTouchHelper().isMoveBottomFrom(FTouchHelper.EVENT_DOWN))
         {
             setDirection(Direction.FROM_HEADER);
-            mScroller.setMaxScrollDistance(((View) getHeaderView()).getHeight());
-        } else if (mGestureManager.getTouchHelper().isMoveTopFrom(FTouchHelper.EVENT_DOWN))
+            getScroller().setMaxScrollDistance(((View) getHeaderView()).getHeight());
+        } else if (getGestureManager().getTouchHelper().isMoveTopFrom(FTouchHelper.EVENT_DOWN))
         {
             setDirection(Direction.FROM_FOOTER);
-            mScroller.setMaxScrollDistance(((View) getFooterView()).getHeight());
+            getScroller().setMaxScrollDistance(((View) getFooterView()).getHeight());
         }
     }
 
     private boolean canPull()
     {
-        final boolean checkDegree = mGestureManager.getTouchHelper().getDegreeYFrom(FTouchHelper.EVENT_DOWN) < 30;
+        final boolean checkDegree = getGestureManager().getTouchHelper().getDegreeYFrom(FTouchHelper.EVENT_DOWN) < 30;
         final boolean checkPull = canPullFromHeader() || canPullFromFooter();
         final boolean checkState = getState() == State.RESET;
 
@@ -183,7 +183,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
 
     private boolean canPullFromHeader()
     {
-        final boolean checkIsMoveBottom = mGestureManager.getTouchHelper().isMoveBottomFrom(FTouchHelper.EVENT_DOWN);
+        final boolean checkIsMoveBottom = getGestureManager().getTouchHelper().isMoveBottomFrom(FTouchHelper.EVENT_DOWN);
         final boolean checkMode = getMode() == Mode.PULL_BOTH || getMode() == Mode.PULL_FROM_HEADER;
         final boolean checkIsScrollToTop = FTouchHelper.isScrollToTop(getRefreshView());
         final boolean checkPullCondition = checkPullConditionHeader();
@@ -193,7 +193,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
 
     private boolean canPullFromFooter()
     {
-        final boolean checkIsMoveTop = mGestureManager.getTouchHelper().isMoveTopFrom(FTouchHelper.EVENT_DOWN);
+        final boolean checkIsMoveTop = getGestureManager().getTouchHelper().isMoveTopFrom(FTouchHelper.EVENT_DOWN);
         final boolean checkMode = getMode() == Mode.PULL_BOTH || getMode() == Mode.PULL_FROM_FOOTER;
         final boolean checkIsScrollToBottom = FTouchHelper.isScrollToBottom(getRefreshView());
         final boolean checkPullCondition = checkPullConditionFooter();
@@ -204,19 +204,19 @@ public class FPullToRefreshView extends BasePullToRefreshView
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev)
     {
-        return mGestureManager.onInterceptTouchEvent(ev);
+        return getGestureManager().onInterceptTouchEvent(ev);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
-        return mGestureManager.onTouchEvent(event);
+        return getGestureManager().onTouchEvent(event);
     }
 
     @Override
     public void computeScroll()
     {
-        if (mScroller.computeScrollOffset())
+        if (getScroller().computeScrollOffset())
         {
             invalidate();
         }
@@ -225,8 +225,8 @@ public class FPullToRefreshView extends BasePullToRefreshView
     @Override
     protected boolean isViewIdle()
     {
-        final boolean checkScrollerFinished = mScroller.isFinished();
-        final boolean checkNotDragging = !mGestureManager.isTagConsume();
+        final boolean checkScrollerFinished = getScroller().isFinished();
+        final boolean checkNotDragging = !getGestureManager().getTagHolder().isTagConsume();
 
         return checkScrollerFinished && checkNotDragging;
     }
@@ -234,13 +234,13 @@ public class FPullToRefreshView extends BasePullToRefreshView
     @Override
     protected boolean onSmoothSlide(int startY, int endY)
     {
-        return mScroller.scrollToY(startY, endY, -1);
+        return getScroller().scrollToY(startY, endY, -1);
     }
 
     @Override
     protected void onDetachedFromWindow()
     {
         super.onDetachedFromWindow();
-        mScroller.abortAnimation();
+        getScroller().abortAnimation();
     }
 }
