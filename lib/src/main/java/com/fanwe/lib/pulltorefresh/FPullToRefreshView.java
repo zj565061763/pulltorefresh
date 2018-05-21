@@ -70,10 +70,11 @@ public class FPullToRefreshView extends BasePullToRefreshView
                 }
 
                 @Override
-                public void onScroll(int dx, int dy)
+                public void onScroll(int currX, int currY, int lastX, int lastY)
                 {
-                    moveViews(dy, false);
+                    final int dy = currY - lastY;
 
+                    moveViews(dy, false);
                     if (mIsDebug)
                     {
                         final LoadingView loadingView = getLoadingViewByDirection();
@@ -115,11 +116,11 @@ public class FPullToRefreshView extends BasePullToRefreshView
                 }
 
                 @Override
-                public boolean onConsumeEvent(MotionEvent event)
+                public boolean onEventConsume(MotionEvent event)
                 {
                     saveDirectionWhenMove();
 
-                    final int dy = (int) getGestureManager().getTouchHelper().getDeltaYFrom(FTouchHelper.EVENT_LAST);
+                    final int dy = (int) getGestureManager().getTouchHelper().getDeltaY();
                     final int dyConsumed = getComsumedDistance(dy);
                     moveViews(dyConsumed, true);
 
@@ -127,18 +128,21 @@ public class FPullToRefreshView extends BasePullToRefreshView
                 }
 
                 @Override
-                public void onConsumeEventFinish(MotionEvent event, VelocityTracker velocityTracker)
+                public void onEventFinish(MotionEvent event, boolean hasConsumeEvent, VelocityTracker velocityTracker)
                 {
-                    if (mIsDebug)
+                    if (hasConsumeEvent)
                     {
-                        Log.e(getDebugTag(), "onConsumeEventFinish:" + event.getAction() + " " + getState());
-                    }
+                        if (mIsDebug)
+                        {
+                            Log.e(getDebugTag(), "onConsumeEventFinish:" + event.getAction() + " " + getState());
+                        }
 
-                    if (getState() == State.RELEASE_TO_REFRESH)
-                    {
-                        setState(State.REFRESHING);
+                        if (getState() == State.RELEASE_TO_REFRESH)
+                        {
+                            setState(State.REFRESHING);
+                        }
+                        smoothSlideViewByState();
                     }
-                    smoothSlideViewByState();
                 }
             });
             mGestureManager.getTagHolder().setCallback(new TagHolder.Callback()
@@ -161,11 +165,11 @@ public class FPullToRefreshView extends BasePullToRefreshView
 
     private void saveDirectionWhenMove()
     {
-        if (getGestureManager().getTouchHelper().isMoveBottomFrom(FTouchHelper.EVENT_DOWN))
+        if (getGestureManager().getTouchHelper().getDeltaYFromDown() > 0)
         {
             setDirection(Direction.FROM_HEADER);
             getScroller().setMaxScrollDistance(((View) getHeaderView()).getHeight());
-        } else if (getGestureManager().getTouchHelper().isMoveTopFrom(FTouchHelper.EVENT_DOWN))
+        } else if (getGestureManager().getTouchHelper().getDeltaYFromDown() < 0)
         {
             setDirection(Direction.FROM_FOOTER);
             getScroller().setMaxScrollDistance(((View) getFooterView()).getHeight());
@@ -174,7 +178,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
 
     private boolean canPull()
     {
-        final boolean checkDegree = getGestureManager().getTouchHelper().getDegreeYFrom(FTouchHelper.EVENT_DOWN) < 30;
+        final boolean checkDegree = getGestureManager().getTouchHelper().getDegreeYFromDown() < 30;
         final boolean checkPull = canPullFromHeader() || canPullFromFooter();
         final boolean checkState = getState() == State.RESET;
 
@@ -183,7 +187,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
 
     private boolean canPullFromHeader()
     {
-        final boolean checkIsMoveBottom = getGestureManager().getTouchHelper().isMoveBottomFrom(FTouchHelper.EVENT_DOWN);
+        final boolean checkIsMoveBottom = getGestureManager().getTouchHelper().getDegreeYFromDown() > 0;
         final boolean checkMode = getMode() == Mode.PULL_BOTH || getMode() == Mode.PULL_FROM_HEADER;
         final boolean checkIsScrollToTop = FTouchHelper.isScrollToTop(getRefreshView());
         final boolean checkPullCondition = checkPullConditionHeader();
@@ -193,7 +197,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
 
     private boolean canPullFromFooter()
     {
-        final boolean checkIsMoveTop = getGestureManager().getTouchHelper().isMoveTopFrom(FTouchHelper.EVENT_DOWN);
+        final boolean checkIsMoveTop = getGestureManager().getTouchHelper().getDegreeYFromDown() < 0;
         final boolean checkMode = getMode() == Mode.PULL_BOTH || getMode() == Mode.PULL_FROM_FOOTER;
         final boolean checkIsScrollToBottom = FTouchHelper.isScrollToBottom(getRefreshView());
         final boolean checkPullCondition = checkPullConditionFooter();

@@ -272,7 +272,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         }
         if (!(headerView instanceof View))
         {
-            throw new IllegalArgumentException("headerView should be instance of " + View.class);
+            throw new IllegalArgumentException("headerView must be instance of " + View.class);
         }
 
         removeView((View) mHeaderView);
@@ -295,7 +295,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         }
         if (!(footerView instanceof View))
         {
-            throw new IllegalArgumentException("footerView should be instance of " + View.class);
+            throw new IllegalArgumentException("footerView must be instance of " + View.class);
         }
 
         removeView((View) mFooterView);
@@ -463,9 +463,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     private void checkDirection()
     {
         if (mDirection == Direction.NONE)
-        {
-            throw new RuntimeException("Direction is not specified before this");
-        }
+            throw new RuntimeException("The direction has not been specified before this");
     }
 
     /**
@@ -496,6 +494,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     protected final void moveViews(int delta, boolean isDrag)
     {
         if (delta == 0) return;
+
         checkDirection();
 
         final LoadingView loadingView = getLoadingViewByDirection();
@@ -529,9 +528,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         }
 
         if (mOnViewPositionChangeCallback != null)
-        {
             mOnViewPositionChangeCallback.onViewPositionChanged(this);
-        }
 
         if (isDrag)
         {
@@ -561,10 +558,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
      */
     protected final void setState(State state)
     {
-        if (mState == state)
-        {
-            return;
-        }
+        if (mState == state) return;
 
         checkDirection();
 
@@ -588,9 +582,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
 
         //通知状态变化回调
         if (mOnStateChangeCallback != null)
-        {
             mOnStateChangeCallback.onStateChanged(mState, oldState, this);
-        }
 
         if (mState == State.RESET)
         {
@@ -659,15 +651,14 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
      */
     protected final void setDirection(Direction direction)
     {
-        if (mDirection == direction)
-        {
-            return;
-        }
+        if (mDirection == direction) return;
+
         if (direction != Direction.NONE)
         {
             if (mDirection == Direction.NONE)
             {
                 mDirection = direction;
+
                 if (mIsDebug)
                 {
                     Log.i(getDebugTag(), "setDirection:" + mDirection);
