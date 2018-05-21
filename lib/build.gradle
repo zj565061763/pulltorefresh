@@ -32,7 +32,7 @@ publish {
     groupId = 'com.fanwe.android'
 
     artifactId = 'pulltorefresh'
-    publishVersion = '1.1.0-rc1'
+    publishVersion = '1.1.0-rc2'
     desc = 'android pulltorefresh library'
     website = 'https://bintray.com/zj565061763/maven/pulltorefresh'
 }
