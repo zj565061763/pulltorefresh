@@ -46,7 +46,7 @@ demo中实现了简单的自定义效果
 1. 自定义加载view中根据状态变化设置不同的图片
 ```java
 @Override
-public void onStateChanged(FIPullToRefreshView.State newState, FIPullToRefreshView.State oldState, PullToRefreshView view)
+public void onStateChanged(PullToRefreshView.State newState, PullToRefreshView.State oldState, PullToRefreshView view)
 {
     switch (newState)
     {
@@ -89,7 +89,7 @@ child可以是RecyclerView,ListView,ScrollView等...
 ## 常用方法
 ```java
 view_pull.setDebug(true); //设置调试模式，会打印log
-view_pull.setMode(FIPullToRefreshView.Mode.PULL_BOTH); //刷新模式，详细模式见源码
+view_pull.setMode(PullToRefreshView.Mode.PULL_BOTH); //刷新模式，详细模式见源码
 view_pull.setOverLayMode(false); //设置LoadingView是覆盖模式，还是拖拽模式，默认拖拽模式
 view_pull.startRefreshingFromHeader(); //触发下拉刷新，此方法不受模式限制
 view_pull.startRefreshingFromFooter(); //触发上拉加载，此方法不受模式限制
@@ -102,7 +102,7 @@ view_pull.getScrollDistance(); //获得滚动的距离
 view_pull.getDirection(); //获得滚动的方向，FROM_HEADER，FROM_FOOTER，NONE
 view_pull.setHeaderView(new CustomPullToRefreshLoadingView(this)); //自定义HeaderView
 view_pull.setFooterView(new CustomPullToRefreshLoadingView(this)); //自定义FooterView
-view_pull.setOnRefreshCallback(new FIPullToRefreshView.OnRefreshCallback() //设置触发刷新回调
+view_pull.setOnRefreshCallback(new PullToRefreshView.OnRefreshCallback() //设置触发刷新回调
 {
     @Override
     public void onRefreshingFromHeader(final PullToRefreshView view)
@@ -118,17 +118,17 @@ view_pull.setOnRefreshCallback(new FIPullToRefreshView.OnRefreshCallback() //设
 });
 
 //设置状态变化回调
-view_pull.setOnStateChangeCallback(new FIPullToRefreshView.OnStateChangeCallback()
+view_pull.setOnStateChangeCallback(new PullToRefreshView.OnStateChangeCallback()
 {
     @Override
-    public void onStateChanged(FIPullToRefreshView.State newState, FIPullToRefreshView.State oldState, PullToRefreshView view)
+    public void onStateChanged(PullToRefreshView.State newState, PullToRefreshView.State oldState, PullToRefreshView view)
     {
         //自定义的加载view继承库中的加载view基类后也可以收到此事件，可以根据状态展示不同的ui
     }
 });
 
 //设置view位置变化回调
-view_pull.setOnViewPositionChangeCallback(new FIPullToRefreshView.OnViewPositionChangeCallback()
+view_pull.setOnViewPositionChangeCallback(new PullToRefreshView.OnViewPositionChangeCallback()
 {
     @Override
     public void onViewPositionChanged(PullToRefreshView view)
