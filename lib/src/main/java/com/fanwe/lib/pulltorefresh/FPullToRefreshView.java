@@ -172,6 +172,8 @@ public class FPullToRefreshView extends BasePullToRefreshView
 
     private boolean canPull()
     {
+        // 为了调试方便，让每个条件都执行后把值都列出来
+
         final boolean checkDegree = getGestureManager().getTouchHelper().getDegreeYFromDown() < 30;
         final boolean checkPull = canPullFromHeader() || canPullFromFooter();
         final boolean checkState = getState() == State.RESET;
