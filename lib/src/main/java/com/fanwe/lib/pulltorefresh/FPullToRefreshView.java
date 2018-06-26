@@ -69,7 +69,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
                 }
 
                 @Override
-                public void onComputeScrollOffset(int lastX, int lastY, int currX, int currY)
+                public void onScroll(int lastX, int lastY, int currX, int currY)
                 {
                     final int dy = currY - lastY;
 
@@ -125,7 +125,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
                 }
 
                 @Override
-                public void onEventFinish(MotionEvent event, boolean hasConsumeEvent, VelocityTracker velocityTracker)
+                public void onEventFinish(boolean hasConsumeEvent, VelocityTracker velocityTracker, MotionEvent event)
                 {
                     if (hasConsumeEvent)
                     {
