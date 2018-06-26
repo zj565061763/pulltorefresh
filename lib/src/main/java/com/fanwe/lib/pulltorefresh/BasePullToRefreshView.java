@@ -947,9 +947,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         String logString = "";
 
         if (mIsDebugLayout)
-        {
             logString += "----------onLayout height:" + getHeight() + " " + mState + "\r\n";
-        }
 
         int left = getPaddingLeft();
         int top = 0;
@@ -962,14 +960,11 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         bottom = top + ((View) mHeaderView).getMeasuredHeight();
         ((View) mHeaderView).layout(left, top, right, bottom);
         if (mIsDebugLayout)
-        {
             logString += "HeaderView:" + top + "," + bottom + " -> " + (bottom - top) + "\r\n";
-        }
 
         // RefreshView
         top = getTopLayoutRefreshView();
-        if (!mIsOverLayMode
-                && mDirection == Direction.FROM_HEADER && bottom > top)
+        if (!mIsOverLayMode && mDirection == Direction.FROM_HEADER && bottom > top)
         {
             top = bottom;
         }
@@ -977,14 +972,11 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         bottom = top + mRefreshView.getMeasuredHeight();
         mRefreshView.layout(left, top, right, bottom);
         if (mIsDebugLayout)
-        {
             logString += "RefreshView:" + top + "," + bottom + " -> " + (bottom - top) + "\r\n";
-        }
 
         // FooterView
         top = getTopLayoutFooterView();
-        if (!mIsOverLayMode
-                && bottom <= getTopAlignBottom() && bottom > top)
+        if (!mIsOverLayMode && bottom <= getTopAlignBottom() && bottom > top)
         {
             top = bottom;
         }
