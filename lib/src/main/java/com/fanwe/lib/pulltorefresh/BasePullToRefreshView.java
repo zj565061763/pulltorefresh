@@ -117,14 +117,9 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     public void setMode(Mode mode)
     {
         if (mode == null)
-        {
             throw new NullPointerException("mode is null");
-        }
 
-        if (mMode != mode)
-        {
-            mMode = mode;
-        }
+        mMode = mode;
     }
 
     @Override
@@ -155,9 +150,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     public void setOverLayMode(boolean overLayMode)
     {
         if (mState == State.RESET)
-        {
             mIsOverLayMode = overLayMode;
-        }
     }
 
     @Override
@@ -169,25 +162,19 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     @Override
     public void setComsumeScrollPercent(float percent)
     {
-        if (percent >= 0 && percent <= 1)
-        {
-            mComsumeScrollPercent = percent;
-        } else
-        {
+        if (percent < 0 || percent > 1)
             throw new IllegalArgumentException("percent >= 0 && percent <= 1 required");
-        }
+
+        mComsumeScrollPercent = percent;
     }
 
     @Override
     public void setDurationShowRefreshResult(int duration)
     {
-        if (duration >= 0)
-        {
-            mDurationShowRefreshResult = duration;
-        } else
-        {
+        if (duration < 0)
             throw new IllegalArgumentException("duration >= 0 required");
-        }
+
+        mDurationShowRefreshResult = duration;
     }
 
     @Override
