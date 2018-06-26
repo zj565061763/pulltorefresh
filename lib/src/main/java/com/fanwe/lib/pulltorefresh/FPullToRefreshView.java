@@ -70,7 +70,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
                 }
 
                 @Override
-                public void onScroll(int currX, int currY, int lastX, int lastY)
+                public void onComputeScrollOffset(int lastX, int lastY, int currX, int currY)
                 {
                     final int dy = currY - lastY;
 
