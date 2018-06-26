@@ -1,10 +1,15 @@
 # About
 一个方便扩展的下拉刷新和上拉加载的库，支持xml中配置全局默认的HeaderView和FooterView，提供拖动回调监听，获取滚动距离后方便扩展各种加载效果<br>
 
-## Gradle
-`implementation 'com.fanwe.android:pulltorefresh:1.1.0-rc2'`
+# Gradle
+[![](https://jitpack.io/v/zj565061763/pulltorefresh.svg)](https://jitpack.io/#zj565061763/pulltorefresh)
+<br>
+本库需要依赖以下库：
+```
+implementation 'com.android.support:support-v4:+'
+```
 
-## 简单效果
+# 简单效果
 ![](http://thumbsnap.com/i/8AyEAjrW.gif?0725)<br>
 支持覆盖的默认配置：<br>
 * strings
@@ -40,7 +45,7 @@
 <!-- 默认的加载view中提示文字的大小 -->
 <dimen name="lib_ptr_text_loading_info">13sp</dimen>
 ```
-## 自定义效果
+# 自定义效果
 ![](http://thumbsnap.com/i/GFbZkldb.gif?0707)<br>
 demo中实现了简单的自定义效果
 1. 自定义加载view中根据状态变化设置不同的图片
@@ -72,7 +77,7 @@ view_pull.setFooterView(new CustomPullToRefreshLoadingView(this)); //自定义Fo
 ```
 
 
-## Xml布局
+# Xml布局
 在xml中只能给FPullToRefreshView添加一个child<br>
 child可以是RecyclerView,ListView,ScrollView等...
 ```xml
@@ -86,7 +91,7 @@ child可以是RecyclerView,ListView,ScrollView等...
 </com.fanwe.lib.pulltorefresh.FPullToRefreshView>
 ```
 
-## 常用方法
+# 常用方法
 ```java
 view_pull.setDebug(true); //设置调试模式，会打印log
 view_pull.setMode(PullToRefreshView.Mode.PULL_BOTH); //刷新模式，详细模式见源码
@@ -137,7 +142,7 @@ view_pull.setOnViewPositionChangeCallback(new PullToRefreshView.OnViewPositionCh
     }
 });
 ```
-## 支持的方法
+# PullToRefreshView接口
 ```java
 public interface PullToRefreshView
 {
