@@ -763,7 +763,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
             maxWidth = Math.max(maxWidth, mRefreshView.getMeasuredWidth());
             maxWidth += (getPaddingLeft() + getPaddingRight());
 
-            maxWidth = Math.max(maxWidth, Utils.getMinimumWidth(this));
+            maxWidth = Math.max(maxWidth, getSuggestedMinimumWidth());
             if (widthMode == MeasureSpec.UNSPECIFIED)
             {
                 width = maxWidth;
@@ -783,7 +783,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
             }
             maxHeight += (getPaddingTop() + getPaddingBottom());
 
-            maxHeight = Math.max(maxHeight, Utils.getMinimumHeight(this));
+            maxHeight = Math.max(maxHeight, getSuggestedMinimumHeight());
             if (heightMode == MeasureSpec.UNSPECIFIED)
             {
                 height = maxHeight;

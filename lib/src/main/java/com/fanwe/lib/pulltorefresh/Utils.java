@@ -5,16 +5,6 @@ import android.view.View;
 
 class Utils
 {
-    public static int getMinimumWidth(View view)
-    {
-        return ViewCompat.getMinimumWidth(view);
-    }
-
-    public static int getMinimumHeight(View view)
-    {
-        return ViewCompat.getMinimumHeight(view);
-    }
-
     public static void offsetTopAndBottom(View view, int offset)
     {
         ViewCompat.offsetTopAndBottom(view, offset);
