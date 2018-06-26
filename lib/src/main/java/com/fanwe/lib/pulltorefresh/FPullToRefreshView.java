@@ -62,9 +62,8 @@ public class FPullToRefreshView extends BasePullToRefreshView
                     if (isFinished)
                     {
                         if (mIsDebug)
-                        {
-                            Log.e(getDebugTag(), "onScroll finished:" + " " + getState());
-                        }
+                            Log.i(getDebugTag(), "onScroll finished:" + " " + getState());
+
                         dealViewIdle();
                     }
                 }
