@@ -95,23 +95,21 @@ public class FPullToRefreshView extends BasePullToRefreshView
                 @Override
                 public boolean shouldInterceptEvent(MotionEvent event)
                 {
-                    final boolean canPull = canPull();
+                    final boolean shouldInterceptEvent = canPull();
                     if (mIsDebug)
-                    {
-                        Log.i(getDebugTag(), "shouldInterceptEvent:" + canPull);
-                    }
-                    return canPull;
+                        Log.i(getDebugTag(), "shouldInterceptEvent:" + shouldInterceptEvent);
+
+                    return shouldInterceptEvent;
                 }
 
                 @Override
                 public boolean shouldConsumeEvent(MotionEvent event)
                 {
-                    final boolean canPull = canPull();
+                    final boolean shouldConsumeEvent = canPull();
                     if (mIsDebug)
-                    {
-                        Log.i(getDebugTag(), "shouldConsumeEvent:" + canPull);
-                    }
-                    return canPull;
+                        Log.i(getDebugTag(), "shouldConsumeEvent:" + shouldConsumeEvent);
+
+                    return shouldConsumeEvent;
                 }
 
                 @Override
@@ -132,14 +130,11 @@ public class FPullToRefreshView extends BasePullToRefreshView
                     if (hasConsumeEvent)
                     {
                         if (mIsDebug)
-                        {
                             Log.e(getDebugTag(), "onConsumeEventFinish:" + event.getAction() + " " + getState());
-                        }
 
                         if (getState() == State.RELEASE_TO_REFRESH)
-                        {
                             setState(State.REFRESHING);
-                        }
+
                         smoothSlideViewByState();
                     }
                 }
@@ -220,9 +215,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
     public void computeScroll()
     {
         if (getScroller().computeScrollOffset())
-        {
             invalidate();
-        }
     }
 
     @Override
