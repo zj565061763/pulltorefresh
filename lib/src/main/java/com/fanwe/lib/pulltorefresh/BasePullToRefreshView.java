@@ -217,12 +217,9 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         if (mState == State.REFRESHING)
         {
             if (success)
-            {
                 setState(State.REFRESHING_SUCCESS);
-            } else
-            {
+            else
                 setState(State.REFRESHING_FAILURE);
-            }
         }
     }
 
@@ -254,13 +251,10 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     public void setHeaderView(LoadingView headerView)
     {
         if (headerView == null || headerView == mHeaderView)
-        {
             return;
-        }
+
         if (!(headerView instanceof View))
-        {
             throw new IllegalArgumentException("headerView must be instance of " + View.class);
-        }
 
         removeView((View) mHeaderView);
         addView((View) headerView);
@@ -277,13 +271,10 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     public void setFooterView(LoadingView footerView)
     {
         if (footerView == null || footerView == mFooterView)
-        {
             return;
-        }
+
         if (!(footerView instanceof View))
-        {
             throw new IllegalArgumentException("footerView must be instance of " + View.class);
-        }
 
         removeView((View) mFooterView);
         addView((View) footerView);
@@ -307,9 +298,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     {
         final LoadingView loadingView = getLoadingViewByDirection();
         if (loadingView == null)
-        {
             return 0;
-        }
 
         final int topReset = getTopLoadingViewReset(loadingView);
         final int distance = ((View) loadingView).getTop() - topReset;
