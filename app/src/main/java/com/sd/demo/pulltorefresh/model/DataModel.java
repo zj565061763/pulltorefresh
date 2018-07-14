@@ -1,8 +1,6 @@
 package com.sd.demo.pulltorefresh.model;
 
 
-import com.fanwe.lib.selectmanager.FSelectManager;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,13 +8,9 @@ import java.util.List;
  * Created by Administrator on 2017/4/14.
  */
 
-public class DataModel implements FSelectManager.Selectable
+public class DataModel
 {
-
     private String name;
-
-    //add
-    private boolean selected;
 
     public String getName()
     {
@@ -38,17 +32,5 @@ public class DataModel implements FSelectManager.Selectable
             listModel.add(model);
         }
         return listModel;
-    }
-
-    @Override
-    public boolean isSelected()
-    {
-        return selected;
-    }
-
-    @Override
-    public void setSelected(boolean selected)
-    {
-        this.selected = selected;
     }
 }

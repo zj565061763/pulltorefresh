@@ -10,7 +10,6 @@ import android.view.Gravity;
 
 import com.fanwe.lib.pulltorefresh.PullToRefreshView;
 import com.fanwe.lib.pulltorefresh.loadingview.BaseLoadingView;
-import com.fanwe.library.utils.LogUtil;
 
 /**
  * Created by Administrator on 2017/7/26.
@@ -84,14 +83,10 @@ public class GoogleLoadingView extends BaseLoadingView
     {
         super.onViewPositionChanged(view);
 
-        LogUtil.i("onViewPositionChanged--------------------");
-
         float scrollDistance = Math.abs(view.getScrollDistance());
         float dragPercent = Math.min(1f, scrollDistance / (float) getRefreshingHeight());
-        LogUtil.i("dragPercent:" + dragPercent);
         float adjustedPercent = (float) Math.max(dragPercent - .4, 0) * 5 / 3;
         float strokeStart = adjustedPercent * .8f;
-        LogUtil.i("strokeStart:" + strokeStart);
         float startAngle = 0f;
         float endAngle = Math.min(MAX_PROGRESS_ANGLE, strokeStart);
         mProgress.setStartEndTrim(startAngle, endAngle);

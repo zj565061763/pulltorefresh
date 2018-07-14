@@ -1,30 +1,32 @@
 package com.sd.demo.pulltorefresh.activity;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
 import com.fanwe.lib.pulltorefresh.PullToRefreshView;
-import com.fanwe.library.activity.SDBaseActivity;
 import com.sd.demo.pulltorefresh.R;
 import com.sd.demo.pulltorefresh.loadingview.google.GoogleLoadingView;
 
-public class ButtonActivity extends SDBaseActivity
+public class ButtonActivity extends AppCompatActivity
 {
     private FPullToRefreshView view_pull;
     private Button btn_overlay, btn_stop, btn_stop_success, btn_stop_failure;
 
     @Override
-    protected void init(Bundle savedInstanceState)
+    protected void onCreate(@Nullable Bundle savedInstanceState)
     {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_button);
-        view_pull = (FPullToRefreshView) findViewById(R.id.view_pull);
-        btn_overlay = (Button) findViewById(R.id.btn_overlay);
-        btn_stop = (Button) findViewById(R.id.btn_stop);
-        btn_stop_success = (Button) findViewById(R.id.btn_stop_success);
-        btn_stop_failure = (Button) findViewById(R.id.btn_stop_failure);
+        view_pull = findViewById(R.id.view_pull);
+        btn_overlay = findViewById(R.id.btn_overlay);
+        btn_stop = findViewById(R.id.btn_stop);
+        btn_stop_success = findViewById(R.id.btn_stop_success);
+        btn_stop_failure = findViewById(R.id.btn_stop_failure);
 
         btn_stop.setOnClickListener(new View.OnClickListener()
         {

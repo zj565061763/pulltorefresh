@@ -2,6 +2,10 @@ package com.sd.demo.pulltorefresh.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -9,23 +13,23 @@ import com.fanwe.lib.adapter.FSimpleRecyclerAdapter;
 import com.fanwe.lib.adapter.viewholder.FRecyclerViewHolder;
 import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
 import com.fanwe.lib.pulltorefresh.PullToRefreshView;
-import com.fanwe.library.activity.SDBaseActivity;
-import com.fanwe.library.view.SDRecyclerView;
 import com.sd.demo.pulltorefresh.R;
 import com.sd.demo.pulltorefresh.loadingview.CustomPullToRefreshLoadingView;
 import com.sd.demo.pulltorefresh.model.DataModel;
 
-public class RecyclerViewActivity extends SDBaseActivity
+public class RecyclerViewActivity extends AppCompatActivity
 {
     private FPullToRefreshView view_pull;
-    private SDRecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView;
 
     @Override
-    protected void init(Bundle savedInstanceState)
+    protected void onCreate(@Nullable Bundle savedInstanceState)
     {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recyclerview);
         view_pull = findViewById(R.id.view_pull);
         mRecyclerView = findViewById(R.id.recyclerView);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
 
         view_pull.setDebug(true);
@@ -56,7 +60,7 @@ public class RecyclerViewActivity extends SDBaseActivity
                     @Override
                     public void run()
                     {
-                        mAdapter.getDataHolder().appendData(DataModel.getListModel(3));
+                        mAdapter.getDataHolder().addData(DataModel.getListModel(3));
                         view.stopRefreshing();
                     }
                 }, 1000);

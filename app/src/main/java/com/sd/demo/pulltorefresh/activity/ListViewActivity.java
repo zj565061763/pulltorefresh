@@ -2,6 +2,8 @@ package com.sd.demo.pulltorefresh.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -10,19 +12,19 @@ import android.widget.TextView;
 import com.fanwe.lib.adapter.FSimpleAdapter;
 import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
 import com.fanwe.lib.pulltorefresh.PullToRefreshView;
-import com.fanwe.library.activity.SDBaseActivity;
 import com.sd.demo.pulltorefresh.R;
 import com.sd.demo.pulltorefresh.loadingview.CustomPullToRefreshLoadingView;
 import com.sd.demo.pulltorefresh.model.DataModel;
 
-public class ListViewActivity extends SDBaseActivity
+public class ListViewActivity extends AppCompatActivity
 {
     private FPullToRefreshView view_pull;
     private ListView mListView;
 
     @Override
-    protected void init(Bundle savedInstanceState)
+    protected void onCreate(@Nullable Bundle savedInstanceState)
     {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listview);
         view_pull = findViewById(R.id.view_pull);
         mListView = findViewById(R.id.listView);
@@ -56,7 +58,7 @@ public class ListViewActivity extends SDBaseActivity
                     @Override
                     public void run()
                     {
-                        mAdapter.getDataHolder().appendData(DataModel.getListModel(10));
+                        mAdapter.getDataHolder().addData(DataModel.getListModel(10));
                         view.stopRefreshing();
                     }
                 }, 1000);
@@ -80,5 +82,4 @@ public class ListViewActivity extends SDBaseActivity
             tv_content.setText(String.valueOf(model.getName()));
         }
     };
-
 }

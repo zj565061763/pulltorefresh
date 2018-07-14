@@ -8,7 +8,8 @@ import android.util.AttributeSet;
 
 import com.fanwe.lib.pulltorefresh.PullToRefreshView;
 import com.fanwe.lib.pulltorefresh.loadingview.SimpleImageLoadingView;
-import com.fanwe.library.utils.SDViewUtil;
+import com.fanwe.lib.utils.FViewUtil;
+import com.fanwe.lib.utils.context.FResUtil;
 import com.sd.demo.pulltorefresh.R;
 
 /**
@@ -36,7 +37,7 @@ public class CustomPullToRefreshLoadingView extends SimpleImageLoadingView
     protected void init()
     {
         super.init();
-        SDViewUtil.setHeight(getImageView(), SDViewUtil.dp2px(35));
+        FViewUtil.setHeight(getImageView(), FResUtil.dp2px(35));
     }
 
     @Override
@@ -54,7 +55,7 @@ public class CustomPullToRefreshLoadingView extends SimpleImageLoadingView
                 break;
             case REFRESHING:
                 getImageView().setImageResource(R.drawable.ic_pull_refresh_refreshing);
-                SDViewUtil.startAnimationDrawable(getImageView().getDrawable());
+                FViewUtil.startAnimationDrawable(getImageView().getDrawable());
                 break;
         }
     }

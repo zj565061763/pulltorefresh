@@ -2,27 +2,29 @@ package com.sd.demo.pulltorefresh.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
 
 import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
 import com.fanwe.lib.pulltorefresh.PullToRefreshView;
-import com.fanwe.library.activity.SDBaseActivity;
 import com.sd.demo.pulltorefresh.R;
 
-public class ScrollViewActivity extends SDBaseActivity
+public class ScrollViewActivity extends AppCompatActivity
 {
-    private static final String TAG = "ScrollViewActivity";
+    private static final String TAG = ScrollViewActivity.class.getSimpleName();
 
     private FPullToRefreshView view_pull;
     private Button btn;
 
     @Override
-    protected void init(Bundle savedInstanceState)
+    protected void onCreate(@Nullable Bundle savedInstanceState)
     {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scrollview);
-        view_pull = (FPullToRefreshView) findViewById(R.id.view_pull);
-        btn = (Button) findViewById(R.id.btn);
+        view_pull = findViewById(R.id.view_pull);
+        btn = findViewById(R.id.btn);
 
         view_pull.setDebug(true);
         view_pull.setOnStateChangeCallback(new PullToRefreshView.OnStateChangeCallback()
@@ -75,5 +77,4 @@ public class ScrollViewActivity extends SDBaseActivity
         });
         view_pull.startRefreshingFromFooter();
     }
-
 }
