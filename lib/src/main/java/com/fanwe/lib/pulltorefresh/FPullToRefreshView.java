@@ -118,9 +118,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
                     saveDirectionWhenMove();
 
                     final int dy = (int) getGestureManager().getTouchHelper().getDeltaY();
-                    final int dyConsumed = getComsumedDistance(dy);
-                    moveViews(dyConsumed, true);
-
+                    moveViews(dy, true);
                     return true;
                 }
 
@@ -132,10 +130,7 @@ public class FPullToRefreshView extends BasePullToRefreshView
                         if (mIsDebug)
                             Log.e(getDebugTag(), "onConsumeEventFinish:" + event.getAction() + " " + getState());
 
-                        if (getState() == State.RELEASE_TO_REFRESH)
-                            setState(State.REFRESHING);
-
-                        smoothSlideViewByState();
+                        processDragFinish();
                     }
                 }
             });
@@ -155,6 +150,14 @@ public class FPullToRefreshView extends BasePullToRefreshView
             });
         }
         return mGestureManager;
+    }
+
+    private void processDragFinish()
+    {
+        if (getState() == State.RELEASE_TO_REFRESH)
+            setState(State.REFRESHING);
+
+        smoothSlideViewByState();
     }
 
     private void saveDirectionWhenMove()
@@ -240,5 +243,67 @@ public class FPullToRefreshView extends BasePullToRefreshView
     {
         super.onDetachedFromWindow();
         getScroller().abortAnimation();
+    }
+
+    private boolean mHasNestedScroll;
+
+    @Override
+    public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes)
+    {
+        super.onStartNestedScroll(child, target, nestedScrollAxes);
+
+        final boolean checkState = getState() == State.RESET;
+        final boolean checkMode = getMode() != Mode.PULL_DISABLE;
+        final boolean checkIsScrollToBound = FTouchHelper.isScrollToTop(getRefreshView()) || FTouchHelper.isScrollToBottom(getRefreshView());
+
+        final boolean checkTarget = target == getRefreshView();
+        final boolean checkDirection = (nestedScrollAxes & 2) != 0;
+
+        final boolean checkFinal = checkState && checkMode && checkIsScrollToBound && checkTarget && checkDirection;
+        return checkFinal;
+    }
+
+    @Override
+    public void onNestedPreScroll(View target, int dx, int dy, int[] consumed)
+    {
+        super.onNestedPreScroll(target, dx, dy, consumed);
+
+        dy = -dy;
+
+        boolean check = false;
+        if (dy > 0)
+        {
+            if (check = checkPullConditionHeader() && FTouchHelper.isScrollToTop(getRefreshView()))
+            {
+                setDirection(Direction.FROM_HEADER);
+                getScroller().setMaxScrollDistance(((View) getHeaderView()).getHeight());
+            }
+        } else if (dy < 0)
+        {
+            if (check = checkPullConditionFooter() && FTouchHelper.isScrollToBottom(getRefreshView()))
+            {
+                setDirection(Direction.FROM_FOOTER);
+                getScroller().setMaxScrollDistance(((View) getFooterView()).getHeight());
+            }
+        }
+
+        if (check)
+        {
+            moveViews(dy, true);
+            consumed[1] = -dy;
+            mHasNestedScroll = true;
+        }
+    }
+
+    @Override
+    public void onStopNestedScroll(View child)
+    {
+        super.onStopNestedScroll(child);
+
+        if (mHasNestedScroll)
+        {
+            mHasNestedScroll = false;
+            processDragFinish();
+        }
     }
 }

@@ -467,6 +467,13 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         if (delta == 0)
             return;
 
+        if (isDrag)
+        {
+            delta = getComsumedDistance(delta);
+            if (delta == 0)
+                return;
+        }
+
         checkDirection();
 
         final LoadingView loadingView = getLoadingViewByDirection();
@@ -637,7 +644,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
      * @param distance
      * @return
      */
-    protected final int getComsumedDistance(float distance)
+    private int getComsumedDistance(float distance)
     {
         distance -= distance * mComsumeScrollPercent;
         return (int) distance;
