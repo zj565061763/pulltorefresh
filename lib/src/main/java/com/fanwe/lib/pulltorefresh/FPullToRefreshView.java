@@ -41,11 +41,6 @@ public class FPullToRefreshView extends BasePullToRefreshView
         super(context, attrs);
     }
 
-    public FPullToRefreshView(Context context, AttributeSet attrs, int defStyleAttr)
-    {
-        super(context, attrs, defStyleAttr);
-    }
-
     private FGestureManager mGestureManager;
     private FScroller mScroller;
 

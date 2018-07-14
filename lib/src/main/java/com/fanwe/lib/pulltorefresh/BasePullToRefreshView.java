@@ -41,12 +41,6 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         init(attrs);
     }
 
-    public BasePullToRefreshView(Context context, AttributeSet attrs, int defStyleAttr)
-    {
-        super(context, attrs, defStyleAttr);
-        init(attrs);
-    }
-
     private LoadingView mHeaderView;
     private LoadingView mFooterView;
     private View mRefreshView;
