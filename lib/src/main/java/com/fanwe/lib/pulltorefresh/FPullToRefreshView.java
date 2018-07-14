@@ -19,6 +19,7 @@ import android.content.Context;
 import android.os.Build;
 import android.support.v4.view.NestedScrollingParent;
 import android.support.v4.view.NestedScrollingParentHelper;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -257,7 +258,7 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
         final boolean checkIsScrollToBound = FTouchHelper.isScrollToTop(getRefreshView()) || FTouchHelper.isScrollToBottom(getRefreshView());
 
         final boolean checkTarget = target == getRefreshView();
-        final boolean checkDirection = (nestedScrollAxes & 2) != 0;
+        final boolean checkDirection = (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
 
         final boolean checkFinal = checkState && checkMode && checkIsScrollToBound && checkTarget && checkDirection;
         return checkFinal;
