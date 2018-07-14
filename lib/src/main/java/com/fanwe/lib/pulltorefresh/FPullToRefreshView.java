@@ -16,6 +16,9 @@
 package com.fanwe.lib.pulltorefresh;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.v4.view.NestedScrollingParent;
+import android.support.v4.view.NestedScrollingParentHelper;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -29,7 +32,7 @@ import com.fanwe.lib.gesture.FTouchHelper;
 import com.fanwe.lib.gesture.tag.TagHolder;
 import com.fanwe.lib.pulltorefresh.loadingview.LoadingView;
 
-public class FPullToRefreshView extends BasePullToRefreshView
+public class FPullToRefreshView extends BasePullToRefreshView implements NestedScrollingParent
 {
     public FPullToRefreshView(Context context)
     {
@@ -43,6 +46,8 @@ public class FPullToRefreshView extends BasePullToRefreshView
 
     private FGestureManager mGestureManager;
     private FScroller mScroller;
+
+    private final NestedScrollingParentHelper mNestedScrollingParentHelper = new NestedScrollingParentHelper(this);
 
     private FScroller getScroller()
     {
@@ -240,13 +245,13 @@ public class FPullToRefreshView extends BasePullToRefreshView
         getScroller().abortAnimation();
     }
 
+    //---------- NestedScrollingParent Start ----------
+
     private boolean mHasNestedScroll;
 
     @Override
     public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes)
     {
-        super.onStartNestedScroll(child, target, nestedScrollAxes);
-
         final boolean checkState = getState() == State.RESET;
         final boolean checkMode = getMode() != Mode.PULL_DISABLE;
         final boolean checkIsScrollToBound = FTouchHelper.isScrollToTop(getRefreshView()) || FTouchHelper.isScrollToBottom(getRefreshView());
@@ -261,7 +266,8 @@ public class FPullToRefreshView extends BasePullToRefreshView
     @Override
     public void onNestedPreScroll(View target, int dx, int dy, int[] consumed)
     {
-        super.onNestedPreScroll(target, dx, dy, consumed);
+        if (Build.VERSION.SDK_INT >= 21)
+            super.onNestedPreScroll(target, dx, dy, consumed);
 
         dy = -dy;
 
@@ -293,7 +299,10 @@ public class FPullToRefreshView extends BasePullToRefreshView
     @Override
     public void onStopNestedScroll(View child)
     {
-        super.onStopNestedScroll(child);
+        if (Build.VERSION.SDK_INT >= 21)
+            super.onStopNestedScroll(child);
+        else
+            mNestedScrollingParentHelper.onStopNestedScroll(child);
 
         if (mHasNestedScroll)
         {
@@ -301,4 +310,49 @@ public class FPullToRefreshView extends BasePullToRefreshView
             processDragFinish();
         }
     }
+
+    @Override
+    public void onNestedScrollAccepted(View child, View target, int axes)
+    {
+        if (Build.VERSION.SDK_INT >= 21)
+            super.onNestedScrollAccepted(child, target, axes);
+        else
+            mNestedScrollingParentHelper.onNestedScrollAccepted(child, target, axes);
+    }
+
+    @Override
+    public void onNestedScroll(View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed)
+    {
+        if (Build.VERSION.SDK_INT >= 21)
+            super.onNestedScroll(target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
+    }
+
+    @Override
+    public boolean onNestedFling(View target, float velocityX, float velocityY, boolean consumed)
+    {
+        if (Build.VERSION.SDK_INT >= 21)
+            return super.onNestedFling(target, velocityX, velocityY, consumed);
+        else
+            return false;
+    }
+
+    @Override
+    public boolean onNestedPreFling(View target, float velocityX, float velocityY)
+    {
+        if (Build.VERSION.SDK_INT >= 21)
+            return super.onNestedPreFling(target, velocityX, velocityY);
+        else
+            return false;
+    }
+
+    @Override
+    public int getNestedScrollAxes()
+    {
+        if (Build.VERSION.SDK_INT >= 21)
+            return super.getNestedScrollAxes();
+        else
+            return mNestedScrollingParentHelper.getNestedScrollAxes();
+    }
+
+    //---------- NestedScrollingParent End ----------
 }
