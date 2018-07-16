@@ -290,8 +290,6 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
             consumed[0] += mParentScrollConsumed[0];
             consumed[1] += mParentScrollConsumed[1];
         }
-
-        Log.i(getClass().toString(), "onNestedPreScroll:" + getDirection());
     }
 
     @Override
