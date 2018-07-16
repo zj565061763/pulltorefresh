@@ -257,6 +257,7 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
     private final NestedScrollingChildHelper mNestedScrollingChildHelper = new NestedScrollingChildHelper(this);
 
     private final int[] mParentScrollConsumed = new int[2];
+    private final int[] mParentOffsetInWindow = new int[2];
 
     private boolean mIsNestedScroll;
     private boolean mHasNestedScroll;
@@ -277,26 +278,7 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
     @Override
     public void onNestedPreScroll(View target, int dx, int dy, int[] consumed)
     {
-        if (getDirection() == Direction.NONE)
-        {
-            if (dy < 0)
-            {
-                if (checkPullConditionHeader() && FTouchHelper.isScrollToTop(getRefreshView()))
-                {
-                    setDirection(Direction.FROM_HEADER);
-                    getScroller().setMaxScrollDistance(((View) getHeaderView()).getHeight());
-                }
-            } else if (dy > 0)
-            {
-                if (checkPullConditionFooter() && FTouchHelper.isScrollToBottom(getRefreshView()))
-                {
-                    setDirection(Direction.FROM_FOOTER);
-                    getScroller().setMaxScrollDistance(((View) getFooterView()).getHeight());
-                }
-            }
-        }
-
-        if (getDirection() != Direction.NONE)
+        if (getDirection() != Direction.NONE && !isLoadingViewReset())
         {
             mHasNestedScroll = true;
             consumed[1] = dy;
@@ -338,7 +320,36 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
     @Override
     public void onNestedScroll(View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed)
     {
-        dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, null);
+        dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, mParentOffsetInWindow);
+
+        final int dy = dyUnconsumed + mParentOffsetInWindow[1];
+        if (dy != 0)
+        {
+            if (getDirection() == Direction.NONE)
+            {
+                if (dy < 0)
+                {
+                    if (checkPullConditionHeader() && FTouchHelper.isScrollToTop(getRefreshView()))
+                    {
+                        setDirection(Direction.FROM_HEADER);
+                        getScroller().setMaxScrollDistance(((View) getHeaderView()).getHeight());
+                    }
+                } else if (dy > 0)
+                {
+                    if (checkPullConditionFooter() && FTouchHelper.isScrollToBottom(getRefreshView()))
+                    {
+                        setDirection(Direction.FROM_FOOTER);
+                        getScroller().setMaxScrollDistance(((View) getFooterView()).getHeight());
+                    }
+                }
+
+                if (getDirection() != Direction.NONE)
+                {
+                    mHasNestedScroll = true;
+                    moveViews(-dy, true);
+                }
+            }
+        }
     }
 
     @Override
