@@ -366,6 +366,9 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
                 case FINISH:
                     setState(State.RESET);
                     break;
+                case RESET:
+                    resetIfNeed();
+                    break;
             }
         } else
         {
@@ -544,6 +547,11 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         if (mOnStateChangeCallback != null)
             mOnStateChangeCallback.onStateChanged(mState, oldState, this);
 
+        resetIfNeed();
+    }
+
+    private void resetIfNeed()
+    {
         if (mState == State.RESET)
         {
             requestLayoutIfNeed();
