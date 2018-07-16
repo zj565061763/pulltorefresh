@@ -100,7 +100,7 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
                 @Override
                 public boolean shouldInterceptEvent(MotionEvent event)
                 {
-                    final boolean shouldInterceptEvent = canPull() && !mIsNestedScroll;
+                    final boolean shouldInterceptEvent = canPull() && !mIsNestedScrollStarted;
                     if (mIsDebug)
                         Log.i(getDebugTag(), "shouldInterceptEvent:" + shouldInterceptEvent);
 
@@ -259,7 +259,7 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
     private final int[] mParentScrollConsumed = new int[2];
     private final int[] mParentOffsetInWindow = new int[2];
 
-    private boolean mIsNestedScroll;
+    private boolean mIsNestedScrollStarted;
     private boolean mHasNestedScroll;
 
     @Override
@@ -295,7 +295,7 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
     public void onStopNestedScroll(View child)
     {
         mNestedScrollingParentHelper.onStopNestedScroll(child);
-        mIsNestedScroll = false;
+        mIsNestedScrollStarted = false;
 
         if (mHasNestedScroll)
         {
@@ -311,7 +311,7 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
     {
         mNestedScrollingParentHelper.onNestedScrollAccepted(child, target, axes);
         startNestedScroll(axes & ViewCompat.SCROLL_AXIS_VERTICAL);
-        mIsNestedScroll = true;
+        mIsNestedScrollStarted = true;
     }
 
     @Override
