@@ -605,6 +605,8 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
      */
     protected final void setDirection(Direction direction)
     {
+        if (direction == null)
+            throw new NullPointerException("direction is null");
         if (mDirection == direction)
             return;
 
