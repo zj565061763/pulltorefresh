@@ -265,19 +265,14 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
     }
 
     @Override
-    public void onNestedPreScroll(View target, int dx, int dy, int[] consumed)
+    public void onNestedScrollAccepted(View child, View target, int axes)
     {
-        if (mNeedConsumeNestedScroll)
-        {
-            consumed[1] = dy;
-            moveViews(-dy, true);
-        }
+        if (mIsDebug)
+            Log.i(getDebugTag(), "onNestedScrollAccepted----------");
 
-        if (dispatchNestedPreScroll(dx - consumed[0], dy - consumed[1], mParentScrollConsumed, null))
-        {
-            consumed[0] += mParentScrollConsumed[0];
-            consumed[1] += mParentScrollConsumed[1];
-        }
+        mNestedScrollingParentHelper.onNestedScrollAccepted(child, target, axes);
+        startNestedScroll(axes & ViewCompat.SCROLL_AXIS_VERTICAL);
+        mIsNestedScrollStarted = true;
     }
 
     @Override
@@ -297,14 +292,19 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
     }
 
     @Override
-    public void onNestedScrollAccepted(View child, View target, int axes)
+    public void onNestedPreScroll(View target, int dx, int dy, int[] consumed)
     {
-        if (mIsDebug)
-            Log.i(getDebugTag(), "onNestedScrollAccepted----------");
+        if (mNeedConsumeNestedScroll)
+        {
+            consumed[1] = dy;
+            moveViews(-dy, true);
+        }
 
-        mNestedScrollingParentHelper.onNestedScrollAccepted(child, target, axes);
-        startNestedScroll(axes & ViewCompat.SCROLL_AXIS_VERTICAL);
-        mIsNestedScrollStarted = true;
+        if (dispatchNestedPreScroll(dx - consumed[0], dy - consumed[1], mParentScrollConsumed, null))
+        {
+            consumed[0] += mParentScrollConsumed[0];
+            consumed[1] += mParentScrollConsumed[1];
+        }
     }
 
     @Override
@@ -344,15 +344,15 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
     }
 
     @Override
-    public boolean onNestedFling(View target, float velocityX, float velocityY, boolean consumed)
-    {
-        return dispatchNestedFling(velocityX, velocityY, consumed);
-    }
-
-    @Override
     public boolean onNestedPreFling(View target, float velocityX, float velocityY)
     {
         return dispatchNestedPreFling(velocityX, velocityY);
+    }
+
+    @Override
+    public boolean onNestedFling(View target, float velocityX, float velocityY, boolean consumed)
+    {
+        return dispatchNestedFling(velocityX, velocityY, consumed);
     }
 
     @Override
