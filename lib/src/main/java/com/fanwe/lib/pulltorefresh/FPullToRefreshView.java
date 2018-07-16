@@ -27,6 +27,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.Scroller;
 
 import com.fanwe.lib.gesture.FGestureManager;
@@ -46,10 +47,12 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
     {
         super(context, attrs);
         setNestedScrollingEnabled(true);
+        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
 
     private FGestureManager mGestureManager;
     private FScroller mScroller;
+    private final int mTouchSlop;
 
     private FScroller getScroller()
     {
@@ -97,7 +100,7 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
                 @Override
                 public boolean shouldInterceptEvent(MotionEvent event)
                 {
-                    final boolean shouldInterceptEvent = canPull();
+                    final boolean shouldInterceptEvent = canPull() && !mIsNestedScroll;
                     if (mIsDebug)
                         Log.i(getDebugTag(), "shouldInterceptEvent:" + shouldInterceptEvent);
 
@@ -180,10 +183,11 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
         // 为了调试方便，让每个条件都执行后把值都列出来
 
         final boolean checkDegree = getGestureManager().getTouchHelper().getDegreeYFromDown() < 30;
+        final boolean checkPullDelta = Math.abs(getGestureManager().getTouchHelper().getDeltaYFromDown()) > mTouchSlop;
         final boolean checkPull = canPullFromHeader() || canPullFromFooter();
         final boolean checkState = getState() == State.RESET;
 
-        return checkDegree && checkPull && checkState;
+        return checkDegree && checkPullDelta && checkPull && checkState;
     }
 
     private boolean canPullFromHeader()
@@ -254,6 +258,7 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
 
     private final int[] mParentScrollConsumed = new int[2];
 
+    private boolean mIsNestedScroll;
     private boolean mHasNestedScroll;
 
     @Override
@@ -311,6 +316,7 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
     public void onStopNestedScroll(View child)
     {
         mNestedScrollingParentHelper.onStopNestedScroll(child);
+        mIsNestedScroll = false;
 
         if (mHasNestedScroll)
         {
@@ -326,6 +332,7 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
     {
         mNestedScrollingParentHelper.onNestedScrollAccepted(child, target, axes);
         startNestedScroll(axes & ViewCompat.SCROLL_AXIS_VERTICAL);
+        mIsNestedScroll = true;
     }
 
     @Override
