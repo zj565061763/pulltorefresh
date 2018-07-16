@@ -38,10 +38,9 @@ import com.fanwe.lib.pulltorefresh.loadingview.LoadingView;
 
 public class FPullToRefreshView extends BasePullToRefreshView implements NestedScrollingParent, NestedScrollingChild
 {
-    public FPullToRefreshView(Context context)
-    {
-        this(context, null);
-    }
+    private FGestureManager mGestureManager;
+    private FScroller mScroller;
+    private final int mTouchSlop;
 
     public FPullToRefreshView(Context context, AttributeSet attrs)
     {
@@ -49,10 +48,6 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
         setNestedScrollingEnabled(true);
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
-
-    private FGestureManager mGestureManager;
-    private FScroller mScroller;
-    private final int mTouchSlop;
 
     private FScroller getScroller()
     {

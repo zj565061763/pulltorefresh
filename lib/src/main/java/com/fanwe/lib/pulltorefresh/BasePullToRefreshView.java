@@ -29,18 +29,6 @@ import java.lang.reflect.Constructor;
 
 public abstract class BasePullToRefreshView extends ViewGroup implements PullToRefreshView
 {
-    public BasePullToRefreshView(Context context)
-    {
-        super(context);
-        init(null);
-    }
-
-    public BasePullToRefreshView(Context context, AttributeSet attrs)
-    {
-        super(context, attrs);
-        init(attrs);
-    }
-
     private LoadingView mHeaderView;
     private LoadingView mFooterView;
     private View mRefreshView;
@@ -69,8 +57,9 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     protected boolean mIsDebug;
     private boolean mIsDebugLayout;
 
-    private void init(AttributeSet attrs)
+    public BasePullToRefreshView(Context context, AttributeSet attrs)
     {
+        super(context, attrs);
         addLoadingViews();
     }
 
