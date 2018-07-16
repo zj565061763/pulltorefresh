@@ -249,9 +249,7 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
     private final int[] mParentOffsetInWindow = new int[2];
 
     private boolean mIsNestedScrollStarted;
-
     private boolean mNeedConsumeNestedScroll;
-    private boolean mHasNestedScroll;
 
     @Override
     public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes)
@@ -273,7 +271,6 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
         {
             consumed[1] = dy;
             moveViews(-dy, true);
-            mHasNestedScroll = true;
         }
 
         if (dispatchNestedPreScroll(dx - consumed[0], dy - consumed[1], mParentScrollConsumed, null))
@@ -287,17 +284,14 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
     public void onStopNestedScroll(View child)
     {
         if (mIsDebug)
-            Log.e(getDebugTag(), "onStopNestedScroll");
+            Log.e(getDebugTag(), "onStopNestedScroll:" + getDirection());
 
         mNestedScrollingParentHelper.onStopNestedScroll(child);
         mIsNestedScrollStarted = false;
         mNeedConsumeNestedScroll = false;
 
-        if (mHasNestedScroll)
-        {
-            mHasNestedScroll = false;
+        if (getDirection() != Direction.NONE)
             processDragFinish();
-        }
 
         stopNestedScroll();
     }
