@@ -51,12 +51,6 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
     private FGestureManager mGestureManager;
     private FScroller mScroller;
 
-    private final NestedScrollingParentHelper mNestedScrollingParentHelper = new NestedScrollingParentHelper(this);
-    private final NestedScrollingChildHelper mNestedScrollingChildHelper = new NestedScrollingChildHelper(this);
-
-    private final int[] mParentScrollConsumed = new int[2];
-    private final int[] mParentOffsetInWindow = new int[2];
-
     private FScroller getScroller()
     {
         if (mScroller == null)
@@ -255,7 +249,13 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
 
     //---------- NestedScrollingParent Start ----------
 
+    private final NestedScrollingParentHelper mNestedScrollingParentHelper = new NestedScrollingParentHelper(this);
+    private final NestedScrollingChildHelper mNestedScrollingChildHelper = new NestedScrollingChildHelper(this);
+
+    private final int[] mParentScrollConsumed = new int[2];
+
     private boolean mHasNestedScroll;
+    private int mNestedScrollDistance;
 
     @Override
     public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes)
@@ -273,9 +273,7 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
     @Override
     public void onNestedPreScroll(View target, int dx, int dy, int[] consumed)
     {
-        final int parentOffsetInWindowY = mParentOffsetInWindow[1];
-
-        if (getDirection() == Direction.NONE && parentOffsetInWindowY == 0)
+        if (getDirection() == Direction.NONE && mNestedScrollDistance == 0)
         {
             if (dy < 0)
             {
@@ -296,12 +294,13 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
 
         if (getDirection() != Direction.NONE)
         {
-            moveViews(-(dy + mParentOffsetInWindow[1]), true);
-            consumed[1] = dy;
             mHasNestedScroll = true;
+            consumed[1] = dy;
+            if (moveViews(-dy, true))
+                mNestedScrollDistance += dy;
         }
 
-        if (dispatchNestedPreScroll(dx - consumed[0], dy - consumed[1], mParentScrollConsumed, mParentOffsetInWindow))
+        if (dispatchNestedPreScroll(dx - consumed[0], dy - consumed[1], mParentScrollConsumed, null))
         {
             consumed[0] += mParentScrollConsumed[0];
             consumed[1] += mParentScrollConsumed[1];
@@ -332,7 +331,7 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
     @Override
     public void onNestedScroll(View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed)
     {
-        dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, mParentOffsetInWindow);
+        dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, null);
     }
 
     @Override

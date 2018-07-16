@@ -455,17 +455,18 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
      *
      * @param delta
      * @param isDrag true-手指拖动，false-惯性滑动
+     * @return
      */
-    protected final void moveViews(int delta, boolean isDrag)
+    protected final boolean moveViews(int delta, boolean isDrag)
     {
         if (delta == 0)
-            return;
+            return false;
 
         if (isDrag)
         {
             delta = getComsumedDistance(delta);
             if (delta == 0)
-                return;
+                return false;
         }
 
         checkDirection();
@@ -483,7 +484,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         }
 
         if (delta == 0)
-            return;
+            return false;
 
         // HeaderView or FooterView
         Utils.offsetTopAndBottom((View) loadingView, delta);
@@ -504,6 +505,8 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
 
         if (isDrag)
             updateStateByMoveDistance();
+
+        return true;
     }
 
     /**
