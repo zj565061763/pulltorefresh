@@ -803,7 +803,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
      * @param loadingView
      * @return
      */
-    protected final int getTopLoadingViewReset(LoadingView loadingView)
+    private int getTopLoadingViewReset(LoadingView loadingView)
     {
         if (loadingView == mHeaderView)
         {
@@ -823,7 +823,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
      * @param loadingView
      * @return
      */
-    protected final int getTopLoadingViewRefreshing(LoadingView loadingView)
+    private int getTopLoadingViewRefreshing(LoadingView loadingView)
     {
         final int reset = getTopLoadingViewReset(loadingView);
 
