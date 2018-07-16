@@ -16,7 +16,9 @@
 package com.fanwe.lib.pulltorefresh;
 
 import android.content.Context;
-import android.os.Build;
+import android.support.annotation.Nullable;
+import android.support.v4.view.NestedScrollingChild;
+import android.support.v4.view.NestedScrollingChildHelper;
 import android.support.v4.view.NestedScrollingParent;
 import android.support.v4.view.NestedScrollingParentHelper;
 import android.support.v4.view.ViewCompat;
@@ -33,22 +35,27 @@ import com.fanwe.lib.gesture.FTouchHelper;
 import com.fanwe.lib.gesture.tag.TagHolder;
 import com.fanwe.lib.pulltorefresh.loadingview.LoadingView;
 
-public class FPullToRefreshView extends BasePullToRefreshView implements NestedScrollingParent
+public class FPullToRefreshView extends BasePullToRefreshView implements NestedScrollingParent, NestedScrollingChild
 {
     public FPullToRefreshView(Context context)
     {
-        super(context);
+        this(context, null);
     }
 
     public FPullToRefreshView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
+        setNestedScrollingEnabled(true);
     }
 
     private FGestureManager mGestureManager;
     private FScroller mScroller;
 
     private final NestedScrollingParentHelper mNestedScrollingParentHelper = new NestedScrollingParentHelper(this);
+    private final NestedScrollingChildHelper mNestedScrollingChildHelper = new NestedScrollingChildHelper(this);
+
+    private final int[] mParentScrollConsumed = new int[2];
+    private final int[] mParentOffsetInWindow = new int[2];
 
     private FScroller getScroller()
     {
@@ -266,93 +273,143 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
     @Override
     public void onNestedPreScroll(View target, int dx, int dy, int[] consumed)
     {
-        if (Build.VERSION.SDK_INT >= 21)
-            super.onNestedPreScroll(target, dx, dy, consumed);
+        final int parentOffsetInWindowY = mParentOffsetInWindow[1];
 
-        dy = -dy;
-
-        boolean check = false;
-        if (dy > 0)
+        if (getDirection() == Direction.NONE && parentOffsetInWindowY == 0)
         {
-            if (check = checkPullConditionHeader() && FTouchHelper.isScrollToTop(getRefreshView()))
+            if (dy < 0)
             {
-                setDirection(Direction.FROM_HEADER);
-                getScroller().setMaxScrollDistance(((View) getHeaderView()).getHeight());
-            }
-        } else if (dy < 0)
-        {
-            if (check = checkPullConditionFooter() && FTouchHelper.isScrollToBottom(getRefreshView()))
+                if (checkPullConditionHeader() && FTouchHelper.isScrollToTop(getRefreshView()))
+                {
+                    setDirection(Direction.FROM_HEADER);
+                    getScroller().setMaxScrollDistance(((View) getHeaderView()).getHeight());
+                }
+            } else if (dy > 0)
             {
-                setDirection(Direction.FROM_FOOTER);
-                getScroller().setMaxScrollDistance(((View) getFooterView()).getHeight());
+                if (checkPullConditionFooter() && FTouchHelper.isScrollToBottom(getRefreshView()))
+                {
+                    setDirection(Direction.FROM_FOOTER);
+                    getScroller().setMaxScrollDistance(((View) getFooterView()).getHeight());
+                }
             }
         }
 
-        if (check)
+        if (getDirection() != Direction.NONE)
         {
-            moveViews(dy, true);
-            consumed[1] = -dy;
+            moveViews(-(dy + mParentOffsetInWindow[1]), true);
+            consumed[1] = dy;
             mHasNestedScroll = true;
+        }
+
+        if (dispatchNestedPreScroll(dx - consumed[0], dy - consumed[1], mParentScrollConsumed, mParentOffsetInWindow))
+        {
+            consumed[0] += mParentScrollConsumed[0];
+            consumed[1] += mParentScrollConsumed[1];
         }
     }
 
     @Override
     public void onStopNestedScroll(View child)
     {
-        if (Build.VERSION.SDK_INT >= 21)
-            super.onStopNestedScroll(child);
-        else
-            mNestedScrollingParentHelper.onStopNestedScroll(child);
+        mNestedScrollingParentHelper.onStopNestedScroll(child);
 
         if (mHasNestedScroll)
         {
             mHasNestedScroll = false;
             processDragFinish();
         }
+
+        stopNestedScroll();
     }
 
     @Override
     public void onNestedScrollAccepted(View child, View target, int axes)
     {
-        if (Build.VERSION.SDK_INT >= 21)
-            super.onNestedScrollAccepted(child, target, axes);
-        else
-            mNestedScrollingParentHelper.onNestedScrollAccepted(child, target, axes);
+        mNestedScrollingParentHelper.onNestedScrollAccepted(child, target, axes);
+        startNestedScroll(axes & ViewCompat.SCROLL_AXIS_VERTICAL);
     }
 
     @Override
     public void onNestedScroll(View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed)
     {
-        if (Build.VERSION.SDK_INT >= 21)
-            super.onNestedScroll(target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
+        dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, mParentOffsetInWindow);
     }
 
     @Override
     public boolean onNestedFling(View target, float velocityX, float velocityY, boolean consumed)
     {
-        if (Build.VERSION.SDK_INT >= 21)
-            return super.onNestedFling(target, velocityX, velocityY, consumed);
-        else
-            return false;
+        return dispatchNestedFling(velocityX, velocityY, consumed);
     }
 
     @Override
     public boolean onNestedPreFling(View target, float velocityX, float velocityY)
     {
-        if (Build.VERSION.SDK_INT >= 21)
-            return super.onNestedPreFling(target, velocityX, velocityY);
-        else
-            return false;
+        return dispatchNestedPreFling(velocityX, velocityY);
     }
 
     @Override
     public int getNestedScrollAxes()
     {
-        if (Build.VERSION.SDK_INT >= 21)
-            return super.getNestedScrollAxes();
-        else
-            return mNestedScrollingParentHelper.getNestedScrollAxes();
+        return mNestedScrollingParentHelper.getNestedScrollAxes();
     }
 
     //---------- NestedScrollingParent End ----------
+
+    //---------- NestedScrollingChild Start ----------
+
+    @Override
+    public void setNestedScrollingEnabled(boolean enabled)
+    {
+        mNestedScrollingChildHelper.setNestedScrollingEnabled(enabled);
+    }
+
+    @Override
+    public boolean isNestedScrollingEnabled()
+    {
+        return mNestedScrollingChildHelper.isNestedScrollingEnabled();
+    }
+
+    @Override
+    public boolean startNestedScroll(int axes)
+    {
+        return mNestedScrollingChildHelper.startNestedScroll(axes);
+    }
+
+    @Override
+    public void stopNestedScroll()
+    {
+        mNestedScrollingChildHelper.stopNestedScroll();
+    }
+
+    @Override
+    public boolean hasNestedScrollingParent()
+    {
+        return mNestedScrollingChildHelper.hasNestedScrollingParent();
+    }
+
+    @Override
+    public boolean dispatchNestedPreScroll(int dx, int dy, int[] consumed, int[] offsetInWindow)
+    {
+        return mNestedScrollingChildHelper.dispatchNestedPreScroll(dx, dy, consumed, offsetInWindow);
+    }
+
+    @Override
+    public boolean dispatchNestedScroll(int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, @Nullable int[] offsetInWindow)
+    {
+        return mNestedScrollingChildHelper.dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, offsetInWindow);
+    }
+
+    @Override
+    public boolean dispatchNestedPreFling(float velocityX, float velocityY)
+    {
+        return mNestedScrollingChildHelper.dispatchNestedPreFling(velocityX, velocityY);
+    }
+
+    @Override
+    public boolean dispatchNestedFling(float velocityX, float velocityY, boolean consumed)
+    {
+        return mNestedScrollingChildHelper.dispatchNestedFling(velocityX, velocityY, consumed);
+    }
+
+    //---------- NestedScrollingChild End ----------
 }
