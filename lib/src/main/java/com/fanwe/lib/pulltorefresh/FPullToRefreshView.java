@@ -280,7 +280,6 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
     {
         if (getDirection() != Direction.NONE && !isLoadingViewReset())
         {
-            mHasNestedScroll = true;
             consumed[1] = dy;
             moveViews(-dy, true);
         }
