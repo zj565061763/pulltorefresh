@@ -96,9 +96,6 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
                 public boolean shouldInterceptEvent(MotionEvent event)
                 {
                     final boolean shouldInterceptEvent = canPull() && !mIsNestedScrollStarted;
-                    if (mIsDebug)
-                        Log.i(getDebugTag(), "shouldInterceptEvent:" + shouldInterceptEvent);
-
                     return shouldInterceptEvent;
                 }
 
@@ -106,9 +103,6 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
                 public boolean shouldConsumeEvent(MotionEvent event)
                 {
                     final boolean shouldConsumeEvent = canPull();
-                    if (mIsDebug)
-                        Log.i(getDebugTag(), "shouldConsumeEvent:" + shouldConsumeEvent);
-
                     return shouldConsumeEvent;
                 }
 
@@ -277,9 +271,6 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
     {
         if (mNeedConsumeNestedScroll)
         {
-            if (mIsDebug)
-                Log.i(getDebugTag(), "onNestedPreScroll consume");
-
             consumed[1] = dy;
             moveViews(-dy, true);
             mHasNestedScroll = true;
