@@ -260,8 +260,7 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
         final boolean checkTarget = target == getRefreshView();
         final boolean checkDirection = (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
 
-        final boolean checkFinal = checkState && checkMode && checkIsScrollToBound && checkTarget && checkDirection;
-        return checkFinal;
+        return checkState && checkMode && checkIsScrollToBound && checkTarget && checkDirection;
     }
 
     @Override
