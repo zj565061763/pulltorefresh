@@ -284,10 +284,12 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
 
         mNestedScrollingParentHelper.onStopNestedScroll(child);
         mIsNestedScrollStarted = false;
-        mNeedConsumeNestedScroll = false;
 
-        if (getDirection() != Direction.NONE)
+        if (mNeedConsumeNestedScroll)
+        {
+            mNeedConsumeNestedScroll = false;
             processDragFinish();
+        }
 
         stopNestedScroll();
     }
