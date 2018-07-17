@@ -102,7 +102,7 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
                 @Override
                 public boolean shouldConsumeEvent(MotionEvent event)
                 {
-                    final boolean shouldConsumeEvent = canPull();
+                    final boolean shouldConsumeEvent = canPull() && !mIsNestedScrollStarted;
                     return shouldConsumeEvent;
                 }
 
