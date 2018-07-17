@@ -16,6 +16,7 @@
 package com.fanwe.lib.pulltorefresh;
 
 import android.content.Context;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -479,17 +480,17 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
             return false;
 
         // HeaderView or FooterView
-        Utils.offsetTopAndBottom((View) loadingView, delta);
+        ViewCompat.offsetTopAndBottom((View) loadingView, delta);
         loadingView.onViewPositionChanged(this);
 
         // RefreshView
         if (mIsOverLayMode)
         {
-            if (Utils.getZ((View) loadingView) <= Utils.getZ(mRefreshView))
-                Utils.setZ((View) loadingView, Utils.getZ(mRefreshView) + 1);
+            if (ViewCompat.getZ((View) loadingView) <= ViewCompat.getZ(mRefreshView))
+                ViewCompat.setZ((View) loadingView, ViewCompat.getZ(mRefreshView) + 1);
         } else
         {
-            Utils.offsetTopAndBottom(mRefreshView, delta);
+            ViewCompat.offsetTopAndBottom(mRefreshView, delta);
         }
 
         if (mOnViewPositionChangeCallback != null)
