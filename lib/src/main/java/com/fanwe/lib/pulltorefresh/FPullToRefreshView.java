@@ -95,14 +95,14 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
                 @Override
                 public boolean shouldInterceptEvent(MotionEvent event)
                 {
-                    final boolean shouldInterceptEvent = canPull() && !mIsNestedScrollStarted;
+                    final boolean shouldInterceptEvent = canPull();
                     return shouldInterceptEvent;
                 }
 
                 @Override
                 public boolean shouldConsumeEvent(MotionEvent event)
                 {
-                    final boolean shouldConsumeEvent = canPull() && !mIsNestedScrollStarted;
+                    final boolean shouldConsumeEvent = canPull();
                     return shouldConsumeEvent;
                 }
 
@@ -175,8 +175,9 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
         final boolean checkPullDelta = Math.abs(getGestureManager().getTouchHelper().getDeltaYFromDown()) > mTouchSlop;
         final boolean checkPull = canPullFromHeader() || canPullFromFooter();
         final boolean checkState = getState() == State.RESET;
+        final boolean checkNestedScroll = !mIsNestedScrollStarted;
 
-        return checkDegree && checkPullDelta && checkPull && checkState;
+        return checkDegree && checkPullDelta && checkPull && checkState && checkNestedScroll;
     }
 
     private boolean canPullFromHeader()
