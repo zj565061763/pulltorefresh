@@ -797,16 +797,6 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         return getHeight() - getPaddingBottom();
     }
 
-    protected boolean isLoadingViewReset()
-    {
-        final LoadingView view = getLoadingViewByDirection();
-        if (view == null)
-            return true;
-
-        final int topReset = getTopLoadingViewReset(view);
-        return topReset == ((View) view).getTop();
-    }
-
     /**
      * 返回loadingView在{@link State#RESET}状态下的top值
      *
