@@ -172,8 +172,11 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
         // 为了调试方便，让每个条件都执行后把值都列出来
 
         final boolean checkDegree = getGestureManager().getTouchHelper().getDegreeYFromDown() < 30;
-        final boolean checkPullDelta = Math.abs(getGestureManager().getTouchHelper().getDeltaYFromDown()) > mTouchSlop;
-        final boolean checkPull = canPullFromHeader() || canPullFromFooter();
+
+        final int deltaY = (int) getGestureManager().getTouchHelper().getDeltaYFromDown();
+        final boolean checkPullDelta = Math.abs(deltaY) > mTouchSlop;
+        final boolean checkPull = (canPullFromHeader() && deltaY > 0) || (canPullFromFooter() && deltaY < 0);
+
         final boolean checkState = getState() == State.RESET;
         final boolean checkNestedScroll = !mIsNestedScrollStarted;
 
@@ -182,22 +185,16 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
 
     private boolean canPullFromHeader()
     {
-        final boolean checkIsMoveBottom = getGestureManager().getTouchHelper().getDeltaYFromDown() > 0;
-        final boolean checkMode = getMode() == Mode.PULL_BOTH || getMode() == Mode.PULL_FROM_HEADER;
-        final boolean checkIsScrollToTop = FTouchHelper.isScrollToTop(getRefreshView());
-        final boolean checkPullCondition = checkPullConditionHeader();
-
-        return checkIsMoveBottom && checkMode && checkIsScrollToTop && checkPullCondition;
+        return (getMode() == Mode.PULL_BOTH || getMode() == Mode.PULL_FROM_HEADER)
+                && (FTouchHelper.isScrollToTop(getRefreshView()))
+                && (checkPullConditionHeader());
     }
 
     private boolean canPullFromFooter()
     {
-        final boolean checkIsMoveTop = getGestureManager().getTouchHelper().getDeltaYFromDown() < 0;
-        final boolean checkMode = getMode() == Mode.PULL_BOTH || getMode() == Mode.PULL_FROM_FOOTER;
-        final boolean checkIsScrollToBottom = FTouchHelper.isScrollToBottom(getRefreshView());
-        final boolean checkPullCondition = checkPullConditionFooter();
-
-        return checkIsMoveTop && checkMode && checkIsScrollToBottom && checkPullCondition;
+        return (getMode() == Mode.PULL_BOTH || getMode() == Mode.PULL_FROM_FOOTER)
+                && (FTouchHelper.isScrollToBottom(getRefreshView()))
+                && (checkPullConditionFooter());
     }
 
     @Override
@@ -323,14 +320,16 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
             {
                 if (dy < 0)
                 {
-                    if (checkPullConditionHeader() && FTouchHelper.isScrollToTop(getRefreshView()))
+                    // header
+                    if (canPullFromHeader())
                     {
                         setDirection(Direction.FROM_HEADER);
                         getScroller().setMaxScrollDistance(((View) getHeaderView()).getHeight());
                     }
                 } else if (dy > 0)
                 {
-                    if (checkPullConditionFooter() && FTouchHelper.isScrollToBottom(getRefreshView()))
+                    // footer
+                    if (canPullFromFooter())
                     {
                         setDirection(Direction.FROM_FOOTER);
                         getScroller().setMaxScrollDistance(((View) getFooterView()).getHeight());
