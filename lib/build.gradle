@@ -8,8 +8,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 20180626
-        versionName "1.1.0-rc3"
+        versionCode 20180730
+        versionName "1.1.0-rc4"
     }
 
     buildTypes {
@@ -26,7 +26,7 @@ android {
 }
 
 dependencies {
-    compileOnly 'com.android.support:support-v4:+'
+    implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.github.zj565061763:gesture:1.0.10'
 }
 
