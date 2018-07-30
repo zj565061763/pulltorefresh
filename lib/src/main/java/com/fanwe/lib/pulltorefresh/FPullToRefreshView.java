@@ -238,8 +238,6 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
         getScroller().abortAnimation();
     }
 
-    //---------- NestedScrollingParent Start ----------
-
     private final NestedScrollingParentHelper mNestedScrollingParentHelper = new NestedScrollingParentHelper(this);
     private final NestedScrollingChildHelper mNestedScrollingChildHelper = new NestedScrollingChildHelper(this);
 
@@ -248,6 +246,8 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
 
     private boolean mIsNestedScrollStarted;
     private boolean mNeedConsumeNestedScroll;
+
+    //---------- NestedScrollingParent Start ----------
 
     @Override
     public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes)
