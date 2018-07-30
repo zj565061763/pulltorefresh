@@ -3,11 +3,6 @@
 
 # Gradle
 [![](https://jitpack.io/v/zj565061763/pulltorefresh.svg)](https://jitpack.io/#zj565061763/pulltorefresh)
-<br>
-本库需要依赖以下库：
-```
-implementation 'com.android.support:support-v4:+'
-```
 
 # 简单效果
 ![](http://thumbsnap.com/i/8AyEAjrW.gif?0725)<br>
