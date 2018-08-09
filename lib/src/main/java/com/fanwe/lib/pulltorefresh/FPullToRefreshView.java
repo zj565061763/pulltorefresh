@@ -221,8 +221,9 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
     {
         final boolean checkScrollerFinished = getScroller().isFinished();
         final boolean checkNotDragging = !getGestureManager().getTagHolder().isTagConsume();
+        final boolean checkNotNestedScroll = !mIsNestedScrollStarted;
 
-        return checkScrollerFinished && checkNotDragging;
+        return checkScrollerFinished && checkNotDragging && checkNotNestedScroll;
     }
 
     @Override
