@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AbsListView;
 
-import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
+import com.sd.lib.pulltorefresh.FPullToRefreshView;
 
 /**
  * Created by Administrator on 2017/7/3.

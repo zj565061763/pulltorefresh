@@ -2,19 +2,18 @@ package com.sd.demo.pulltorefresh.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.fanwe.lib.adapter.FSimpleAdapter;
-import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
-import com.fanwe.lib.pulltorefresh.PullToRefreshView;
 import com.sd.demo.pulltorefresh.R;
 import com.sd.demo.pulltorefresh.loadingview.CustomPullToRefreshLoadingView;
 import com.sd.demo.pulltorefresh.model.DataModel;
+import com.sd.lib.adapter.FSimpleAdapter;
+import com.sd.lib.pulltorefresh.FPullToRefreshView;
+import com.sd.lib.pulltorefresh.PullToRefreshView;
 
 public class ListViewActivity extends AppCompatActivity
 {
@@ -22,7 +21,7 @@ public class ListViewActivity extends AppCompatActivity
     private ListView mListView;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState)
+    protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listview);

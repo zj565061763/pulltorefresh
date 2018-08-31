@@ -7,8 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
 
-import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
-import com.fanwe.lib.pulltorefresh.PullToRefreshView;
+import com.sd.lib.pulltorefresh.FPullToRefreshView;
+import com.sd.lib.pulltorefresh.PullToRefreshView;
 import com.sd.demo.pulltorefresh.R;
 
 public class ScrollViewActivity extends AppCompatActivity

@@ -23,7 +23,7 @@
         android:layout_height="50dp"
         android:text="停止刷新->失败"/>
 
-    <com.fanwe.lib.pulltorefresh.FPullToRefreshView
+    <com.sd.lib.pulltorefresh.FPullToRefreshView
         android:id="@+id/view_pull"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -37,6 +37,6 @@
             android:background="@color/white"
             android:text="覆盖模式"/>
 
-    </com.fanwe.lib.pulltorefresh.FPullToRefreshView>
+    </com.sd.lib.pulltorefresh.FPullToRefreshView>
 
 </LinearLayout>

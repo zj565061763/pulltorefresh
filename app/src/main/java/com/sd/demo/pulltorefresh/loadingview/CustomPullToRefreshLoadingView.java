@@ -1,16 +1,13 @@
 package com.sd.demo.pulltorefresh.loadingview;
 
 import android.content.Context;
-import android.support.annotation.AttrRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 
-import com.fanwe.lib.pulltorefresh.PullToRefreshView;
-import com.fanwe.lib.pulltorefresh.loadingview.SimpleImageLoadingView;
-import com.fanwe.lib.utils.FViewUtil;
-import com.fanwe.lib.utils.context.FResUtil;
 import com.sd.demo.pulltorefresh.R;
+import com.sd.lib.pulltorefresh.PullToRefreshView;
+import com.sd.lib.pulltorefresh.loadingview.SimpleImageLoadingView;
+import com.sd.lib.utils.FViewUtil;
+import com.sd.lib.utils.context.FResUtil;
 
 /**
  * Created by Administrator on 2017/6/30.
@@ -18,17 +15,17 @@ import com.sd.demo.pulltorefresh.R;
 
 public class CustomPullToRefreshLoadingView extends SimpleImageLoadingView
 {
-    public CustomPullToRefreshLoadingView(@NonNull Context context)
+    public CustomPullToRefreshLoadingView(Context context)
     {
         super(context);
     }
 
-    public CustomPullToRefreshLoadingView(@NonNull Context context, @Nullable AttributeSet attrs)
+    public CustomPullToRefreshLoadingView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
     }
 
-    public CustomPullToRefreshLoadingView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr)
+    public CustomPullToRefreshLoadingView(Context context, AttributeSet attrs, int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
     }

@@ -2,20 +2,19 @@ package com.sd.demo.pulltorefresh.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.fanwe.lib.adapter.FSimpleRecyclerAdapter;
-import com.fanwe.lib.adapter.viewholder.FRecyclerViewHolder;
-import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
-import com.fanwe.lib.pulltorefresh.PullToRefreshView;
 import com.sd.demo.pulltorefresh.R;
 import com.sd.demo.pulltorefresh.loadingview.CustomPullToRefreshLoadingView;
 import com.sd.demo.pulltorefresh.model.DataModel;
+import com.sd.lib.adapter.FSimpleRecyclerAdapter;
+import com.sd.lib.adapter.viewholder.FRecyclerViewHolder;
+import com.sd.lib.pulltorefresh.FPullToRefreshView;
+import com.sd.lib.pulltorefresh.PullToRefreshView;
 
 public class RecyclerViewActivity extends AppCompatActivity
 {
@@ -23,7 +22,7 @@ public class RecyclerViewActivity extends AppCompatActivity
     private RecyclerView mRecyclerView;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState)
+    protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recyclerview);

@@ -8,8 +8,8 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 
-import com.fanwe.lib.pulltorefresh.PullToRefreshView;
-import com.fanwe.lib.pulltorefresh.loadingview.BaseLoadingView;
+import com.sd.lib.pulltorefresh.PullToRefreshView;
+import com.sd.lib.pulltorefresh.loadingview.BaseLoadingView;
 
 /**
  * Created by Administrator on 2017/7/26.

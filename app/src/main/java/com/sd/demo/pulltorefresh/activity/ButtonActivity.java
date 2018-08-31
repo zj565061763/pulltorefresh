@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.fanwe.lib.pulltorefresh.FPullToRefreshView;
-import com.fanwe.lib.pulltorefresh.PullToRefreshView;
+import com.sd.lib.pulltorefresh.FPullToRefreshView;
+import com.sd.lib.pulltorefresh.PullToRefreshView;
 import com.sd.demo.pulltorefresh.R;
 import com.sd.demo.pulltorefresh.loadingview.google.GoogleLoadingView;
 
