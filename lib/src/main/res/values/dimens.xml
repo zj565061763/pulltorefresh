@@ -1,6 +1,0 @@
-<resources>
-
-    <!-- 默认的加载view中提示文字的大小 -->
-    <dimen name="lib_ptr_text_loading_info">13sp</dimen>
-
-</resources>

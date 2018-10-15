@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <!-- 默认的加载view中提示文字的颜色 -->
-    <color name="lib_ptr_text_loading_info">#888888</color>
-
-</resources>

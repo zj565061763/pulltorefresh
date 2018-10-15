@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--          string          -->
+
+    <string name="lib_ptr_state_pull_to_refresh_header">pull to refresh</string>
+    <string name="lib_ptr_state_pull_to_refresh_footer">pull to load</string>
+
+    <string name="lib_ptr_state_release_to_refresh_header">release to refresh</string>
+    <string name="lib_ptr_state_release_to_refresh_footer">release to load</string>
+
+    <string name="lib_ptr_state_refreshing_header">refreshing...</string>
+    <string name="lib_ptr_state_refreshing_footer">loading...</string>
+
+    <string name="lib_ptr_state_refreshing_success_header">refreshing success</string>
+    <string name="lib_ptr_state_refreshing_success_footer">loading success</string>
+
+    <string name="lib_ptr_state_refreshing_failure_header">refreshing failure</string>
+    <string name="lib_ptr_state_refreshing_failure_footer">loading failure</string>
+
+</resources>
