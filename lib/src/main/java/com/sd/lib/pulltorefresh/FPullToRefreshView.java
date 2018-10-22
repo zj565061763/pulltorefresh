@@ -198,7 +198,7 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
     public void computeScroll()
     {
         if (getScroller().computeScrollOffset())
-            invalidate();
+            ViewCompat.postInvalidateOnAnimation(this);
     }
 
     @Override

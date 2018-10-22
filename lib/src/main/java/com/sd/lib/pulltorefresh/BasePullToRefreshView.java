@@ -325,7 +325,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
 
         if (slide)
         {
-            invalidate();
+            ViewCompat.postInvalidateOnAnimation(this);
         } else
         {
             dealViewIdle();
