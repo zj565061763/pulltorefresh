@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -9,30 +8,24 @@
         android:id="@+id/btn_button"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="Button_Activity"/>
+        android:text="Button_Activity" />
 
     <Button
         android:id="@+id/btn_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="Recyclerview_Activity"/>
+        android:text="Recyclerview_Activity" />
 
     <Button
         android:id="@+id/btn_listview"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="ListView_Activity"/>
+        android:text="ListView_Activity" />
 
     <Button
         android:id="@+id/btn_scrollview"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="ScrollView_Activity"/>
-
-    <Button
-        android:id="@+id/btn_dynamic_add"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="Dynamic_add_Activity"/>
+        android:text="ScrollView_Activity" />
 
 </LinearLayout>
