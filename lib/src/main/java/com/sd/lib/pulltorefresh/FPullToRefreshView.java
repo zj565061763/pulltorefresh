@@ -13,11 +13,11 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.widget.Scroller;
 
 import com.sd.lib.gesture.FGestureManager;
-import com.sd.lib.gesture.FScroller;
 import com.sd.lib.gesture.FTouchHelper;
+import com.sd.lib.gesture.scroller.FScroller;
+import com.sd.lib.gesture.scroller.SimpleScrollerApi;
 import com.sd.lib.gesture.tag.TagHolder;
 import com.sd.lib.pulltorefresh.loadingview.LoadingView;
 
@@ -38,7 +38,7 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
     {
         if (mScroller == null)
         {
-            mScroller = new FScroller(new Scroller(getContext()));
+            mScroller = new FScroller(new SimpleScrollerApi(getContext()));
             mScroller.setCallback(new FScroller.Callback()
             {
                 @Override
