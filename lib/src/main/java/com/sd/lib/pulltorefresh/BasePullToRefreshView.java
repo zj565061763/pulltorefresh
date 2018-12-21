@@ -639,10 +639,10 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
 
         final int count = getChildCount();
         if (count < 3)
-            throw new IllegalArgumentException("you must add one child to SDPullToRefreshView in your xml file");
+            throw new IllegalArgumentException("you must add one child to PullToRefreshView in your xml file");
 
         if (count > 3)
-            throw new IllegalArgumentException("you can only add one child to SDPullToRefreshView in your xml file");
+            throw new IllegalArgumentException("you can only add one child to PullToRefreshView in your xml file");
 
         mRefreshView = getChildAt(2);
     }
