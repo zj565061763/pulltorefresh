@@ -8,8 +8,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 20181221
-        versionName "1.2.0-rc4"
+        versionCode 20181224
+        versionName "1.2.0-rc5"
     }
 
     buildTypes {
@@ -27,7 +27,7 @@ android {
 
 dependencies {
     implementation 'com.android.support:support-v4:27.1.1'
-    implementation 'com.github.zj565061763:gesture:1.1.2'
+    implementation 'com.github.zj565061763:gesture:1.2.0'
 }
 
 // 指定编码

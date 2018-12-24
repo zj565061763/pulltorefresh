@@ -15,9 +15,8 @@ import android.view.View;
 import android.view.ViewConfiguration;
 
 import com.sd.lib.gesture.FGestureManager;
+import com.sd.lib.gesture.FScroller;
 import com.sd.lib.gesture.FTouchHelper;
-import com.sd.lib.gesture.scroller.FScroller;
-import com.sd.lib.gesture.scroller.SimpleScrollerApi;
 import com.sd.lib.gesture.tag.TagHolder;
 import com.sd.lib.pulltorefresh.loadingview.LoadingView;
 
@@ -38,27 +37,14 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
     {
         if (mScroller == null)
         {
-            mScroller = new FScroller(new SimpleScrollerApi(getContext()));
-            mScroller.setCallback(new FScroller.Callback()
+            mScroller = new FScroller(getContext())
             {
                 @Override
-                public void onScrollStateChanged(boolean isFinished)
-                {
-                    if (isFinished)
-                    {
-                        if (mIsDebug)
-                            Log.i(getDebugTag(), "onScroll finished:" + " " + getState());
-
-                        dealViewIdle();
-                    }
-                }
-
-                @Override
-                public void onScroll(int lastX, int lastY, int currX, int currY)
+                protected void onScrollCompute(int lastX, int lastY, int currX, int currY)
                 {
                     final int dy = currY - lastY;
-
                     moveViews(dy, false);
+
                     if (mIsDebug)
                     {
                         final LoadingView loadingView = getLoadingViewByDirection();
@@ -66,7 +52,16 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
                         Log.i(getDebugTag(), "onScroll:" + top + " " + getState());
                     }
                 }
-            });
+
+                @Override
+                protected void onScrollFinish(boolean isAbort)
+                {
+                    if (mIsDebug)
+                        Log.i(getDebugTag(), "onScroll finished:" + " " + getState());
+
+                    dealViewIdle();
+                }
+            };
         }
         return mScroller;
     }
@@ -102,9 +97,9 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
                 }
 
                 @Override
-                public void onEventFinish(boolean hasConsumeEvent, VelocityTracker velocityTracker, MotionEvent event)
+                public void onEventFinish(FGestureManager.FinishParams params, VelocityTracker velocityTracker, MotionEvent event)
                 {
-                    if (hasConsumeEvent)
+                    if (params.hasConsumeEvent)
                     {
                         if (mIsDebug)
                             Log.e(getDebugTag(), "onConsumeEventFinish:" + event.getAction() + " " + getState());
