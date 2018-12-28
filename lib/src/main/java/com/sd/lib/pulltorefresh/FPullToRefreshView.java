@@ -51,8 +51,6 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
                 @Override
                 public void onEventConsume(MotionEvent event)
                 {
-                    setDirectionByDelta((int) getGestureManager().getTouchHelper().getDeltaYFromDown());
-
                     final int dy = (int) getGestureManager().getTouchHelper().getDeltaY();
                     moveViews(dy, true);
                 }
@@ -128,7 +126,7 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
     /**
      * 根据移动距离设置方向
      *
-     * @param delta
+     * @param delta 大于0-下拉，小于0-上拉
      */
     private void setDirectionByDelta(int delta)
     {
@@ -169,6 +167,7 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
         if (!checkNotNestedScroll)
             return false;
 
+        setDirectionByDelta(deltaY);
         return true;
     }
 
@@ -294,34 +293,34 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
         dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, mParentOffsetInWindow);
 
         final int dy = dyUnconsumed + mParentOffsetInWindow[1];
-        if (dy != 0)
-        {
-            if (getDirection() == Direction.NONE)
-            {
-                if (dy < 0)
-                {
-                    // header
-                    if (canPullFromHeader())
-                    {
-                        setDirection(Direction.FROM_HEADER);
-                        getGestureManager().getScroller().setMaxScrollDistance(((View) getHeaderView()).getHeight());
-                    }
-                } else if (dy > 0)
-                {
-                    // footer
-                    if (canPullFromFooter())
-                    {
-                        setDirection(Direction.FROM_FOOTER);
-                        getGestureManager().getScroller().setMaxScrollDistance(((View) getFooterView()).getHeight());
-                    }
-                }
+        if (dy == 0)
+            return;
 
-                if (getDirection() != Direction.NONE)
+        if (getDirection() == Direction.NONE)
+        {
+            if (dy < 0)
+            {
+                // header
+                if (canPullFromHeader())
                 {
-                    mNeedConsumeNestedScroll = true;
-                    if (mIsDebug)
-                        Log.i(getDebugTag(), "onNestedScroll need consume");
+                    setDirection(Direction.FROM_HEADER);
+                    getGestureManager().getScroller().setMaxScrollDistance(((View) getHeaderView()).getHeight());
                 }
+            } else if (dy > 0)
+            {
+                // footer
+                if (canPullFromFooter())
+                {
+                    setDirection(Direction.FROM_FOOTER);
+                    getGestureManager().getScroller().setMaxScrollDistance(((View) getFooterView()).getHeight());
+                }
+            }
+
+            if (getDirection() != Direction.NONE)
+            {
+                mNeedConsumeNestedScroll = true;
+                if (mIsDebug)
+                    Log.i(getDebugTag(), "onNestedScroll need consume");
             }
         }
     }
