@@ -51,7 +51,7 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
                 @Override
                 public void onEventConsume(MotionEvent event)
                 {
-                    saveDirectionWhenMove();
+                    setDirectionByDelta((int) getGestureManager().getTouchHelper().getDeltaYFromDown());
 
                     final int dy = (int) getGestureManager().getTouchHelper().getDeltaY();
                     moveViews(dy, true);
@@ -125,13 +125,21 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
         updateViewByState();
     }
 
-    private void saveDirectionWhenMove()
+    /**
+     * 根据移动距离设置方向
+     *
+     * @param delta
+     */
+    private void setDirectionByDelta(int delta)
     {
-        if (getGestureManager().getTouchHelper().getDeltaYFromDown() > 0)
+        if (delta == 0)
+            throw new IllegalArgumentException();
+
+        if (delta > 0)
         {
             setDirection(Direction.FROM_HEADER);
             getGestureManager().getScroller().setMaxScrollDistance(((View) getHeaderView()).getHeight());
-        } else if (getGestureManager().getTouchHelper().getDeltaYFromDown() < 0)
+        } else if (delta < 0)
         {
             setDirection(Direction.FROM_FOOTER);
             getGestureManager().getScroller().setMaxScrollDistance(((View) getFooterView()).getHeight());
