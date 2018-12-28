@@ -140,8 +140,8 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     @Override
     public void setDurationShowRefreshResult(int duration)
     {
-        if (duration < 0)
-            throw new IllegalArgumentException("duration >= 0 required");
+        if (duration <= 0)
+            throw new IllegalArgumentException("duration > 0 required");
 
         mDurationShowRefreshResult = duration;
     }
