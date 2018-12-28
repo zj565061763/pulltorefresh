@@ -79,6 +79,7 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
                         case Consume:
                             break;
                         case Fling:
+                            ViewCompat.postInvalidateOnAnimation(FPullToRefreshView.this);
                             break;
                         case Idle:
                             dealViewIdle();

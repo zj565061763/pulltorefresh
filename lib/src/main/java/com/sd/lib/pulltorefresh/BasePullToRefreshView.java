@@ -321,11 +321,8 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
             Log.i(getDebugTag(), "updateViewByState " + headerOrFooter + " " + startY + " -> " + endY + " " + getState());
         }
 
-        final boolean slide = smoothScroll(startY, endY);
-
-        if (slide)
+        if (smoothScroll(startY, endY))
         {
-            ViewCompat.postInvalidateOnAnimation(this);
         } else
         {
             dealViewIdle();
