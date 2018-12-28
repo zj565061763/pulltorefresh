@@ -14,16 +14,13 @@ import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 
-import com.sd.lib.gesture.FGestureManager;
-import com.sd.lib.gesture.FScroller;
-import com.sd.lib.gesture.FTouchHelper;
-import com.sd.lib.gesture.tag.TagHolder;
+import com.sd.lib.pulltorefresh.gesture.FGestureManager;
+import com.sd.lib.pulltorefresh.gesture.FTouchHelper;
 import com.sd.lib.pulltorefresh.loadingview.LoadingView;
 
 public class FPullToRefreshView extends BasePullToRefreshView implements NestedScrollingParent, NestedScrollingChild
 {
     private FGestureManager mGestureManager;
-    private FScroller mScroller;
     private final int mTouchSlop;
 
     public FPullToRefreshView(Context context, AttributeSet attrs)
@@ -33,44 +30,11 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
 
-    private FScroller getScroller()
-    {
-        if (mScroller == null)
-        {
-            mScroller = new FScroller(getContext())
-            {
-                @Override
-                protected void onScrollCompute(int lastX, int lastY, int currX, int currY)
-                {
-                    final int dy = currY - lastY;
-                    moveViews(dy, false);
-
-                    if (mIsDebug)
-                    {
-                        final LoadingView loadingView = getLoadingViewByDirection();
-                        final int top = ((View) loadingView).getTop();
-                        Log.i(getDebugTag(), "onScroll:" + top + " " + getState());
-                    }
-                }
-
-                @Override
-                protected void onScrollFinish(boolean isAbort)
-                {
-                    if (mIsDebug)
-                        Log.i(getDebugTag(), "onScroll finished:" + " " + getState());
-
-                    dealViewIdle();
-                }
-            };
-        }
-        return mScroller;
-    }
-
     private FGestureManager getGestureManager()
     {
         if (mGestureManager == null)
         {
-            mGestureManager = new FGestureManager(new FGestureManager.Callback()
+            mGestureManager = new FGestureManager(this, new FGestureManager.Callback()
             {
                 @Override
                 public boolean shouldInterceptEvent(MotionEvent event)
@@ -87,19 +51,18 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
                 }
 
                 @Override
-                public boolean onEventConsume(MotionEvent event)
+                public void onEventConsume(MotionEvent event)
                 {
                     saveDirectionWhenMove();
 
                     final int dy = (int) getGestureManager().getTouchHelper().getDeltaY();
                     moveViews(dy, true);
-                    return true;
                 }
 
                 @Override
-                public void onEventFinish(FGestureManager.FinishParams params, VelocityTracker velocityTracker, MotionEvent event)
+                public void onEventFinish(VelocityTracker velocityTracker, MotionEvent event)
                 {
-                    if (params.hasConsumeEvent)
+                    if (mGestureManager.getLifecycleInfo().hasConsumeEvent())
                     {
                         if (mIsDebug)
                             Log.e(getDebugTag(), "onConsumeEventFinish:" + event.getAction() + " " + getState());
@@ -107,8 +70,37 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
                         processDragFinish();
                     }
                 }
+
+                @Override
+                public void onStateChanged(FGestureManager.State oldState, FGestureManager.State newState)
+                {
+                    switch (newState)
+                    {
+                        case Consume:
+                            break;
+                        case Fling:
+                            break;
+                        case Idle:
+                            dealViewIdle();
+                            break;
+                    }
+                }
+
+                @Override
+                public void onScrollerCompute(int lastX, int lastY, int currX, int currY)
+                {
+                    final int dy = currY - lastY;
+                    moveViews(dy, false);
+
+                    if (mIsDebug)
+                    {
+                        final LoadingView loadingView = getLoadingViewByDirection();
+                        final int top = ((View) loadingView).getTop();
+                        Log.i(getDebugTag(), "onScroll:" + top + " " + getState());
+                    }
+                }
             });
-            mGestureManager.getTagHolder().setCallback(new TagHolder.Callback()
+            mGestureManager.getTagHolder().setCallback(new FGestureManager.TagHolder.Callback()
             {
                 @Override
                 public void onTagInterceptChanged(boolean tag)
@@ -139,11 +131,11 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
         if (getGestureManager().getTouchHelper().getDeltaYFromDown() > 0)
         {
             setDirection(Direction.FROM_HEADER);
-            getScroller().setMaxScrollDistance(((View) getHeaderView()).getHeight());
+            getGestureManager().getScroller().setMaxScrollDistance(((View) getHeaderView()).getHeight());
         } else if (getGestureManager().getTouchHelper().getDeltaYFromDown() < 0)
         {
             setDirection(Direction.FROM_FOOTER);
-            getScroller().setMaxScrollDistance(((View) getFooterView()).getHeight());
+            getGestureManager().getScroller().setMaxScrollDistance(((View) getFooterView()).getHeight());
         }
     }
 
@@ -192,31 +184,30 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
     @Override
     public void computeScroll()
     {
-        if (getScroller().computeScrollOffset())
+        if (getGestureManager().getScroller().computeScrollOffset())
             ViewCompat.postInvalidateOnAnimation(this);
     }
 
     @Override
     protected boolean isViewIdle()
     {
-        final boolean checkScrollerFinished = getScroller().isFinished();
-        final boolean checkNotDragging = !getGestureManager().getTagHolder().isTagConsume();
+        final boolean checkStateIdle = getGestureManager().getState() == FGestureManager.State.Idle;
         final boolean checkNotNestedScroll = !mIsNestedScrollStarted;
 
-        return checkScrollerFinished && checkNotDragging && checkNotNestedScroll;
+        return checkStateIdle && checkNotNestedScroll;
     }
 
     @Override
     protected boolean onSmoothSlide(int startY, int endY)
     {
-        return getScroller().scrollToY(startY, endY, -1);
+        return getGestureManager().getScroller().scrollToY(startY, endY, -1);
     }
 
     @Override
     protected void onDetachedFromWindow()
     {
         super.onDetachedFromWindow();
-        getScroller().abortAnimation();
+        getGestureManager().getScroller().abortAnimation();
     }
 
     private final NestedScrollingParentHelper mNestedScrollingParentHelper = new NestedScrollingParentHelper(this);
@@ -305,7 +296,7 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
                     if (canPullFromHeader())
                     {
                         setDirection(Direction.FROM_HEADER);
-                        getScroller().setMaxScrollDistance(((View) getHeaderView()).getHeight());
+                        getGestureManager().getScroller().setMaxScrollDistance(((View) getHeaderView()).getHeight());
                     }
                 } else if (dy > 0)
                 {
@@ -313,7 +304,7 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
                     if (canPullFromFooter())
                     {
                         setDirection(Direction.FROM_FOOTER);
-                        getScroller().setMaxScrollDistance(((View) getFooterView()).getHeight());
+                        getGestureManager().getScroller().setMaxScrollDistance(((View) getFooterView()).getHeight());
                     }
                 }
 
