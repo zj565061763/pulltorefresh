@@ -166,20 +166,6 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
         return true;
     }
 
-    private boolean canPullFromHeader()
-    {
-        return (getMode() == Mode.PULL_BOTH || getMode() == Mode.PULL_FROM_HEADER)
-                && (FTouchHelper.isScrollToTop(getRefreshView()))
-                && (checkPullConditionHeader());
-    }
-
-    private boolean canPullFromFooter()
-    {
-        return (getMode() == Mode.PULL_BOTH || getMode() == Mode.PULL_FROM_FOOTER)
-                && (FTouchHelper.isScrollToBottom(getRefreshView()))
-                && (checkPullConditionFooter());
-    }
-
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev)
     {

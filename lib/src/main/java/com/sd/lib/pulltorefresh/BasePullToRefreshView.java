@@ -380,22 +380,26 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         }
     }
 
-    /**
-     * 检查{@link PullCondition}是否可以从Header处触发刷新
-     *
-     * @return
-     */
-    protected final boolean checkPullConditionHeader()
+    protected final boolean canPullFromHeader()
+    {
+        return (getMode() == Mode.PULL_BOTH || getMode() == Mode.PULL_FROM_HEADER)
+                && (FTouchHelper.isScrollToTop(getRefreshView()))
+                && (checkPullConditionHeader());
+    }
+
+    protected final boolean canPullFromFooter()
+    {
+        return (getMode() == Mode.PULL_BOTH || getMode() == Mode.PULL_FROM_FOOTER)
+                && (FTouchHelper.isScrollToBottom(getRefreshView()))
+                && (checkPullConditionFooter());
+    }
+
+    private boolean checkPullConditionHeader()
     {
         return mPullCondition != null ? mPullCondition.canPullFromHeader(this) : true;
     }
 
-    /**
-     * 检查{@link PullCondition}是否可以从Footer处触发刷新
-     *
-     * @return
-     */
-    protected final boolean checkPullConditionFooter()
+    private boolean checkPullConditionFooter()
     {
         return mPullCondition != null ? mPullCondition.canPullFromFooter(this) : true;
     }
