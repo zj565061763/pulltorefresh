@@ -123,7 +123,7 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
         if (getState() == State.RELEASE_TO_REFRESH)
             setState(State.REFRESHING);
 
-        smoothSlideViewByState();
+        updateViewByState();
     }
 
     private void saveDirectionWhenMove()

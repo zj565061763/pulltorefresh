@@ -153,7 +153,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         {
             setDirection(Direction.FROM_HEADER);
             setState(State.REFRESHING);
-            smoothSlideViewByState();
+            updateViewByState();
         }
     }
 
@@ -164,7 +164,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         {
             setDirection(Direction.FROM_FOOTER);
             setState(State.REFRESHING);
-            smoothSlideViewByState();
+            updateViewByState();
         }
     }
 
@@ -176,7 +176,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
                 || mState == State.REFRESHING_FAILURE)
         {
             setState(State.FINISH);
-            smoothSlideViewByState();
+            updateViewByState();
         }
     }
 
@@ -293,9 +293,9 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     protected abstract boolean smoothScroll(int startY, int endY);
 
     /**
-     * 根据当前状态滑动view到某个位置
+     * 根据当前状态刷新View
      */
-    protected final void smoothSlideViewByState()
+    protected final void updateViewByState()
     {
         final LoadingView loadingView = getLoadingViewByDirection();
 
@@ -318,7 +318,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         if (mIsDebug)
         {
             final String headerOrFooter = loadingView == mHeaderView ? "Header" : "Footer";
-            Log.i(getDebugTag(), "smoothSlideViewByState " + headerOrFooter + " " + startY + " -> " + endY + " " + getState());
+            Log.i(getDebugTag(), "updateViewByState " + headerOrFooter + " " + startY + " -> " + endY + " " + getState());
         }
 
         final boolean slide = smoothScroll(startY, endY);
