@@ -198,7 +198,7 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
     }
 
     @Override
-    protected boolean onSmoothSlide(int startY, int endY)
+    protected boolean smoothScroll(int startY, int endY)
     {
         return getGestureManager().getScroller().scrollToY(startY, endY, -1);
     }

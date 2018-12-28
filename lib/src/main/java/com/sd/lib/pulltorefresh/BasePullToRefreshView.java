@@ -290,7 +290,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
      * @param endY
      * @return true-触发滑动
      */
-    protected abstract boolean onSmoothSlide(int startY, int endY);
+    protected abstract boolean smoothScroll(int startY, int endY);
 
     /**
      * 根据当前状态滑动view到某个位置
@@ -321,7 +321,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
             Log.i(getDebugTag(), "smoothSlideViewByState " + headerOrFooter + " " + startY + " -> " + endY + " " + getState());
         }
 
-        final boolean slide = onSmoothSlide(startY, endY);
+        final boolean slide = smoothScroll(startY, endY);
 
         if (slide)
         {
