@@ -515,7 +515,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
 
         checkDirection();
 
-        final State oldState = mState;
+        final State old = mState;
         mState = state;
 
         if (mIsDebug)
@@ -527,11 +527,11 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
 
         //通知view改变状态
         final LoadingView loadingView = getLoadingViewByDirection();
-        loadingView.onStateChanged(mState, oldState, this);
+        loadingView.onStateChanged(mState, old, this);
 
         //通知状态变化回调
         if (mOnStateChangeCallback != null)
-            mOnStateChangeCallback.onStateChanged(mState, oldState, this);
+            mOnStateChangeCallback.onStateChanged(mState, old, this);
 
         resetIfNeed();
     }
