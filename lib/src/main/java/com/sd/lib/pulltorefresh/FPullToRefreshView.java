@@ -142,18 +142,28 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
 
     private boolean canPull()
     {
-        // 为了调试方便，让每个条件都执行后把值都列出来
-
         final boolean checkDegree = getGestureManager().getTouchHelper().getDegreeYFromDown() < 30;
+        if (!checkDegree)
+            return false;
 
         final int deltaY = (int) getGestureManager().getTouchHelper().getDeltaYFromDown();
         final boolean checkPullDelta = Math.abs(deltaY) > mTouchSlop;
+        if (!checkPullDelta)
+            return false;
+
         final boolean checkPull = (canPullFromHeader() && deltaY > 0) || (canPullFromFooter() && deltaY < 0);
+        if (!checkPull)
+            return false;
 
         final boolean checkState = getState() == State.RESET;
-        final boolean checkNestedScroll = !mIsNestedScrollStarted;
+        if (!checkState)
+            return false;
 
-        return checkDegree && checkPullDelta && checkPull && checkState && checkNestedScroll;
+        final boolean checkNotNestedScroll = !mIsNestedScrollStarted;
+        if (!checkNotNestedScroll)
+            return false;
+
+        return true;
     }
 
     private boolean canPullFromHeader()
@@ -193,9 +203,14 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
     protected boolean isViewIdle()
     {
         final boolean checkStateIdle = getGestureManager().getState() == FGestureManager.State.Idle;
-        final boolean checkNotNestedScroll = !mIsNestedScrollStarted;
+        if (!checkStateIdle)
+            return false;
 
-        return checkStateIdle && checkNotNestedScroll;
+        final boolean checkNotNestedScroll = !mIsNestedScrollStarted;
+        if (!checkNotNestedScroll)
+            return false;
+
+        return true;
     }
 
     @Override
