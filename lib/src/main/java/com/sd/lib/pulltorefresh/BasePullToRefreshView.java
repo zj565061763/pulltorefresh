@@ -54,7 +54,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
      *
      * @param debug
      */
-    public final void setDebug(boolean debug)
+    public void setDebug(boolean debug)
     {
         mIsDebug = debug;
     }

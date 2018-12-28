@@ -30,6 +30,13 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
 
+    @Override
+    public void setDebug(boolean debug)
+    {
+        super.setDebug(debug);
+        getGestureManager().setDebug(debug);
+    }
+
     private FGestureManager getGestureManager()
     {
         if (mGestureManager == null)
