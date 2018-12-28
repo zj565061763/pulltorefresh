@@ -485,12 +485,9 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
         if (isDrag)
         {
             if (loadingView.canRefresh(getScrollDistance()))
-            {
                 setState(State.RELEASE_TO_REFRESH);
-            } else
-            {
+            else
                 setState(State.PULL_TO_REFRESH);
-            }
         }
 
         return true;
