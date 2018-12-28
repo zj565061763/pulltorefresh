@@ -39,15 +39,13 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
                 @Override
                 public boolean shouldInterceptEvent(MotionEvent event)
                 {
-                    final boolean shouldInterceptEvent = canPull();
-                    return shouldInterceptEvent;
+                    return canPull();
                 }
 
                 @Override
                 public boolean shouldConsumeEvent(MotionEvent event)
                 {
-                    final boolean shouldConsumeEvent = canPull();
-                    return shouldConsumeEvent;
+                    return mGestureManager.getTagHolder().isTagIntercept() || canPull();
                 }
 
                 @Override
