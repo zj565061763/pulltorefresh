@@ -483,26 +483,19 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
             mOnViewPositionChangeCallback.onViewPositionChanged(this);
 
         if (isDrag)
-            updateStateByMoveDistance();
+        {
+            if (loadingView.canRefresh(getScrollDistance()))
+            {
+                setState(State.RELEASE_TO_REFRESH);
+            } else
+            {
+                setState(State.PULL_TO_REFRESH);
+            }
+        }
 
         return true;
     }
 
-    /**
-     * 根据移动距离刷新当前状态
-     */
-    private void updateStateByMoveDistance()
-    {
-        final LoadingView loadingView = getLoadingViewByDirection();
-        final int scrollDistance = getScrollDistance();
-        if (loadingView.canRefresh(scrollDistance))
-        {
-            setState(State.RELEASE_TO_REFRESH);
-        } else
-        {
-            setState(State.PULL_TO_REFRESH);
-        }
-    }
 
     /**
      * 设置状态
