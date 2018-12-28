@@ -60,7 +60,7 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     }
 
     /**
-     * 设置是否打印{@link #onLayout(boolean, int, int, int, int)}日志
+     * 设置是否打印layout日志
      *
      * @param debugLayout
      */
@@ -910,10 +910,18 @@ public abstract class BasePullToRefreshView extends ViewGroup implements PullToR
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b)
     {
+        if (mIsDebugLayout)
+            Log.i(getDebugTag(), "onLayout");
+
+        layoutInternal();
+    }
+
+    private void layoutInternal()
+    {
         String logString = "";
 
         if (mIsDebugLayout)
-            logString += "----------onLayout height:" + getHeight() + " " + mState + "\r\n";
+            logString += "----------layoutInternal height:" + getHeight() + " " + mState + "\r\n";
 
         int left = getPaddingLeft();
         int top = 0;
