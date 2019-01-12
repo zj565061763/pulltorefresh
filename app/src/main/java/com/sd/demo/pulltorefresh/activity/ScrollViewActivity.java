@@ -7,9 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
 
+import com.sd.demo.pulltorefresh.R;
 import com.sd.lib.pulltorefresh.FPullToRefreshView;
 import com.sd.lib.pulltorefresh.PullToRefreshView;
-import com.sd.demo.pulltorefresh.R;
 
 public class ScrollViewActivity extends AppCompatActivity
 {
@@ -30,7 +30,7 @@ public class ScrollViewActivity extends AppCompatActivity
         view_pull.setOnStateChangeCallback(new PullToRefreshView.OnStateChangeCallback()
         {
             @Override
-            public void onStateChanged(PullToRefreshView.State newState, PullToRefreshView.State oldState, PullToRefreshView view)
+            public void onStateChanged(PullToRefreshView.State oldState, PullToRefreshView.State newState, PullToRefreshView view)
             {
                 //状态变化回调
                 btn.setText(String.valueOf(view.getDirection()) + "->" + String.valueOf(newState));

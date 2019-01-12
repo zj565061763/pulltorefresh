@@ -234,11 +234,11 @@ public interface PullToRefreshView
         /**
          * 状态变化回调
          *
-         * @param newState
          * @param oldState
+         * @param newState
          * @param view
          */
-        void onStateChanged(State newState, State oldState, PullToRefreshView view);
+        void onStateChanged(State oldState, State newState, PullToRefreshView view);
     }
 
     interface OnRefreshCallback

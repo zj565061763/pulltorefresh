@@ -41,7 +41,7 @@ public class SimpleTextLoadingView extends BaseLoadingView
     }
 
     @Override
-    public void onStateChanged(PullToRefreshView.State newState, PullToRefreshView.State oldState, PullToRefreshView view)
+    public void onStateChanged(PullToRefreshView.State oldState, PullToRefreshView.State newState, PullToRefreshView view)
     {
         switch (newState)
         {
