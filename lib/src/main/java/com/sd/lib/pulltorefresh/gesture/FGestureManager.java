@@ -31,7 +31,7 @@ public class FGestureManager
     private State mState = State.Idle;
     private LifecycleInfo mLifecycleInfo;
 
-    private IdleRunnable mIdleRunnable;
+    private final IdleRunnable mIdleRunnable = new IdleRunnable();
     private VelocityTracker mVelocityTracker;
 
     private boolean mDebug;
@@ -63,9 +63,6 @@ public class FGestureManager
             @Override
             protected void onScrollerStart()
             {
-                if (mDebug)
-                    Log.i(FGestureManager.class.getSimpleName(), "onScrollerStart");
-
                 setState(State.Fling);
                 super.onScrollerStart();
             }
@@ -84,9 +81,12 @@ public class FGestureManager
                     Log.e(FGestureManager.class.getSimpleName(), "onScrollerFinish isAbort:" + isAbort);
 
                 if (mTagHolder.isTagConsume())
+                {
                     setState(State.Consume);
-                else
-                    postIdleRunnable();
+                } else
+                {
+                    mIdleRunnable.post();
+                }
 
                 super.onScrollerFinish(isAbort);
             }
@@ -135,7 +135,7 @@ public class FGestureManager
         if (mDebug)
             Log.i(FGestureManager.class.getSimpleName(), "setState:" + mState + " -> " + state);
 
-        cancelIdleRunnable();
+        mIdleRunnable.cancel();
 
         final State old = mState;
         if (old != state)
@@ -161,22 +161,6 @@ public class FGestureManager
         }
     }
 
-    private void postIdleRunnable()
-    {
-        cancelIdleRunnable();
-        mIdleRunnable = new IdleRunnable(mState);
-        mIdleRunnable.post();
-    }
-
-    private void cancelIdleRunnable()
-    {
-        if (mIdleRunnable != null)
-        {
-            mIdleRunnable.cancel();
-            mIdleRunnable = null;
-        }
-    }
-
     /**
      * 取消消费事件
      */
@@ -188,11 +172,17 @@ public class FGestureManager
                 Log.i(FGestureManager.class.getSimpleName(), "cancelConsumeEvent");
 
             getLifecycleInfo().setCancelConsumeEvent(true);
-            mTagHolder.reset();
 
             if (getScroller().isFinished())
-                postIdleRunnable();
+            {
+                /**
+                 * 调用取消消费事件方法之后，外部有可能立即调用滚动的方法变更状态为{@link State.Fling}
+                 * 所以此处延迟设置{@link State.Idle}状态
+                 */
+                mIdleRunnable.post();
+            }
 
+            mTagHolder.reset();
             mCallback.onCancelConsumeEvent();
         }
     }
@@ -271,58 +261,43 @@ public class FGestureManager
         mTagHolder.reset();
         mCallback.onEventFinish(getVelocityTracker(), event);
 
+        releaseVelocityTracker();
+        getLifecycleInfo().reset();
+
         if (mState == State.Consume)
             setState(State.Idle);
-
-        getLifecycleInfo().reset();
-        releaseVelocityTracker();
     }
 
     private final class IdleRunnable implements Runnable
     {
-        private final State mLastState;
         private boolean mPost;
-
-        public IdleRunnable(State state)
-        {
-            mLastState = state;
-        }
 
         @Override
         public void run()
         {
+            if (mDebug)
+                Log.i(FGestureManager.class.getSimpleName(), "IdleRunnable run");
+
             mPost = false;
-            if (mIdleRunnable == this)
-                mIdleRunnable = null;
-
-            if (mState == mLastState)
-            {
-                if (mDebug)
-                    Log.i(FGestureManager.class.getSimpleName(), "IdleRunnable run:" + this);
-
-                setState(State.Idle);
-            }
+            setState(State.Idle);
         }
 
         public void post()
         {
-            cancel();
+            if (mDebug)
+                Log.i(FGestureManager.class.getSimpleName(), "IdleRunnable post");
+
             mViewGroup.post(this);
             mPost = true;
-
-            if (mDebug)
-                Log.i(FGestureManager.class.getSimpleName(), "IdleRunnable post:" + this);
         }
 
         public void cancel()
         {
-            mViewGroup.removeCallbacks(this);
+            if (mDebug && mPost)
+                Log.i(FGestureManager.class.getSimpleName(), "IdleRunnable cancel");
 
-            if (mPost)
-            {
-                if (mDebug)
-                    Log.i(FGestureManager.class.getSimpleName(), "IdleRunnable cancel:" + this);
-            }
+            mViewGroup.removeCallbacks(this);
+            mPost = false;
         }
     }
 
