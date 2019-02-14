@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--          string          -->
-
     <string name="lib_ptr_state_pull_to_refresh_header">pull to refresh</string>
     <string name="lib_ptr_state_pull_to_refresh_footer">pull to load</string>
 

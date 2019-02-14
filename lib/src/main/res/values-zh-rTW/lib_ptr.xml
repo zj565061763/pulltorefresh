@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="lib_ptr_state_pull_to_refresh_header">下拉刷新</string>
+    <string name="lib_ptr_state_pull_to_refresh_footer">上拉加載</string>
+
+    <string name="lib_ptr_state_release_to_refresh_header">松開刷新</string>
+    <string name="lib_ptr_state_release_to_refresh_footer">松開加載</string>
+
+    <string name="lib_ptr_state_refreshing_header">刷新中...</string>
+    <string name="lib_ptr_state_refreshing_footer">加載中...</string>
+
+    <string name="lib_ptr_state_refreshing_success_header">刷新成功</string>
+    <string name="lib_ptr_state_refreshing_success_footer">加載成功</string>
+
+    <string name="lib_ptr_state_refreshing_failure_header">刷新失敗</string>
+    <string name="lib_ptr_state_refreshing_failure_footer">加載失敗</string>
+
+</resources>
