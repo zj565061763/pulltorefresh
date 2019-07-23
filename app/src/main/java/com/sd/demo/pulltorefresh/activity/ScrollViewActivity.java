@@ -2,10 +2,11 @@ package com.sd.demo.pulltorefresh.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.sd.demo.pulltorefresh.R;
 import com.sd.lib.pulltorefresh.FPullToRefreshView;

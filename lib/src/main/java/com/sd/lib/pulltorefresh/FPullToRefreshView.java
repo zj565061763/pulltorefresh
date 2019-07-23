@@ -1,18 +1,18 @@
 package com.sd.lib.pulltorefresh;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.v4.view.NestedScrollingChild;
-import android.support.v4.view.NestedScrollingChildHelper;
-import android.support.v4.view.NestedScrollingParent;
-import android.support.v4.view.NestedScrollingParentHelper;
-import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
+
+import androidx.core.view.NestedScrollingChild;
+import androidx.core.view.NestedScrollingChildHelper;
+import androidx.core.view.NestedScrollingParent;
+import androidx.core.view.NestedScrollingParentHelper;
+import androidx.core.view.ViewCompat;
 
 import com.sd.lib.pulltorefresh.gesture.FGestureManager;
 import com.sd.lib.pulltorefresh.gesture.FTouchHelper;
@@ -407,7 +407,7 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
     }
 
     @Override
-    public boolean dispatchNestedScroll(int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, @Nullable int[] offsetInWindow)
+    public boolean dispatchNestedScroll(int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int[] offsetInWindow)
     {
         return mNestedScrollingChildHelper.dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, offsetInWindow);
     }

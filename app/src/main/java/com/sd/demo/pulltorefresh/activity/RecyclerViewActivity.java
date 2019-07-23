@@ -2,11 +2,12 @@ package com.sd.demo.pulltorefresh.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.sd.demo.pulltorefresh.R;
 import com.sd.demo.pulltorefresh.loadingview.CustomPullToRefreshLoadingView;
