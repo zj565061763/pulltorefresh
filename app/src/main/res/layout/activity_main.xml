@@ -8,24 +8,40 @@
         android:id="@+id/btn_button"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="Button_Activity" />
+        android:onClick="onClick"
+        android:text="ButtonActivity"
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/btn_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="Recyclerview_Activity" />
+        android:onClick="onClick"
+        android:text="RecyclerViewActivity"
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/btn_listview"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="ListView_Activity" />
+        android:onClick="onClick"
+        android:text="ListViewActivity"
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/btn_scrollview"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="ScrollView_Activity" />
+        android:onClick="onClick"
+        android:text="ScrollViewActivity"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/btn_nested_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:onClick="onClick"
+        android:text="NestedRecyclerViewActivity"
+        android:textAllCaps="false" />
 
 </LinearLayout>
