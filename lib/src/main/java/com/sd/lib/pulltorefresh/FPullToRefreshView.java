@@ -269,7 +269,7 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
     public void onNestedScrollAccepted(View child, View target, int axes)
     {
         if (mIsDebug)
-            Log.i(getDebugTag(), "onNestedScrollAccepted----------");
+            Log.i(getDebugTag(), "onNestedScrollAccepted---------- target:" + target);
 
         mNestedScrollingParentHelper.onNestedScrollAccepted(child, target, axes);
         startNestedScroll(axes & ViewCompat.SCROLL_AXIS_VERTICAL);
@@ -324,7 +324,7 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
             if (dy < 0)
             {
                 // header
-                if (canPullFromHeader())
+                if (canPullFromHeader() && FTouchHelper.isScrollToTop(target))
                 {
                     setDirection(Direction.FROM_HEADER);
                     getGestureManager().getScroller().setMaxScrollDistance(((View) getHeaderView()).getHeight());
@@ -332,7 +332,7 @@ public class FPullToRefreshView extends BasePullToRefreshView implements NestedS
             } else if (dy > 0)
             {
                 // footer
-                if (canPullFromFooter())
+                if (canPullFromFooter() && FTouchHelper.isScrollToBottom(target))
                 {
                     setDirection(Direction.FROM_FOOTER);
                     getGestureManager().getScroller().setMaxScrollDistance(((View) getFooterView()).getHeight());
